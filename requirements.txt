@@ -1,0 +1,10 @@
+# 核心依賴（必需）
+python-docx>=0.8.11
+Jinja2>=3.0.0
+
+# GUI 增強（選用，提供更美觀的介面）
+ttkbootstrap>=1.10.0
+tkcalendar>=1.6.0
+
+# HTML 預覽（選用，提供內嵌預覽功能）
+pywebview>=4.0.0
