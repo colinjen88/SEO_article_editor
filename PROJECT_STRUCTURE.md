@@ -1,13 +1,16 @@
 # SEO Article Editor - 專案結構說明
 
+> **版本：** v1.7  
+> **更新日期：** 2025-11-04
+
 ## 如何啟動程式
 
-**主程式入口:**
+**主程式入口：**
 ```bash
 python SEO_Article_Editor.py
 ```
 
-這會啟動 SEO 文章編輯器的視覺化介面。
+這會啟動 SEO 文章編輯器的視覺化介面（包含完整 SEO 控制與 Schema.org 支援）。
 
 ## 檔案結構
 
@@ -45,45 +48,71 @@ SEO_Article_Editor/
 
 ## 主要功能
 
-### SEO 文章編輯器 (`src/tp_editor_gui.py`)
-- 視覺化編輯介面
-- 支援階層式結構:
-  - H1 標題
+### SEO 文章編輯器 (`src/tp_editor_gui.py`) - v1.7
+- **視覺化編輯介面**（darkly 暗色主題）
+- **階層式結構**:
+  - H1 主標題
+  - 前言區塊
   - H2 段落 (SecBlock)
-    - H3 子段落 (H3Block)
-  - FAQ 區塊
-- SEO 欄位:
+    - H3 子段落 (H3Block) - 可多個
+  - FAQ 區塊 (FaqBlock)
+- **完整 SEO 控制** (10+ 欄位):
   - 作者、組織名稱
   - 發布日期、修改日期
-  - 文章標題、描述
-  - 文章編號 (自動遞增)
-- 即時預覽
-- 瀏覽器預覽
-- FAQ 預覽分頁
-- JSON 格式儲存/載入
-- 輸出 HTML Schema 文章
+  - 文章標題（Headline）、描述
+  - 文章編號（自動遞增）
+  - 作者型別（Organization/Person）
+  - Publisher Logo URL、Publisher URL
+  - Publisher Logo 寬高、sameAs 社群連結
+- **Schema.org 結構化資料**:
+  - 自動生成 Article JSON-LD
+  - 自動生成 FAQPage JSON-LD（如有 FAQ）
+- **三重預覽**:
+  - 編輯分頁：左側編輯 + 右側 HTML 原始碼
+  - Schema 預覽分頁：JSON-LD 結構化資料
+  - 瀏覽器預覽：完整 CSS + 語意化 HTML
+- **內容增強**:
+  - 段落內容支援原生 HTML（可貼表格）
+  - FAQ 答案支援 HTML/純文字切換
+- **資料管理**:
+  - JSON 格式儲存/載入（包含完整 SEO 資訊）
+  - 語意化 HTML 匯出（`<article>`, `<section>` 標籤）
 
 ## 技術特色
 
-- **介面主題**: ttkbootstrap darkly 風格
-- **編輯模式**: 區塊式編輯 (H2 段落 + H3 子段落)
-- **輸出格式**: 符合 Schema.org Article 標準的 HTML
-- **資料格式**: JSON (包含 SEO metadata)
-- **預覽功能**: 
-  - 視窗內即時預覽 (階層式縮排)
-  - 瀏覽器完整預覽
-  - FAQ 專用預覽分頁
+- **介面主題**：ttkbootstrap darkly 風格（專業暗色）
+- **編輯模式**：區塊式編輯（H1 + 前言 + H2 段落 + H3 子段落 + FAQ）
+- **輸出格式**：符合 Schema.org Article + FAQPage 標準的語意化 HTML
+- **資料格式**：JSON（包含完整 SEO metadata + 內容結構）
+- **結構化資料**：自動生成雙 JSON-LD 腳本（Article + FAQPage）
+- **預覽功能**：
+  - 編輯分頁即時預覽（HTML 原始碼）
+  - Schema 預覽分頁（JSON-LD）
+  - 瀏覽器完整預覽（CSS + 語意化標籤）
+- **內容支援**：HTML 表格、多段落、FAQ HTML 模式
 
 ## 使用流程
 
 1. 啟動 `SEO_Article_Editor.py`
-2. 填寫 SEO 欄位 (作者、日期、標題等)
-3. 編輯文章內容:
-   - 使用 "+" 按鈕新增 H2 段落
-   - 在段落內使用 "+" 按鈕新增 H3 子段落
-   - 切換到 FAQ 預覽分頁編輯常見問答
-4. 隨時查看預覽或在瀏覽器中預覽
-5. 儲存為 JSON (File > Save) 或輸出 HTML (File > Output HTML)
+2. 填寫 **SEO 資訊區**（10+ 欄位）：
+   - 作者、日期、組織、文章編號
+   - 標題、描述
+   - 作者型別、Publisher 資訊
+3. 編輯 **文章內容**：
+   - 填寫 H1 主標題
+   - 填寫前言（選填）
+   - 點擊「+ 段落」新增 H2 段落
+   - 在段落內點擊「+ H3」新增子區塊
+   - 點擊「+ QA」新增 FAQ 問答
+   - 段落內容可直接貼入 HTML 表格
+   - FAQ 可切換 HTML 模式
+4. 查看 **預覽**：
+   - 右側即時 HTML 原始碼預覽
+   - 切換「Schema 預覽」分頁查看 JSON-LD
+   - 點擊「🌐 在瀏覽器開啟」查看完整效果
+5. **儲存與匯出**：
+   - 點擊「儲存」存為 JSON 專案檔
+   - 點擊「匯出HTML」產生完整 HTML 檔案
 
 ## 封存檔案說明
 

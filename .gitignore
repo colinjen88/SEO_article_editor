@@ -42,9 +42,12 @@ desktop.ini
 # Project specific
 output/*.html
 !output/.gitkeep
+!output/preview_temp.html
 article_number.txt
 settings.json
 temp_*.py
+*.json
+!requirements.txt
 
 # Temporary files
 *.tmp

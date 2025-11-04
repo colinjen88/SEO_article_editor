@@ -121,6 +121,14 @@ class Editor:
     
     def _ui(self):
         # 全域樣式：確保 ttk.Entry 也採用白底黑字，即使主題（如 ttkbootstrap darkly）會覆蓋
+        self.root.option_add("*Entry.background", "#ffffff")
+        self.root.option_add("*Entry.foreground", "black")
+        self.root.option_add("*Entry.insertBackground", "black")
+        self.root.option_add("*Text.background", "#ffffff")
+        self.root.option_add("*Text.foreground", "black")
+        self.root.option_add("*Text.insertBackground", "black")
+        self.root.option_add("*TEntry*FieldBackground", "#ffffff")
+        self.root.option_add("*TEntry*foreground", "black")
         try:
             st = ttk.Style()
             st.configure("TEntry", fieldbackground="#ffffff", foreground="black")
@@ -287,7 +295,7 @@ class Editor:
         ttk.Button(pv_toolbar, text="🌐 在瀏覽器開啟", command=self._preview_browser).pack(side=tk.LEFT)
         ttk.Label(pv_toolbar, text="(HTML 原始碼)", font=("Arial", 8), foreground="gray").pack(side=tk.LEFT, padx=10)
 
-        self.pv = scrolledtext.ScrolledText(rf, wrap=tk.WORD, state=tk.DISABLED)
+        self.pv = scrolledtext.ScrolledText(rf, wrap=tk.WORD, state=tk.DISABLED, bg="#ffffff", fg="black")
         self.pv.pack(fill=tk.BOTH, expand=True)
 
         # Schema 預覽分頁（JSON-LD）
@@ -299,14 +307,14 @@ class Editor:
         ttk.Label(schema_toolbar, text="Schema JSON-LD", font=("Arial", 12, "bold")).pack(side=tk.LEFT)
         ttk.Button(schema_toolbar, text="重新整理", command=self._update_schema_preview).pack(side=tk.RIGHT)
 
-        self.schema_preview = scrolledtext.ScrolledText(schema_tab, wrap=tk.WORD, font=("Consolas", 10))
+        self.schema_preview = scrolledtext.ScrolledText(schema_tab, wrap=tk.WORD, font=("Consolas", 10), bg="#ffffff", fg="black")
         self.schema_preview.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
         # 底部作者宣告
         footer = ttk.Frame(self.root)
         footer.pack(side=tk.BOTTOM, fill=tk.X, pady=2)
 
-        ttk.Label(footer, text="SEOArticleEditor product v1.1 produced by ", font=("Arial", 7), foreground="gray").pack(side=tk.LEFT, padx=(0, 0))
+        ttk.Label(footer, text="SEOArticleEditor product v1.7 produced by ", font=("Arial", 7), foreground="gray").pack(side=tk.LEFT, padx=(0, 0))
 
         author_link = ttk.Label(
             footer,

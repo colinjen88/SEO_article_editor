@@ -7,6 +7,71 @@
 
 ---
 
+## [1.7.0] - 2025-11-04
+
+### 新增 (Added)
+- ✨ **完整 SEO 元數據控制介面**
+  - 新增「SEO 資訊」專區，包含 10+ 欄位
+  - 作者、發布/修改日期、組織名稱、文章編號
+  - 標題（Headline）、描述（Description）
+  - 作者型別選擇（Organization / Person）
+  - Publisher Logo URL、Publisher URL
+  - Publisher Logo 寬高設定
+  - Publisher sameAs 社群連結（多個，逗號分隔）
+- 📊 **完整 Schema.org JSON-LD 支援**
+  - 自動生成 Article Schema（包含所有 SEO 資訊）
+  - 自動生成 FAQPage Schema（如有 FAQ）
+  - 兩個獨立的 `<script type="application/ld+json">` 區塊
+  - 新增「Schema 預覽」分頁，可即時查看 JSON-LD
+- 🎨 **HTML 模式支援**
+  - 段落內容預設支援原生 HTML（可貼表格）
+  - FAQ 答案新增「HTML 模式」切換開關
+  - 內容標籤提示：「[支援 HTML 表格]」
+- 🌐 **語意化 HTML 輸出**
+  - 使用 `<article class="seo-article-content">` 包裹
+  - 使用 `<section>` 標籤區分段落
+  - 前言使用 `<section class="intro-summary">`
+  - FAQ 使用 `<section id="faq">`
+  - H3 子區塊也用 `<section>` 包裹
+- 🎨 **介面美化與易用性**
+  - 採用 ttkbootstrap darkly 主題（暗色專業風格）
+  - 「+ 段落」和「+ QA」按鈕加大至 3 倍寬度（`width=20`）
+  - 新增檔案路徑顯示標籤（顯示當前開啟的檔案）
+  - 底部加入版本號與作者資訊
+
+### 變更 (Changed)
+- 🔄 **主程式入口更名**：`main.py` → `SEO_Article_Editor.py`
+- 📁 **舊版工具歸檔**：`src/seo_layout_gui.py` 等移至 `src/legacy/`
+- 🎯 **預設範例更新**：載入時使用包含完整 SEO 資訊的範例
+- 📄 **JSON 格式擴充**：儲存檔案包含完整 `seo` 物件（10+ 欄位）
+- 🎨 **CSS 模板更新**：匯出 HTML 使用新的 CSS 樣式（符合模板）
+
+### 改進 (Improved)
+- 🚀 **SEO 完整度大幅提升**：從基本文章編輯器升級為專業 SEO 工具
+- 📊 **符合 Google 搜尋最佳實踐**：完整的結構化資料支援
+- 🎯 **更靈活的內容編輯**：支援 HTML 表格等複雜內容
+- 👁️ **三重預覽系統**：編輯 + HTML + Schema，全方位檢視
+- 📦 **更完整的資料保存**：JSON 包含所有設定，無資料遺失
+
+### 已知問題 (Known Issues)
+- ⚠️ **輸入欄位顏色問題**：在 darkly 主題下，部分輸入欄位可能未正確顯示白底黑字
+  - 原因：ttkbootstrap 主題樣式覆蓋優先權
+  - 已嘗試：使用 `tk.Entry`/`tk.Text` + `option_add` 強制設定
+  - 狀態：主題覆蓋機制仍可能影響部分元件
+  - 暫時方案：可改用 `flatly` 主題或移除 ttkbootstrap
+
+### 技術細節 (Technical)
+- 新增 `Editor._gen_schema_jsonld()` 方法生成 JSON-LD
+- 新增 `Editor._strip_tags()` 方法處理 HTML 轉純文字
+- `SecBlock.is_html` 固定為 `True`（段落內容預設 HTML）
+- `FaqBlock.is_html` 使用 `BooleanVar`（可切換）
+- JSON 儲存新增 `seo` 頂層物件（包含 10+ SEO 欄位）
+- HTML 匯出整合 CSS 模板與 JSON-LD 生成
+- 使用 `tk.Entry` 和 `tk.Text` 取代 `ttk.Entry`（確保樣式可控）
+- 新增 `root.option_add()` 全域樣式設定（嘗試覆蓋主題）
+
+---
+
 ## [1.6.0] - 2025-11-04
 
 ### 新增 (Added)

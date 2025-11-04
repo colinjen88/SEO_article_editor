@@ -1,20 +1,24 @@
 # SEO 文章編輯器
 
-> **版本：** v1.6  
+> **版本：** v1.7  
 > **更新日期：** 2025-11-04
 
 ## 📌 專案簡介
 
-**視覺化 SEO 文章編輯器** - 專為內容創作者設計的簡單易用工具。無需學習複雜語法，透過直覺的表單介面快速編輯文章，支援多層次標題結構（H1/H2/H3）與 FAQ 區塊，即時預覽 HTML 效果。
+**視覺化 SEO 文章編輯器** - 專為內容創作者設計的專業 SEO 文章製作工具。支援完整的 Schema.org 結構化資料（Article + FAQPage JSON-LD）、多層次標題結構（H1/H2/H3）、進階 SEO 元數據控制，以及語意化 HTML 輸出。
 
 ### ✨ 核心特色
-- � **表單式編輯**：完全視覺化，無需任何標記語法
+- 📝 **表單式編輯**：完全視覺化，無需任何標記語法
 - 🎯 **多層次結構**：支援 H1 > H2 > H3 的階層標題
-- ❓ **FAQ 專區**：獨立 FAQ 區塊，符合 SEO 最佳實踐
-- �️ **即時預覽**：左側編輯，右側即時顯示 HTML 效果
-- � **JSON 儲存**：資料以 JSON 格式保存，易於管理
+- ❓ **FAQ 專區**：獨立 FAQ 區塊，支援 HTML/純文字切換
+- 🔍 **完整 SEO 控制**：作者、日期、組織、文章編號、描述等
+- 📊 **Schema.org 結構化資料**：自動生成 Article 與 FAQPage JSON-LD
+- 🏢 **進階出版者設定**：支援 Logo URL/尺寸、sameAs 社群連結
+- 👁️ **三重預覽**：編輯 + HTML 原始碼 + Schema JSON-LD
 - 🌐 **瀏覽器預覽**：一鍵在瀏覽器查看完整樣式
-- 📤 **HTML 匯出**：產生完整 HTML 檔案（含 CSS）
+- 📤 **語意化 HTML 匯出**：使用 `<article>`、`<section>` 標籤
+- 💾 **JSON 專案儲存**：所有設定與內容完整保存
+- 🎨 **Darkly 主題**：專業暗色介面（ttkbootstrap）
 
 ---
 
@@ -32,37 +36,59 @@ git clone <repository-url>
 cd SEO_article_editor
 ```
 
-2. **安裝依賴（選用美化套件）**
+2. **安裝依賴**
 ```powershell
-pip install ttkbootstrap
+pip install -r requirements.txt
 ```
+   *註：ttkbootstrap 提供 darkly 主題，強烈建議安裝*
 
 3. **啟動編輯器**
 ```powershell
-python main.py
+python SEO_Article_Editor.py
 ```
 
 ---
 
 ## 💡 使用指南
 
-### � 編輯器操作
+### 📋 SEO 資訊區
 
-啟動編輯器後，你會看到雙面板介面：
+編輯器頂部提供完整的 SEO 元數據控制：
 
-```powershell
-python main.py
-```
+**基本資訊：**
+- **作者**：內容創作者姓名
+- **文章日期**：發布日期（YYYY-MM-DD）
+- **修改日期**：最後修改日期
+- **組織名稱**：發布組織/公司名稱
+- **文章編號**：自動遞增的唯一識別碼
+- **作者型別**：Organization（組織）或 Person（個人）
 
-**核心特色：**
-- 📝 **表單式輸入**：所有內容透過輸入框填寫，完全視覺化
-- 📌 **固定區塊**：H1 主標題 + 前言（不可刪除）
-- ➕ **動態段落**：可隨時新增/刪除文章段落（H2 + 內容）
-- ❓ **FAQ 專區**：專門的 FAQ 區塊，自動套用 visually-hidden 樣式
-- 👁️ **即時預覽**：右側面板即時顯示 HTML 效果
-- 🌐 **瀏覽器預覽**：一鍵在瀏覽器中查看完整樣式
-- 💾 **JSON 儲存**：文章資料以 JSON 格式儲存，易於編輯和管理
-- 📤 **匯出 HTML**：產生完整的 HTML 檔案，包含 CSS 樣式
+**進階設定：**
+- **標題（Headline）**：SEO 標題，用於 JSON-LD
+- **描述（Description）**：文章摘要描述
+- **Publisher Logo**：出版者 Logo 圖片 URL
+- **Publisher URL**：出版者官網 URL
+- **Logo 寬/高**：Logo 圖片尺寸（像素）
+- **Publisher sameAs**：社群媒體連結（逗號分隔）
+
+### ✍️ 內容編輯
+
+**核心操作：**
+- 📝 **H1 主標題**：文章最上層標題（必填）
+- � **前言**：文章開場摘要（選填）
+- ➕ **+ 段落**：新增 H2 段落區塊
+  - 每個段落包含：H2 標題 + 內容
+  - 內容支援**原生 HTML**（可貼入表格）
+  - 可新增多個 H3 子區塊
+- ➕ **+ QA**：新增 FAQ 問答
+  - 支援 HTML/純文字模式切換
+  - FAQ 答案預設為純文字，可切換為 HTML
+
+### 👁️ 三重預覽
+
+1. **編輯分頁**：左側編輯 + 右側 HTML 原始碼即時預覽
+2. **Schema 預覽分頁**：查看生成的 JSON-LD 結構化資料
+3. **瀏覽器預覽**：點擊工具列「🌐 在瀏覽器開啟」查看完整樣式
 
 **介面說明：**
 
@@ -100,30 +126,37 @@ python main.py
 └───────────────┴─────────────────────────┘
 ```
 
-### 操作流程
+### 📖 操作流程
 
-1. **填寫基本資訊**
-   - H1：文章主標題
-   - 前言：文章開頭摘要
+1. **填寫 SEO 資訊**（必填）
+   - 作者、組織名稱
+   - 發布日期、修改日期（預設今日）
+   - 文章標題（Headline）、描述
+   - 文章編號（自動遞增）
+   - 作者型別（Organization/Person）
+   - Publisher 資訊（Logo、URL、社群連結等）
 
-2. **新增文章段落**
-   - 點擊「+ 段落」新增 H2 區塊
-   - 填寫 H2 標題和內容
-   - 可在段落內點擊「+ H3」新增子區塊
-   - H3 子區塊可包含自己的標題和內容
+2. **編輯文章內容**
+   - H1：主標題（必填）
+   - 前言：開場摘要（選填）
+   - 點擊「**+ 段落**」新增 H2 區塊
+   - 填寫 H2 標題和內容（支援貼入 HTML 表格）
+   - 在段落內點擊「**+ H3**」新增子區塊
+   - H3 子區塊可包含標題和內容
 
-3. **新增 FAQ 區塊**
-   - 點擊「+ QA」新增問答
-   - 分別填寫問題和答案
+3. **新增 FAQ 區塊**（選填）
+   - 點擊「**+ QA**」新增問答
+   - 填寫問題和答案
+   - 勾選「**HTML 模式**」讓答案支援 HTML
 
-4. **預覽與匯出**
-   - 右側面板即時顯示 HTML 效果
-   - 點擊「預覽」在瀏覽器查看完整樣式
-   - 點擊「匯出HTML」儲存最終檔案
+4. **查看預覽**
+   - **編輯分頁**：右側即時顯示 HTML 原始碼
+   - **Schema 預覽分頁**：查看生成的 JSON-LD
+   - 點擊「**🌐 在瀏覽器開啟**」查看完整效果
 
-5. **儲存專案**
-   - 點擊「儲存」將文章存為 JSON
-   - 下次可以「開啟」繼續編輯
+5. **儲存與匯出**
+   - 點擊「**儲存**」存為 JSON 專案檔（可重複編輯）
+   - 點擊「**匯出HTML**」產生完整 HTML 檔案（包含 CSS + JSON-LD）
 
 ### 快捷鍵與技巧
 
@@ -138,50 +171,70 @@ python main.py
 
 ```
 SEO_article_editor/
-├── main.py                    # 主程式入口
+├── SEO_Article_Editor.py      # 主程式入口
 ├── src/
-│   └── tp_editor_gui.py      # 編輯器核心程式
-├── templates/                 # 備用模板（其他工具用）
+│   ├── tp_editor_gui.py      # 編輯器核心程式（v1.7）
+│   └── legacy/               # 舊版工具（已棄用）
+├── templates/                 # HTML 模板
 ├── output/                    # HTML 輸出資料夾
-└── docs/                      # 文件
+├── docs/                      # 完整文件
+├── requirements.txt           # Python 依賴套件
+├── article_number.txt         # 文章編號追蹤
+└── README.md                  # 本文件
 ```
 
 ---
 
-## 🎨 介面美化（選用）
+## 🎨 主題設定
 
-如果想要更美觀的介面主題，可安裝：
+本編輯器使用 **ttkbootstrap darkly 主題**（暗色專業風格）。
 
-```powershell
-pip install ttkbootstrap
+如要更換主題，編輯 `src/tp_editor_gui.py` 最後一行：
+```python
+root = tb.Window(themename="darkly")  # 改為其他主題名稱
 ```
 
-支援主題：flatly（預設）、cosmo、darkly、morph、sandstone、solar
+支援主題：`flatly`、`cosmo`、`darkly`、`morph`、`sandstone`、`solar`
 
 ---
 
 ## 🔧 常見問題
 
-### Q: 視窗沒有跳出？
-**A:** 測試 tkinter 是否正常：
-```powershell
-python -m tkinter
-```
+### Q: 輸入欄位顏色異常（暗色背景看不清）？
+**A:** 這是 ttkbootstrap darkly 主題的已知限制。目前程式已設定白底黑字，但主題可能覆蓋設定。請檢查：
+1. 是否已安裝 `ttkbootstrap`：`pip install ttkbootstrap`
+2. 重新啟動程式
+3. 如持續異常，可暫時編輯 `tp_editor_gui.py` 最後一行，將 `themename="darkly"` 改為 `themename="flatly"`
 
 ### Q: 如何產生多段落？
 **A:** 在內容文字區使用雙換行（Enter Enter），會自動轉換為 `<p>` 段落。
 
-### Q: H3 子區塊有什麼用？
-**A:** 當一個 H2 段落內容太多時，可以用 H3 分成更小的子主題，形成更好的階層結構。
+### Q: 段落內容支援 HTML 嗎？
+**A:** 是的！段落內容預設為 HTML 模式，可直接貼入 `<table>` 等標籤。FAQ 答案則可透過「HTML 模式」勾選框切換。
 
-### Q: FAQ 的 H2 為什麼不顯示？
-**A:** FAQ 區塊的 H2 會自動套用 `visually-hidden` CSS 類別，這是 SEO 最佳實踐（有語意但不顯示）。
+### Q: Schema JSON-LD 包含哪些資料？
+**A:** 自動生成兩個結構化資料腳本：
+1. **Article Schema**：包含作者、發布日期、標題、描述、出版者等
+2. **FAQPage Schema**：包含所有 FAQ 問答（如有）
+
+### Q: 匯出的 HTML 可以直接使用嗎？
+**A:** 是的，匯出的 HTML 包含：
+- 完整的語意化標籤（`<article>`, `<section>`）
+- 內嵌 CSS 樣式
+- JSON-LD 結構化資料
+- 可直接部署或嵌入網頁
 
 ---
 
-## 📚 其他說明
+## � 已知問題
 
-本專案原本包含多個 SEO 工具（Word 轉換、TP 解析等），現已簡化為專注的文章編輯器。如需其他功能，可參考 `src/` 目錄下的其他工具程式。
+### 輸入欄位顏色問題
+- **現象**：在 darkly 主題下，部分輸入欄位可能顯示暗色背景而非白色
+- **原因**：ttkbootstrap 主題的 ttk 元件樣式覆蓋優先權問題
+- **狀態**：已在程式中加入 `tk.Entry` 與 `option_add` 強制設定，但仍可能被主題覆蓋
+- **暫時解決方案**：
+  1. 改用 `flatly` 主題（淺色背景較不明顯）
+  2. 或直接使用原生 tkinter（移除 ttkbootstrap）
 
 ---
 
@@ -190,10 +243,50 @@ python -m tkinter
 **核心依賴：**
 - Python 3.8+
 - tkinter（內建）
+- ttkbootstrap >= 1.10.0（darkly 主題）
 
-**選用套件：**
-- ttkbootstrap >= 1.10.0（美化介面）
+**架構特色：**
+- 使用 `tk.Entry` 和 `tk.Text` 確保輸入框可控樣式
+- 動態區塊管理（`SecBlock`, `H3Block`, `FaqBlock` 類別）
+- JSON-LD 安全生成（避免字串拼接錯誤）
+- 語意化 HTML 輸出（符合 HTML5 標準）
+- 防抖動更新機制（500ms 延遲）
+
+**輸出格式：**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>文章標題</title>
+  <style>/* 內嵌 CSS */</style>
+  <script type="application/ld+json">/* Article Schema */</script>
+  <script type="application/ld+json">/* FAQPage Schema */</script>
+</head>
+<body>
+  <article class="seo-article-content">
+    <h1>標題</h1>
+    <section class="intro-summary">...</section>
+    <section>
+      <h2>段落標題</h2>
+      <section><h3>子標題</h3></section>
+    </section>
+    <section id="faq">...</section>
+  </article>
+</body>
+</html>
+```
 
 ---
 
-**© 2025 SEO 文章編輯器**
+## 📚 相關文件
+
+- `CHANGELOG.md` - 完整版本變更記錄
+- `docs/TECHNICAL_DOCUMENTATION.md` - 技術架構說明
+- `docs/HTML_MODE_GUIDE.md` - HTML 模式使用指南
+- `docs/PROJECT_COMPLETION_REPORT.md` - 專案完成報告
+
+---
+
+**© 2025 SEO Article Editor v1.7**  
+Produced by Colinjen (colinjen88@gmail.com)
