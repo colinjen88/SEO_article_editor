@@ -1,19 +1,20 @@
-# SEO 文章工具 
+# SEO 文章編輯器
 
-> **版本：** v1.5  
+> **版本：** v1.6  
 > **更新日期：** 2025-11-04
 
 ## 📌 專案簡介
 
-本工具專為 **SEO 文章製作與自動化轉換** 設計，支援 Word 檔案解析、FAQ 結構化資料產生、手動/批次編輯，並可直接產出符合 SEO 標準的 HTML 原始碼。
+**視覺化 SEO 文章編輯器** - 專為內容創作者設計的簡單易用工具。無需學習複雜語法，透過直覺的表單介面快速編輯文章，支援多層次標題結構（H1/H2/H3）與 FAQ 區塊，即時預覽 HTML 效果。
 
 ### ✨ 核心特色
-- 🚀 **Word 一鍵轉 HTML**：支援 tp 標記自動解析
-- 📊 **FAQ 結構化資料**：自動產生 Schema.org JSON-LD
-- 🎨 **美觀 GUI 介面**：支援主題切換與日期選擇器
-- 📝 **文章編號管理**：自動遞增，避免衝突
-- 🔒 **安全輸出**：自動檔名建議，不覆蓋舊檔
-- 🌐 **即時預覽**：支援瀏覽器與內嵌預覽
+- � **表單式編輯**：完全視覺化，無需任何標記語法
+- 🎯 **多層次結構**：支援 H1 > H2 > H3 的階層標題
+- ❓ **FAQ 專區**：獨立 FAQ 區塊，符合 SEO 最佳實踐
+- �️ **即時預覽**：左側編輯，右側即時顯示 HTML 效果
+- � **JSON 儲存**：資料以 JSON 格式保存，易於管理
+- 🌐 **瀏覽器預覽**：一鍵在瀏覽器查看完整樣式
+- 📤 **HTML 匯出**：產生完整 HTML 檔案（含 CSS）
 
 ---
 
@@ -21,22 +22,22 @@
 
 ### 環境需求
 - Python 3.8 以上
-- pip 套件管理工具
+- tkinter（通常隨 Python 安裝）
 
 ### 安裝步驟
 
 1. **複製專案**
 ```powershell
 git clone <repository-url>
-cd SEO_article_transfer
+cd SEO_article_editor
 ```
 
-2. **安裝依賴**
+2. **安裝依賴（選用美化套件）**
 ```powershell
-pip install -r requirements.txt
+pip install ttkbootstrap
 ```
 
-3. **啟動程式**
+3. **啟動編輯器**
 ```powershell
 python main.py
 ```
@@ -45,29 +46,12 @@ python main.py
 
 ## 💡 使用指南
 
-### 🎯 工具選單（v1.3 新增）
+### � 編輯器操作
 
-啟動主程式會顯示工具選單，可選擇要使用的工具：
+啟動編輯器後，你會看到雙面板介面：
 
 ```powershell
 python main.py
-```
-
-**快速啟動特定工具：**
-```powershell
-python main.py editor    # TP 標記編輯器
-python main.py layout    # SEO Layout GUI
-python main.py article   # SEO 文章編輯
-```
-
----
-
-### 🎨 視覺化編輯器（推薦新手）✨
-
-**最直覺的操作方式！** 完全視覺化表單界面，無需學習任何標記語法。
-
-```powershell
-python src/tp_editor_gui.py
 ```
 
 **核心特色：**
@@ -86,190 +70,130 @@ python src/tp_editor_gui.py
 ┌─────────────────────────────────────────┐
 │ 📂開啟 💾儲存 📤匯出HTML │ 🔄更新 🌐預覽 │
 ├───────────────┬─────────────────────────┤
-│ 📌 主標題     │  👁️ HTML 預覽          │
-│ [H1 輸入框]   │                         │
+│ 📌 H1         │  👁️ HTML 預覽          │
+│ [標題輸入]    │                         │
 │               │  <h1>黃金投資...</h1>   │
 │ 📝 前言       │  <section>              │
-│ [前言輸入框]  │    <p>黃金一直...</p>   │
+│ [前言輸入]    │    <p>黃金一直...</p>   │
 │               │  </section>             │
-│ 📄 文章段落   │                         │
+│ 📄 主內容     │                         │
 │ ┌───────────┐ │  <section>              │
-│ │ H2: xxx   │ │    <h2>為什麼...</h2>  │
-│ │ 內容: ... │ │    <p>黃金具有...</p>  │
-│ │ [🗑️刪除]  │ │  </section>             │
+│ │ H2: 標題  │ │    <h2>為什麼...</h2>  │
+│ │ 內容...   │ │    <p>黃金具有...</p>  │
+│ │ [+ H3]    │ │    <section>            │
+│ │ ┌───────┐ │ │      <h3>小標...</h3>  │
+│ │ │H3:小標│ │ │      <p>詳細...</p>    │
+│ │ │內容...│ │ │    </section>           │
+│ │ │[刪H3] │ │ │  </section>             │
+│ │ └───────┘ │ │                         │
+│ │[刪除段落] │ │  <section id="faq">     │
+│ └───────────┘ │    <h2 class="hidden">  │
+│ [+ 段落]      │    <h3>新手適合?</h3>   │
+│               │    <p>非常適合...</p>   │
+│ ❓ FAQ        │  </section>             │
+│ ┌───────────┐ │                         │
+│ │ Q: 問題?  │ │                         │
+│ │ A: 答案   │ │                         │
+│ │ [刪除]    │ │                         │
 │ └───────────┘ │                         │
-│ [➕ 新增段落] │  <section id="faq">     │
-│               │    <h2 class="hidden">  │
-│ ❓ FAQ 區塊   │    <h3>新手適合?</h3>   │
-│ ┌───────────┐ │    <p>非常適合...</p>   │
-│ │ Q: xxx    │ │  </section>             │
-│ │ A: ...    │ │                         │
-│ │ [🗑️刪除]  │ │                         │
-│ └───────────┘ │                         │
-│ [➕ 新增FAQ]  │                         │
+│ [+ QA]        │                         │
 └───────────────┴─────────────────────────┘
 ```
 
-**操作流程：**
-1. **填寫固定欄位**：輸入 H1 標題和前言
-2. **新增段落**：點擊「➕ 新增段落」，填寫 H2 和內容
-3. **新增 FAQ**：點擊「➕ 新增FAQ」，填寫問答
-4. **即時預覽**：右側自動顯示 HTML 效果
-5. **儲存專案**：儲存為 JSON 檔案，方便日後修改
-6. **匯出 HTML**：產生最終的 HTML 檔案
+### 操作流程
 
-**特殊說明：**
-- FAQ 區塊的 H2 標題會自動套用 `visually-hidden` CSS 類別
-- 所有內容支援雙行換行（`\n\n`）自動轉換為段落
-- 使用者輸入的特殊字元會自動跳脫，確保 HTML 安全
+1. **填寫基本資訊**
+   - H1：文章主標題
+   - 前言：文章開頭摘要
 
----
+2. **新增文章段落**
+   - 點擊「+ 段落」新增 H2 區塊
+   - 填寫 H2 標題和內容
+   - 可在段落內點擊「+ H3」新增子區塊
+   - H3 子區塊可包含自己的標題和內容
 
-### 推薦：SEO Layout GUI ⭐
+3. **新增 FAQ 區塊**
+   - 點擊「+ QA」新增問答
+   - 分別填寫問題和答案
 
-**完整功能版本！** 從 Word 直接轉換為 SEO HTML。
+4. **預覽與匯出**
+   - 右側面板即時顯示 HTML 效果
+   - 點擊「預覽」在瀏覽器查看完整樣式
+   - 點擊「匯出HTML」儲存最終檔案
 
-```powershell
-python src/seo_layout_gui.py
-```
+5. **儲存專案**
+   - 點擊「儲存」將文章存為 JSON
+   - 下次可以「開啟」繼續編輯
 
-**操作步驟：**
+### 快捷鍵與技巧
 
-1. **填寫基本資訊**（大部分會自動填入）
-   - 作者、日期、組織、文章編號
-   
-2. **選擇檔案**
-   - 模板：`templates/seo_layout.html`（預設）
-   - Word 檔案：選擇要轉換的 .docx
-
-3. **解析與預覽**
-   - 點擊「解析 FAQ 預覽」查看問答對
-   - 點擊「預覽 HTML」在瀏覽器中查看
-
-4. **產生 HTML**
-   - 點擊「產生 HTML」儲存檔案
-   - 檔名會自動建議為 `output_YYYYMMDD.html`
-
----
-
-## 📖 Word 檔案標記語法
-
-在 Word 檔案中使用以下標記：
-
-```
-(tp_h1)文章主標題
-
-(tp_intro)前言內容...
-
-(tp_sec)
-(tp_h2)段落標題
-段落內容...
-
-(tp_sec_qa)
-(tp_h2)FAQ常見問題
-(tp_h3_q)問題一？
-(tp_ans)答案一的內容...
-
-(tp_h3_q)問題二？
-(tp_ans)答案二的內容...
-```
-
-### 標記說明
-
-| 標記 | 說明 | 輸出 |
-|------|------|------|
-| `(tp_h1)` | 主標題 | `<h1>` |
-| `(tp_h2)` | 副標題 | `<h2>` |
-| `(tp_h3)` | 小標題 | `<h3>` |
-| `(tp_intro)` | 前言區塊 | `<section class="intro-summary">` |
-| `(tp_sec)` | 段落區塊開始 | `<section>` |
-| `(tp_sec_qa)` | FAQ 區塊開始 | `<section id="faq-section">` |
-| `(tp_h3_q)` | FAQ 問題 | `<h3>` + JSON-LD |
-| `(tp_ans)` | FAQ 答案 | `<p>` + JSON-LD |
+- **自動儲存**：輸入時自動觸發預覽更新（500ms 延遲）
+- **段落換行**：內容區使用雙換行（Enter Enter）產生新段落
+- **HTML 安全**：特殊字元自動跳脫（`<`, `>`, `&`）
+- **FAQ 最佳實踐**：FAQ H2 自動套用 `visually-hidden` 類別
 
 ---
 
 ## 📂 專案結構
 
 ```
-SEO_article_transfer/
-├── main.py                       # 主程式入口（工具選單）
-├── requirements.txt              # 依賴套件
-├── article_number.txt            # 文章編號
-├── settings.json                 # 設定檔（自動產生）
-├── src/                          # 原始碼
-│   ├── tp_editor_gui.py         # TP 標記編輯器 ✨新
-│   ├── seo_layout_gui.py        # 主工具 ⭐
-│   ├── seo_article_gui.py       # 手動編輯
-│   ├── docx_to_seo_html_gui.py  # Word 轉換
-│   ├── tp_template_gui.py       # tp 解析
-│   └── tp_template_parser.py    # 解析引擎
-├── templates/                    # HTML 模板
-│   ├── seo_layout.html          # 主模板
-│   └── seo_article.html         # 範例
-├── input_docs/                   # Word 檔案
-├── output/                       # HTML 輸出
-└── docs/                         # 詳細文件
+SEO_article_editor/
+├── main.py                    # 主程式入口
+├── src/
+│   └── tp_editor_gui.py      # 編輯器核心程式
+├── templates/                 # 備用模板（其他工具用）
+├── output/                    # HTML 輸出資料夾
+└── docs/                      # 文件
 ```
 
 ---
 
-## 🎨 GUI 功能
+## 🎨 介面美化（選用）
 
-### 主題切換
-- flatly（預設）、cosmo、darkly、morph、sandstone、solar
+如果想要更美觀的介面主題，可安裝：
 
-### 日期選擇器
-- 支援視覺化日期選擇（需安裝 ttkbootstrap 或 tkcalendar）
+```powershell
+pip install ttkbootstrap
+```
 
-### 即時預覽
-- 瀏覽器預覽
-- 內嵌預覽（需安裝 pywebview）
+支援主題：flatly（預設）、cosmo、darkly、morph、sandstone、solar
 
 ---
 
 ## 🔧 常見問題
 
 ### Q: 視窗沒有跳出？
-A: 測試 tkinter：`python -m tkinter`
+**A:** 測試 tkinter 是否正常：
+```powershell
+python -m tkinter
+```
 
-### Q: FAQ 沒有正確解析？
-A: 
-1. 檢查標記格式：`(tp_sec_qa)`, `(tp_h3_q)`, `(tp_ans)`
-2. 使用「解析 FAQ 預覽」檢查結果
+### Q: 如何產生多段落？
+**A:** 在內容文字區使用雙換行（Enter Enter），會自動轉換為 `<p>` 段落。
 
-### Q: 缺少套件？
-A: 執行 `pip install -r requirements.txt`
+### Q: H3 子區塊有什麼用？
+**A:** 當一個 H2 段落內容太多時，可以用 H3 分成更小的子主題，形成更好的階層結構。
+
+### Q: FAQ 的 H2 為什麼不顯示？
+**A:** FAQ 區塊的 H2 會自動套用 `visually-hidden` CSS 類別，這是 SEO 最佳實踐（有語意但不顯示）。
 
 ---
 
-## 📚 文件
+## 📚 其他說明
 
-- **[README.md](./README.md)** - 本文件（快速開始）
-- **[docs/README.md](./docs/README.md)** - 完整說明
-- **[docs/SEO_TOOL_SPEC.md](./docs/SEO_TOOL_SPEC.md)** - 功能規格
-- **[docs/TECHNICAL_DOCUMENTATION.md](./docs/TECHNICAL_DOCUMENTATION.md)** - 技術文件
-- **[CHANGELOG.md](./CHANGELOG.md)** - 更新記錄
+本專案原本包含多個 SEO 工具（Word 轉換、TP 解析等），現已簡化為專注的文章編輯器。如需其他功能，可參考 `src/` 目錄下的其他工具程式。
 
 ---
 
 ## 📝 技術資訊
 
 **核心依賴：**
-- python-docx >= 0.8.11
-- Jinja2 >= 3.0.0
+- Python 3.8+
+- tkinter（內建）
 
 **選用套件：**
 - ttkbootstrap >= 1.10.0（美化介面）
-- tkcalendar >= 1.6.0（日期選擇）
-- pywebview >= 4.0.0（內嵌預覽）
 
 ---
 
-## 🤝 支援
-
-如需技術支援或功能建議，請聯絡開發團隊。
-
----
-
-**© 2025 SEO 文章工具**
+**© 2025 SEO 文章編輯器**
