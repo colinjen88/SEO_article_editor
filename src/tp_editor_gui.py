@@ -143,8 +143,8 @@ class Editor:
         # 工具列
         tb = ttk.Frame(self.root)
         tb.pack(side=tk.TOP, fill=tk.X, padx=5, pady=3)
-        ttk.Button(tb, text="開啟", command=self.op).pack(side=tk.LEFT, padx=2)
-        ttk.Button(tb, text="儲存", command=self.sv).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text="開啟編輯檔", command=self.op).pack(side=tk.LEFT, padx=2)
+        ttk.Button(tb, text="儲存編輯檔", command=self.sv).pack(side=tk.LEFT, padx=2)
         ttk.Button(tb, text="匯出HTML", command=self.ex).pack(side=tk.LEFT, padx=2)
 
         # 檔案路徑顯示
@@ -270,8 +270,23 @@ class Editor:
 
         inf = ttk.LabelFrame(self.sf, text="前言", padding=10)
         inf.pack(fill=tk.X, padx=5, pady=5)
-        self.intro = tk.Text(inf, height=6, wrap=tk.WORD, bg="#ffffff", fg="black", font=("Consolas", 9))
-        self.intro.pack(fill=tk.BOTH)
+        
+        # 前言 H2 標題
+        intro_h2_frame = ttk.Frame(inf)
+        intro_h2_frame.pack(fill=tk.X, pady=(0, 5))
+        ttk.Label(intro_h2_frame, text="H2 標題:", width=8).pack(side=tk.LEFT)
+        self.intro_h2 = tk.Entry(intro_h2_frame, bg="#ffffff", fg="black", font=("Consolas", 10))
+        self.intro_h2.insert(0, "前言")
+        self.intro_h2.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        self.intro_h2.bind("<KeyRelease>", lambda e: self._chg())
+        
+        # 前言內容和 HTML 模式開關
+        intro_ct_frame = ttk.Frame(inf)
+        intro_ct_frame.pack(fill=tk.BOTH, expand=True)
+        self.intro_is_html = tk.BooleanVar(value=False)
+        ttk.Checkbutton(intro_ct_frame, text="HTML模式", variable=self.intro_is_html, command=self._chg).pack(anchor="w")
+        self.intro = tk.Text(intro_ct_frame, height=6, wrap=tk.WORD, bg="#ffffff", fg="black", font=("Consolas", 9))
+        self.intro.pack(fill=tk.BOTH, expand=True)
         self.intro.bind("<KeyRelease>", lambda e: self._chg())
 
         self.scf = ttk.LabelFrame(self.sf, text="主內容", padding=10)
@@ -314,7 +329,7 @@ class Editor:
         footer = ttk.Frame(self.root)
         footer.pack(side=tk.BOTTOM, fill=tk.X, pady=2)
 
-        ttk.Label(footer, text="SEOArticleEditor product v1.7 produced by ", font=("Arial", 7), foreground="gray").pack(side=tk.LEFT, padx=(0, 0))
+        ttk.Label(footer, text="SEOArticleEditor product v1.8 produced by ", font=("Arial", 7), foreground="gray").pack(side=tk.LEFT, padx=(0, 0))
 
         author_link = ttk.Label(
             footer,
@@ -470,9 +485,19 @@ class Editor:
         intro = self.intro.get("1.0", tk.END).strip()
         if intro:
             p.append('<section class="intro-summary">')
-            p.append("  <h2>前言</h2>")
-            for pa in intro.split("\n\n"):
-                if pa.strip(): p.append(f"  <p>{self._esc(pa.strip())}</p>")
+            intro_h2 = self.intro_h2.get().strip()
+            if intro_h2:
+                p.append(f"  <h2>{self._esc(intro_h2)}</h2>")
+            
+            # 前言內容支援 HTML 模式
+            if self.intro_is_html.get():
+                # HTML 模式: 直接插入,按行處理
+                for line in intro.split("\n"):
+                    if line.strip(): p.append(f"  {line.strip()}")
+            else:
+                # 純文字模式: 轉義並包裹 <p> 標籤
+                for pa in intro.split("\n\n"):
+                    if pa.strip(): p.append(f"  <p>{self._esc(pa.strip())}</p>")
             p.append("</section>")
             p.append("")
         
@@ -560,6 +585,8 @@ class Editor:
                 },
                 "h1": self.h1.get().strip(),
                 "intro": self.intro.get("1.0", tk.END).strip(),
+                "intro_h2": self.intro_h2.get().strip(),
+                "intro_is_html": self.intro_is_html.get(),
                 "sections": [s.to_dict() for s in self.secs],
                 "faqs": [f.to_dict() for f in self.faqs]
             }
@@ -597,10 +624,13 @@ class Editor:
         
         # 載入內容
         self.h1.delete(0, tk.END); self.intro.delete("1.0", tk.END)
+        self.intro_h2.delete(0, tk.END)
         for s in self.secs: s.f.destroy()
         for f in self.faqs: f.f.destroy()
         self.secs.clear(); self.faqs.clear()
         self.h1.insert(0, d.get("h1","")); self.intro.insert("1.0", d.get("intro",""))
+        self.intro_h2.insert(0, d.get("intro_h2", "前言"))
+        self.intro_is_html.set(d.get("intro_is_html", False))
         for sd in d.get("sections",[]):
             self.add_sec()
             self.secs[-1].set_h2(sd.get("h2",""))

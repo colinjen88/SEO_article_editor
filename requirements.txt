@@ -2,8 +2,10 @@
 python-docx>=0.8.11
 Jinja2>=3.0.0
 
-# GUI 增強（選用，提供更美觀的介面）
+# GUI 主題（強烈推薦，主程式使用 darkly 主題）
 ttkbootstrap>=1.10.0
+
+# GUI 增強（選用，提供額外功能）
 tkcalendar>=1.6.0
 
 # HTML 預覽（選用，提供內嵌預覽功能）

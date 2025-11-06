@@ -116,14 +116,31 @@ SEO_Article_Editor/
 
 ## 封存檔案說明
 
-`src/legacy/` 資料夾中的檔案為舊版工具,功能已整合到新版編輯器中:
+`src/legacy/` 資料夾中的檔案為舊版工具，功能已整合到新版編輯器中：
 - `seo_layout_gui.py` - Word 轉 HTML 工具
 - `seo_article_gui.py` - 舊版文章編輯器
 - `docx_to_seo_html_gui.py` - DOCX 轉換工具
 - `tp_template_gui.py` - TP 樣板編輯器
 - `convent_seo_article.py` - 轉換工具程式
 
-這些檔案保留供參考,但不建議直接使用。
+**注意：** 這些檔案保留僅供參考，不建議直接使用。主程式不依賴 legacy 目錄。
+
+## 版本控制說明
+
+### 不應納入版本控制的檔案
+以下檔案已在 `.gitignore` 中排除：
+- `settings.json` - 使用者個人設定（包含絕對路徑）
+- `article_number.txt` - 文章編號追蹤（使用者資料）
+- `output/*.html` - 除了 `preview_temp.html` 外的所有輸出檔案
+- `__pycache__/` - Python 快取檔案
+- `.vscode/` - IDE 設定檔
+
+### 必須納入版本控制的檔案
+- 所有 `.py` 程式檔案
+- 所有 `.md` 文件檔案
+- `requirements.txt` - 依賴套件清單
+- `templates/` - HTML 模板
+- `output/preview_temp.html` - 預覽範本
 
 ## 相關文件
 

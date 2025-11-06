@@ -14,8 +14,9 @@ if src_dir not in sys.path:
 
 def main():
     """主程式進入點 - 直接啟動 SEO 文章編輯器"""
-    import runpy
-    runpy.run_path(os.path.join(src_dir, 'tp_editor_gui.py'), run_name='__main__')
+    # 直接 import 並執行，而非使用 runpy（pyinstaller 相容）
+    from tp_editor_gui import main as editor_main
+    editor_main()
 
 
 if __name__ == "__main__":

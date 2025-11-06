@@ -21,6 +21,11 @@ wheels/
 *.egg
 MANIFEST
 
+# PyInstaller
+*.spec
+build/
+dist/
+
 # Virtual Environment
 venv/
 ENV/
@@ -47,7 +52,9 @@ article_number.txt
 settings.json
 temp_*.py
 *.json
-!requirements.txt
+!package.json
+!package-lock.json
+!tsconfig.json
 
 # Temporary files
 *.tmp

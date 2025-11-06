@@ -1,7 +1,7 @@
 # SEO 文章編輯器
 
-> **版本：** v1.7  
-> **更新日期：** 2025-11-04
+> **版本：** v1.8  
+> **更新日期：** 2025-11-06
 
 ## 📌 專案簡介
 
@@ -24,11 +24,30 @@
 
 ## 🚀 快速開始
 
-### 環境需求
+### 方式一：使用執行檔（推薦給一般使用者）
+
+**無需安裝 Python，直接執行！**
+
+1. **下載執行檔**
+   - 從 [Releases](../../releases) 下載最新版本的 `SEO_Article_Editor.exe`
+   - 或自行打包（見下方說明）
+
+2. **執行程式**
+   - 雙擊 `SEO_Article_Editor.exe` 即可啟動
+   - 首次執行可能需要 5-10 秒
+
+3. **注意事項**
+   - Windows 10/11 適用
+   - 某些防毒軟體可能誤判，請加入信任清單
+   - 執行檔大小約 7-8 MB
+
+### 方式二：Python 環境執行（開發者）
+
+#### 環境需求
 - Python 3.8 以上
 - tkinter（通常隨 Python 安裝）
 
-### 安裝步驟
+#### 安裝步驟
 
 1. **複製專案**
 ```powershell
@@ -46,6 +65,21 @@ pip install -r requirements.txt
 ```powershell
 python SEO_Article_Editor.py
 ```
+
+### 製作執行檔
+
+如果想自行打包執行檔：
+
+```powershell
+# 方法 1：使用自動化腳本（推薦）
+.\build_exe.ps1
+
+# 方法 2：手動打包
+pip install pyinstaller
+pyinstaller --noconfirm --onefile --windowed --add-data "templates;templates" --add-data "output;output" SEO_Article_Editor.py
+```
+
+完整打包說明請參考 [BUILD_INSTRUCTIONS.md](BUILD_INSTRUCTIONS.md)
 
 ---
 
@@ -75,7 +109,9 @@ python SEO_Article_Editor.py
 
 **核心操作：**
 - 📝 **H1 主標題**：文章最上層標題（必填）
-- � **前言**：文章開場摘要（選填）
+- 📄 **前言**：文章開場摘要（選填）
+  - 可自訂 H2 標題（預設為「前言」）
+  - 支援 **HTML 模式**切換（可插入 HTML 標籤）
 - ➕ **+ 段落**：新增 H2 段落區塊
   - 每個段落包含：H2 標題 + 內容
   - 內容支援**原生 HTML**（可貼入表格）
@@ -83,6 +119,12 @@ python SEO_Article_Editor.py
 - ➕ **+ QA**：新增 FAQ 問答
   - 支援 HTML/純文字模式切換
   - FAQ 答案預設為純文字，可切換為 HTML
+
+### 💾 專案檔案管理
+
+- 📂 **開啟編輯檔**：載入之前儲存的 JSON 專案檔
+- 💾 **儲存編輯檔**：將當前內容存為 JSON 格式（可隨時重新開啟繼續編輯）
+- 📤 **匯出HTML**：生成最終的 HTML 檔案（包含完整 Schema JSON-LD）
 
 ### 👁️ 三重預覽
 
@@ -93,15 +135,16 @@ python SEO_Article_Editor.py
 **介面說明：**
 
 ```
-┌─────────────────────────────────────────┐
-│ 📂開啟 💾儲存 📤匯出HTML │ 🔄更新 🌐預覽 │
-├───────────────┬─────────────────────────┤
-│ 📌 H1         │  👁️ HTML 預覽          │
-│ [標題輸入]    │                         │
-│               │  <h1>黃金投資...</h1>   │
-│ 📝 前言       │  <section>              │
-│ [前言輸入]    │    <p>黃金一直...</p>   │
-│               │  </section>             │
+┌─────────────────────────────────────────────────┐
+│ 📂開啟編輯檔 💾儲存編輯檔 📤匯出HTML           │
+├───────────────┬─────────────────────────────────┤
+│ 📌 H1         │  👁️ HTML 預覽                  │
+│ [標題輸入]    │                                 │
+│               │  <h1>黃金投資...</h1>           │
+│ 📝 前言       │  <section class="intro">        │
+│ H2標題: [前言]│    <h2>前言</h2>                │
+│ ☑ HTML模式   │    <p>黃金一直...</p>           │
+│ [前言輸入]    │  </section>                     │
 │ 📄 主內容     │                         │
 │ ┌───────────┐ │  <section>              │
 │ │ H2: 標題  │ │    <h2>為什麼...</h2>  │
@@ -201,10 +244,16 @@ root = tb.Window(themename="darkly")  # 改為其他主題名稱
 ## 🔧 常見問題
 
 ### Q: 輸入欄位顏色異常（暗色背景看不清）？
-**A:** 這是 ttkbootstrap darkly 主題的已知限制。目前程式已設定白底黑字，但主題可能覆蓋設定。請檢查：
-1. 是否已安裝 `ttkbootstrap`：`pip install ttkbootstrap`
+**A:** 這是 ttkbootstrap darkly 主題的已知限制。目前程式已設定白底黑字，但主題可能覆蓋設定。解決方案：
+1. 確認已安裝 `ttkbootstrap`：`pip install ttkbootstrap`
 2. 重新啟動程式
-3. 如持續異常，可暫時編輯 `tp_editor_gui.py` 最後一行，將 `themename="darkly"` 改為 `themename="flatly"`
+3. 如持續異常，可編輯 `src/tp_editor_gui.py` 最後一行：
+   ```python
+   # 改用淺色主題
+   root = tb.Window(themename="flatly")
+   # 或使用原生 tkinter
+   root = tk.Tk()
+   ```
 
 ### Q: 如何產生多段落？
 **A:** 在內容文字區使用雙換行（Enter Enter），會自動轉換為 `<p>` 段落。

@@ -7,6 +7,7 @@
 
 ### 主要執行檔
 - `SEO_Article_Editor.py` - **主程式入口**，啟動視覺化編輯器
+- `build_exe.ps1` - **自動打包腳本**，一鍵產生 .exe 執行檔
 - `clean.ps1` - 專案清理腳本（清除快取、暫存檔等）
 - `push_to_github.ps1` - GitHub 推送腳本
 
@@ -21,8 +22,11 @@
 - `CHANGELOG.md` - 版本更新記錄
 - `QUICKSTART.md` - 快速啟動指南
 - `PROJECT_STRUCTURE.md` - 專案結構說明
+- `BUILD_INSTRUCTIONS.md` - **執行檔製作說明**
+- `ANALYSIS_REPORT_2025-11-06.md` - 專案分析報告
 - `STATUS_REPORT_2025-11-04.md` - 專案現況報告
 - `GITHUB_SETUP.md` - GitHub 設定說明
+- `DOCUMENTATION_CHECK.md` - 文件檢查清單
 - `FILE_LIST.md` - 本檔案（檔案清單）
 
 ---
@@ -89,8 +93,16 @@ HTML 輸出資料夾：
 
 ## 🗑️ 不需要的檔案（可安全刪除）
 
-### 已清理
-以下檔案已在 2025-11-04 清理：
+### 建議清理
+以下檔案為使用者專屬資料，不應納入版本控制：
+- `settings.json` - 舊版工具設定檔（包含絕對路徑）
+  - **建議**：刪除或清空內容
+  - 已在 `.gitignore` 排除
+- `article_number.txt` - 文章編號追蹤（使用者資料）
+  - **建議**：保留但不提交
+  - 已在 `.gitignore` 排除
+
+### 已清理（2025-11-04）
 - `output/20251002-第2篤.html` ✓
 - `output/20251002.html` ✓
 - `output/output_20250930.html` ✓
@@ -103,7 +115,11 @@ HTML 輸出資料夾：
 以下檔案可根據需求保留或刪除：
 - `docs/TP_EDITOR_GUIDE.md` - 舊版 TP 編輯器指南（功能已整合）
 - `docs/TP_QUICK_REFERENCE.md` - 舊版 TP 快速參考（功能已整合）
-- `src/legacy/` 整個目錄 - 舊版工具（僅供參考）
+- `src/legacy/` 整個目錄 - 舊版工具（僅供參考，不影響主程式）
+
+### 必須保留
+- `output/preview_temp.html` - 瀏覽器預覽暫存檔（程式需要）
+- `templates/` 目錄 - HTML 模板（備用功能）
 
 ---
 
