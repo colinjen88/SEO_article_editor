@@ -72,7 +72,7 @@ python SEO_Article_Editor.py
 
 ```powershell
 # 方法 1：使用自動化腳本（推薦）
-.\build_exe.ps1
+.\scripts\build_exe.ps1
 
 # 方法 2：手動打包
 pip install pyinstaller
@@ -328,14 +328,60 @@ root = tb.Window(themename="darkly")  # 改為其他主題名稱
 
 ---
 
-## 📚 相關文件
+## � 專案結構
 
-- `CHANGELOG.md` - 完整版本變更記錄
-- `docs/TECHNICAL_DOCUMENTATION.md` - 技術架構說明
-- `docs/HTML_MODE_GUIDE.md` - HTML 模式使用指南
-- `docs/PROJECT_COMPLETION_REPORT.md` - 專案完成報告
+```
+SEO_article_editor/
+├── SEO_Article_Editor.py      # 主程式入口
+├── requirements.txt            # Python 依賴套件
+├── README.md                   # 專案說明（本檔案）
+├── CHANGELOG.md                # 版本變更記錄
+├── QUICKSTART.md               # 快速啟動指南
+├── BUILD_INSTRUCTIONS.md       # 執行檔製作說明
+│
+├── src/                        # 原始碼目錄
+│   ├── tp_editor_gui.py        # 主編輯器 GUI（747 行）
+│   ├── tp_template_parser.py   # 模板解析器
+│   └── legacy/                 # 舊版工具（已棄用）
+│
+├── templates/                  # HTML 模板
+│   ├── seo_article.html        # 文章模板
+│   └── seo_layout.html         # 版面模板
+│
+├── scripts/                    # 工具腳本
+│   ├── build_exe.ps1           # 自動打包腳本
+│   ├── clean.ps1               # 清理腳本
+│   └── push_to_github.ps1      # Git 推送腳本
+│
+├── docs/                       # 文件目錄
+│   ├── TECHNICAL_DOCUMENTATION.md  # 技術文件
+│   ├── HTML_MODE_GUIDE.md      # HTML 模式指南
+│   ├── TP_EDITOR_GUIDE.md      # 編輯器使用指南
+│   ├── TP_QUICK_REFERENCE.md   # 快速參考
+│   └── archive/                # 歷史文件
+│
+├── output/                     # 輸出目錄
+│   └── preview_temp.html       # 預覽暫存檔
+│
+├── input_docs/                 # 範例文件
+│   └── example_tp_article.txt  # TP 格式範例
+│
+└── dist/                       # 執行檔輸出目錄
+    └── SEO_Article_Editor.exe  # Windows 執行檔
+```
 
 ---
 
-**© 2025 SEO Article Editor v1.7**  
+## �📚 相關文件
+
+- [CHANGELOG.md](CHANGELOG.md) - 完整版本變更記錄
+- [QUICKSTART.md](QUICKSTART.md) - 快速啟動指南
+- [BUILD_INSTRUCTIONS.md](BUILD_INSTRUCTIONS.md) - 執行檔製作說明
+- [docs/TECHNICAL_DOCUMENTATION.md](docs/TECHNICAL_DOCUMENTATION.md) - 技術架構說明
+- [docs/HTML_MODE_GUIDE.md](docs/HTML_MODE_GUIDE.md) - HTML 模式使用指南
+- [docs/TP_EDITOR_GUIDE.md](docs/TP_EDITOR_GUIDE.md) - 編輯器完整指南
+
+---
+
+**© 2025 SEO Article Editor v1.8**  
 Produced by Colinjen (colinjen88@gmail.com)
