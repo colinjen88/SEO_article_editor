@@ -196,4 +196,4 @@ JSON 檔案會記錄:
 ---
 
 **文件更新**: 2025-11-04  
-**相關工具**: SEO Article Editor v2.0
+**相關工具**: SEO Article Editor v2.0.1

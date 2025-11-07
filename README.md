@@ -1,6 +1,6 @@
 # SEO 文章編輯器
 
-> **版本：** v2.0  
+> **版本：** v2.0.1  
 > **更新日期：** 2025-11-07
 
 ## 📌 專案簡介
@@ -385,5 +385,5 @@ SEO_article_editor/
 
 ---
 
-**© 2025 SEO Article Editor v1.8**  
+**© 2025 SEO Article Editor v2.0.1**  
 Produced by Colinjen (colinjen88@gmail.com)

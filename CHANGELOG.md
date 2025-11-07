@@ -7,6 +7,26 @@
 
 ---
 
+## [2.0.1] - 2025-11-07
+
+### 修正 (Fixed)
+- 🛠 修正打包後執行檔缺少 `tkinter` 導致程式啟動錯誤 `ModuleNotFoundError: No module named 'tkinter'`。
+  - 新增動態收集 `tcl/`、`tk/` 目錄至 PyInstaller `datas`。
+  - 新增 runtime hook `tk_rthook.py` 設定 `TCL_LIBRARY` 與 `TK_LIBRARY`。
+  - 擴充 hidden imports：`_tkinter`、`tkinter.*`、`ttkbootstrap.*`。
+  - 調整打包策略：移除把整個 `src` 當資料資料夾的方式，改用 `pathex`。
+  - 主程式預先 import tkinter 以避免分析遺漏。
+
+### 變更 (Changed)
+- 🔧 打包改為先驗證目錄模式 (onedir) 後再提供單檔 (onefile) 方案。
+- 🏷 版本號：`2.0.0` → `2.0.1`。
+
+### 建議 (Notes)
+- 若需最小單檔執行檔，可在確認 `dist/SEO_Article_Editor.exe` 正常後執行：
+  `pyinstaller --noconfirm --onefile --windowed SEO_Article_Editor.spec`
+
+---
+
 ## [2.0.0] - 2025-11-07
 
 ### 新增 (Added)
