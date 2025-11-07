@@ -5,6 +5,14 @@ SEO 文章編輯器 - 主程式
 
 import os
 import sys
+# 強制提早載入 tkinter，確保 PyInstaller 打包時被收集
+try:
+    import tkinter  # noqa: F401
+    import tkinter.ttk  # noqa: F401
+    import tkinter.scrolledtext  # noqa: F401
+except Exception:
+    # 在開發環境中若無 tkinter，也不阻擋；打包時仍由 hiddenimports 收集
+    pass
 
 # 取得當前腳本的絕對路徑
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

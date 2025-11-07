@@ -10,3 +10,6 @@ tkcalendar>=1.6.0
 
 # HTML 預覽（選用，提供內嵌預覽功能）
 pywebview>=4.0.0
+
+# HTML 格式化（選用，預設用於美化輸出）
+beautifulsoup4>=4.12.0
