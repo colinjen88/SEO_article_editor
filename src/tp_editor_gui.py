@@ -35,9 +35,9 @@ class H3Block:
         self.f = ttk.Frame(p, relief=tk.GROOVE, borderwidth=1)
         self.f.pack(fill=tk.X, padx=10, pady=3)
         ttk.Label(self.f, text="H3:", font=("Arial", 9)).pack(anchor=tk.W, padx=5)
-        self.h3 = tk.Entry(self.f, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10)); self.h3.pack(fill=tk.X, padx=5, pady=(0,3)); self.h3.bind("<KeyRelease>", lambda e: oc())
+        self.h3 = tk.Entry(self.f, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10)); self.h3.pack(fill=tk.X, padx=5, pady=(0,3)); self.h3.bind("<KeyRelease>", lambda e: oc())
         ttk.Label(self.f, text="內容:", font=("Arial", 9)).pack(anchor=tk.W, padx=5)
-        self.ct = tk.Text(self.f, height=4, wrap=tk.WORD, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 9)); self.ct.pack(fill=tk.BOTH, expand=True, padx=5, pady=(0,3)); self.ct.bind("<KeyRelease>", lambda e: oc())
+        self.ct = tk.Text(self.f, height=4, wrap=tk.WORD, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 9)); self.ct.pack(fill=tk.BOTH, expand=True, padx=5, pady=(0,3)); self.ct.bind("<KeyRelease>", lambda e: oc())
         ttk.Button(self.f, text="刪除H3", command=lambda: [self.f.destroy(), od(self)]).pack(anchor=tk.E, padx=5, pady=3)
     def get_h3(self): return self.h3.get().strip()
     def get_ct(self): return self.ct.get("1.0", tk.END).strip()
@@ -53,14 +53,14 @@ class SecBlock:
         self.f = ttk.LabelFrame(p, text="段落", padding=10)
         self.f.pack(fill=tk.X, padx=5, pady=5)
         ttk.Label(self.f, text="H2:").pack(anchor=tk.W)
-        self.h2 = tk.Entry(self.f, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10)); self.h2.pack(fill=tk.X, pady=(0,5)); self.h2.bind("<KeyRelease>", lambda e: oc())
+        self.h2 = tk.Entry(self.f, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10)); self.h2.pack(fill=tk.X, pady=(0,5)); self.h2.bind("<KeyRelease>", lambda e: oc())
 
         ct_label_frame = ttk.Frame(self.f)
         ct_label_frame.pack(fill=tk.X, anchor=tk.W)
         ttk.Label(ct_label_frame, text="內容:").pack(side=tk.LEFT)
         ttk.Label(ct_label_frame, text="[支援 HTML 表格]", font=("Arial", 8), foreground="orange").pack(side=tk.LEFT, padx=5)
 
-        self.ct = tk.Text(self.f, height=6, wrap=tk.WORD, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 9)); self.ct.pack(fill=tk.BOTH, expand=True, pady=(0,5)); self.ct.bind("<KeyRelease>", lambda e: oc())
+        self.ct = tk.Text(self.f, height=6, wrap=tk.WORD, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 9)); self.ct.pack(fill=tk.BOTH, expand=True, pady=(0,5)); self.ct.bind("<KeyRelease>", lambda e: oc())
 
         self.h3_container = ttk.Frame(self.f)
         self.h3_container.pack(fill=tk.X, pady=5)
@@ -88,14 +88,14 @@ class FaqBlock:
         self.f = ttk.LabelFrame(p, text="QA", padding=10)
         self.f.pack(fill=tk.X, padx=5, pady=5)
         ttk.Label(self.f, text="問題:").pack(anchor=tk.W)
-        self.q = tk.Entry(self.f, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10)); self.q.pack(fill=tk.X, pady=(0,5)); self.q.bind("<KeyRelease>", lambda e: oc())
+        self.q = tk.Entry(self.f, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10)); self.q.pack(fill=tk.X, pady=(0,5)); self.q.bind("<KeyRelease>", lambda e: oc())
         
         a_label_frame = ttk.Frame(self.f)
         a_label_frame.pack(fill=tk.X, anchor=tk.W)
         ttk.Label(a_label_frame, text="答案:").pack(side=tk.LEFT)
         ttk.Checkbutton(a_label_frame, text="HTML 模式", variable=self.is_html, command=self._toggle_html).pack(side=tk.LEFT, padx=5)
         
-        self.a = tk.Text(self.f, height=4, wrap=tk.WORD, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 9)); self.a.pack(fill=tk.BOTH, expand=True, pady=(0,5)); self.a.bind("<KeyRelease>", lambda e: oc())
+        self.a = tk.Text(self.f, height=4, wrap=tk.WORD, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 9)); self.a.pack(fill=tk.BOTH, expand=True, pady=(0,5)); self.a.bind("<KeyRelease>", lambda e: oc())
         ttk.Button(self.f, text="刪除", command=lambda: [self.f.destroy(), od(self)]).pack(anchor=tk.E)
     
     def _toggle_html(self):
@@ -159,17 +159,17 @@ class Editor:
         row1 = ttk.Frame(seo_frame)
         row1.pack(fill=tk.X, pady=2)
         ttk.Label(row1, text="作者:", width=10).pack(side=tk.LEFT)
-        self.author = tk.Entry(row1, width=15, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.author = tk.Entry(row1, width=15, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.author.insert(0, "炫麗鑫")
         self.author.pack(side=tk.LEFT, padx=5)
 
         ttk.Label(row1, text="文章日期:", width=10).pack(side=tk.LEFT, padx=(10,0))
-        self.pub_date = tk.Entry(row1, width=15, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.pub_date = tk.Entry(row1, width=15, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.pub_date.insert(0, datetime.today().strftime('%Y-%m-%d'))
         self.pub_date.pack(side=tk.LEFT, padx=5)
 
         ttk.Label(row1, text="修改日期:", width=10).pack(side=tk.LEFT, padx=(10,0))
-        self.mod_date = tk.Entry(row1, width=15, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.mod_date = tk.Entry(row1, width=15, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.mod_date.insert(0, datetime.today().strftime('%Y-%m-%d'))
         self.mod_date.pack(side=tk.LEFT, padx=5)
 
@@ -177,12 +177,12 @@ class Editor:
         row2 = ttk.Frame(seo_frame)
         row2.pack(fill=tk.X, pady=2)
         ttk.Label(row2, text="組織名稱:", width=10).pack(side=tk.LEFT)
-        self.org_name = tk.Entry(row2, width=20, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.org_name.insert(0, "Shiny黃金白銀")
+        self.org_name = tk.Entry(row2, width=20, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.org_name.insert(0, "Shiny黃金白銀交易所")
         self.org_name.pack(side=tk.LEFT, padx=5)
 
         ttk.Label(row2, text="文章編號:", width=10).pack(side=tk.LEFT, padx=(10,0))
-        self.article_num = tk.Entry(row2, width=10, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.article_num = tk.Entry(row2, width=10, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.article_num.insert(0, str(get_article_number()))
         self.article_num.pack(side=tk.LEFT, padx=5)
 
@@ -198,26 +198,26 @@ class Editor:
         row3 = ttk.Frame(seo_frame)
         row3.pack(fill=tk.X, pady=2)
         ttk.Label(row3, text="標題:", width=10).pack(side=tk.LEFT)
-        self.headline = tk.Entry(row3, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.headline = tk.Entry(row3, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.headline.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
         # 第四行
         row4 = ttk.Frame(seo_frame)
         row4.pack(fill=tk.X, pady=2)
         ttk.Label(row4, text="描述:", width=10).pack(side=tk.LEFT)
-        self.description = tk.Entry(row4, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.description = tk.Entry(row4, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.description.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
         # 第五行：Publisher 設定（Logo/URL）
         row5 = ttk.Frame(seo_frame)
         row5.pack(fill=tk.X, pady=2)
         ttk.Label(row5, text="Publisher Logo:", width=14).pack(side=tk.LEFT)
-        self.publisher_logo_url = tk.Entry(row5, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.publisher_logo_url = tk.Entry(row5, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.publisher_logo_url.insert(0, "https://pm.shiny.com.tw/images/logo.png")
         self.publisher_logo_url.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
         ttk.Label(row5, text="Publisher URL:", width=12).pack(side=tk.LEFT, padx=(10,0))
-        self.publisher_url = tk.Entry(row5, width=28, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.publisher_url = tk.Entry(row5, width=28, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.publisher_url.insert(0, "https://pm.shiny.com.tw/")
         self.publisher_url.pack(side=tk.LEFT)
 
@@ -225,17 +225,17 @@ class Editor:
         row6 = ttk.Frame(seo_frame)
         row6.pack(fill=tk.X, pady=2)
         ttk.Label(row6, text="Logo寬(px):", width=10).pack(side=tk.LEFT)
-        self.publisher_logo_width = tk.Entry(row6, width=8, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.publisher_logo_width = tk.Entry(row6, width=8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.publisher_logo_width.insert(0, "")
         self.publisher_logo_width.pack(side=tk.LEFT)
 
         ttk.Label(row6, text="Logo高(px):", width=10).pack(side=tk.LEFT, padx=(10,0))
-        self.publisher_logo_height = tk.Entry(row6, width=8, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.publisher_logo_height = tk.Entry(row6, width=8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.publisher_logo_height.insert(0, "")
         self.publisher_logo_height.pack(side=tk.LEFT)
 
         ttk.Label(row6, text="Publisher sameAs:", width=16).pack(side=tk.LEFT, padx=(10,0))
-        self.publisher_sameas = tk.Entry(row6, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.publisher_sameas = tk.Entry(row6, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.publisher_sameas.insert(0, "")
         self.publisher_sameas.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
@@ -264,7 +264,7 @@ class Editor:
 
         h1f = ttk.LabelFrame(self.sf, text="H1", padding=10)
         h1f.pack(fill=tk.X, padx=5, pady=5)
-        self.h1 = tk.Entry(h1f, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 11))
+        self.h1 = tk.Entry(h1f, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 11))
         self.h1.pack(fill=tk.X)
         self.h1.bind("<KeyRelease>", lambda e: self._chg())
 
@@ -275,7 +275,7 @@ class Editor:
         intro_h2_frame = ttk.Frame(inf)
         intro_h2_frame.pack(fill=tk.X, pady=(0, 5))
         ttk.Label(intro_h2_frame, text="H2 標題:", width=8).pack(side=tk.LEFT)
-        self.intro_h2 = tk.Entry(intro_h2_frame, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.intro_h2 = tk.Entry(intro_h2_frame, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.intro_h2.insert(0, "前言")
         self.intro_h2.pack(side=tk.LEFT, fill=tk.X, expand=True)
         self.intro_h2.bind("<KeyRelease>", lambda e: self._chg())
@@ -285,7 +285,7 @@ class Editor:
         intro_ct_frame.pack(fill=tk.BOTH, expand=True)
         self.intro_is_html = tk.BooleanVar(value=False)
         ttk.Checkbutton(intro_ct_frame, text="HTML模式", variable=self.intro_is_html, command=self._chg).pack(anchor="w")
-        self.intro = tk.Text(intro_ct_frame, height=6, wrap=tk.WORD, bg="#ffffff", fg="black", insertbackground="black", font=("Consolas", 9))
+        self.intro = tk.Text(intro_ct_frame, height=6, wrap=tk.WORD, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 9))
         self.intro.pack(fill=tk.BOTH, expand=True)
         self.intro.bind("<KeyRelease>", lambda e: self._chg())
 
@@ -308,9 +308,11 @@ class Editor:
         pv_toolbar = ttk.Frame(rf)
         pv_toolbar.pack(side=tk.TOP, fill=tk.X, pady=(0, 5))
         ttk.Button(pv_toolbar, text="🌐 在瀏覽器開啟", command=self._preview_browser).pack(side=tk.LEFT)
+        copy_btn = tk.Button(pv_toolbar, text="複製HTML原始碼", bg="#72a97c", fg="#fefefe", relief=tk.FLAT, padx=10, pady=2, command=self._copy_html)
+        copy_btn.pack(side=tk.LEFT, padx=10)
         ttk.Label(pv_toolbar, text="(HTML 原始碼)", font=("Arial", 8), foreground="gray").pack(side=tk.LEFT, padx=10)
 
-        self.pv = scrolledtext.ScrolledText(rf, wrap=tk.WORD, state=tk.DISABLED, bg="#ffffff", fg="black", insertbackground="black")
+        self.pv = scrolledtext.ScrolledText(rf, wrap=tk.WORD, state=tk.DISABLED, bg="#f8f9f9", fg="black", insertbackground="black")
         self.pv.pack(fill=tk.BOTH, expand=True)
 
         # Schema 預覽分頁（JSON-LD）
@@ -322,8 +324,34 @@ class Editor:
         ttk.Label(schema_toolbar, text="Schema JSON-LD", font=("Arial", 12, "bold")).pack(side=tk.LEFT)
         ttk.Button(schema_toolbar, text="重新整理", command=self._update_schema_preview).pack(side=tk.RIGHT)
 
-        self.schema_preview = scrolledtext.ScrolledText(schema_tab, wrap=tk.WORD, font=("Consolas", 10), bg="#ffffff", fg="black", insertbackground="black")
+        self.schema_preview = scrolledtext.ScrolledText(schema_tab, wrap=tk.WORD, font=("Consolas", 10), bg="#f8f9f9", fg="black", insertbackground="black")
         self.schema_preview.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+        # CSS 編輯分頁
+        css_tab = ttk.Frame(notebook)
+        notebook.add(css_tab, text="CSS")
+
+        css_toolbar = ttk.Frame(css_tab)
+        css_toolbar.pack(side=tk.TOP, fill=tk.X, pady=5, padx=5)
+        ttk.Label(css_toolbar, text="共用 CSS 樣式", font=("Arial", 12, "bold")).pack(side=tk.LEFT)
+        ttk.Button(css_toolbar, text="儲存 CSS", command=self._save_css).pack(side=tk.RIGHT, padx=5)
+        ttk.Button(css_toolbar, text="載入 CSS", command=self._load_css).pack(side=tk.RIGHT)
+
+        self.css_editor = scrolledtext.ScrolledText(css_tab, wrap=tk.WORD, font=("Consolas", 10), bg="#f8f9f9", fg="black", insertbackground="black")
+        self.css_editor.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+        # Footer 編輯分頁
+        footer_tab = ttk.Frame(notebook)
+        notebook.add(footer_tab, text="Footer")
+
+        footer_toolbar = ttk.Frame(footer_tab)
+        footer_toolbar.pack(side=tk.TOP, fill=tk.X, pady=5, padx=5)
+        ttk.Label(footer_toolbar, text="共用 Footer HTML", font=("Arial", 12, "bold")).pack(side=tk.LEFT)
+        ttk.Button(footer_toolbar, text="儲存 Footer", command=self._save_footer).pack(side=tk.RIGHT, padx=5)
+        ttk.Button(footer_toolbar, text="載入 Footer", command=self._load_footer).pack(side=tk.RIGHT)
+
+        self.footer_editor = scrolledtext.ScrolledText(footer_tab, wrap=tk.WORD, font=("Consolas", 10), bg="#f8f9f9", fg="black", insertbackground="black")
+        self.footer_editor.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
         # 底部作者宣告
         footer = ttk.Frame(self.root)
@@ -344,6 +372,10 @@ class Editor:
         self._load_ex()
         self.upd()
         
+        # 載入共用檔案
+        self._load_css()
+        self._load_footer()
+        
         # 強制設定所有輸入欄位為白底黑字（在主題載入後執行）
         self.root.after(100, self._force_white_inputs)
     
@@ -358,33 +390,33 @@ class Editor:
                       self.publisher_logo_width, self.publisher_logo_height, self.publisher_sameas,
                       self.h1, self.intro_h2]:
             try:
-                widget.config(bg="#ffffff", fg="black", insertbackground="black")
+                widget.config(bg="#f8f9f9", fg="black", insertbackground="black")
             except:
                 pass
         
         # 更新 Text 欄位
         try:
-            self.intro.config(bg="#ffffff", fg="black", insertbackground="black")
-            self.pv.config(bg="#ffffff", fg="black", insertbackground="black")
-            self.schema_preview.config(bg="#ffffff", fg="black", insertbackground="black")
+            self.intro.config(bg="#f8f9f9", fg="black", insertbackground="black")
+            self.pv.config(bg="#f8f9f9", fg="black", insertbackground="black")
+            self.schema_preview.config(bg="#f8f9f9", fg="black", insertbackground="black")
         except:
             pass
         
         # 更新動態產生的段落和 FAQ
         for sec in self.secs:
             try:
-                sec.h2.config(bg="#ffffff", fg="black", insertbackground="black")
-                sec.ct.config(bg="#ffffff", fg="black", insertbackground="black")
+                sec.h2.config(bg="#f8f9f9", fg="black", insertbackground="black")
+                sec.ct.config(bg="#f8f9f9", fg="black", insertbackground="black")
                 for h3 in sec.h3s:
-                    h3.h3.config(bg="#ffffff", fg="black", insertbackground="black")
-                    h3.ct.config(bg="#ffffff", fg="black", insertbackground="black")
+                    h3.h3.config(bg="#f8f9f9", fg="black", insertbackground="black")
+                    h3.ct.config(bg="#f8f9f9", fg="black", insertbackground="black")
             except:
                 pass
         
         for faq in self.faqs:
             try:
-                faq.q.config(bg="#ffffff", fg="black", insertbackground="black")
-                faq.a.config(bg="#ffffff", fg="black", insertbackground="black")
+                faq.q.config(bg="#f8f9f9", fg="black", insertbackground="black")
+                faq.a.config(bg="#f8f9f9", fg="black", insertbackground="black")
             except:
                 pass
     
@@ -403,6 +435,104 @@ class Editor:
         js = self._gen_schema_jsonld()
         self.schema_preview.delete("1.0", tk.END)
         self.schema_preview.insert("1.0", js)
+
+    def _load_css(self):
+        """從共用 CSS 檔案載入內容"""
+        css_file = "templates/common.css"
+        try:
+            if os.path.exists(css_file):
+                with open(css_file, "r", encoding="utf-8") as f:
+                    content = f.read()
+                self.css_editor.delete("1.0", tk.END)
+                self.css_editor.insert("1.0", content)
+                messagebox.showinfo("成功", f"已載入 CSS 檔案: {css_file}")
+            else:
+                # 如果檔案不存在，載入預設內容
+                default_css = """/* 共用 CSS 樣式 */
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+    line-height: 1.7;
+    color: #343a40;
+}
+
+h1, h2, h3 {
+    font-family: 'Noto Serif TC', serif;
+    color: #1a1a1a;
+}
+
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    color: #b08d57;
+}
+
+h2 {
+    font-size: 1.8em;
+    margin-top: 50px;
+    border-bottom: 2px solid #b08d57;
+}
+
+h3 {
+    font-size: 1.3em;
+    margin-top: 30px;
+}
+"""
+                self.css_editor.delete("1.0", tk.END)
+                self.css_editor.insert("1.0", default_css)
+                messagebox.showinfo("提示", "CSS 檔案不存在，已載入預設樣式")
+        except Exception as e:
+            messagebox.showerror("錯誤", f"載入 CSS 失敗: {e}")
+
+    def _save_css(self):
+        """儲存 CSS 內容到共用檔案"""
+        css_file = "templates/common.css"
+        try:
+            os.makedirs("templates", exist_ok=True)
+            content = self.css_editor.get("1.0", tk.END).strip()
+            with open(css_file, "w", encoding="utf-8") as f:
+                f.write(content)
+            messagebox.showinfo("成功", f"CSS 已儲存至: {css_file}")
+        except Exception as e:
+            messagebox.showerror("錯誤", f"儲存 CSS 失敗: {e}")
+
+    def _load_footer(self):
+        """從共用 Footer 檔案載入內容"""
+        footer_file = "templates/common_footer.html"
+        try:
+            if os.path.exists(footer_file):
+                with open(footer_file, "r", encoding="utf-8") as f:
+                    content = f.read()
+                self.footer_editor.delete("1.0", tk.END)
+                self.footer_editor.insert("1.0", content)
+                messagebox.showinfo("成功", f"已載入 Footer 檔案: {footer_file}")
+            else:
+                # 如果檔案不存在，載入預設內容
+                default_footer = """<section>
+    <h3>1. 宏觀風險與避險需求（Safe-Haven Demand）</h3>
+    <p>&lt;p&gt;黃金是對抗通膨、經濟放緩及貨幣貶值的主要避險工具。&lt;/p&gt;
+        &lt;ul&gt;
+            &lt;li&gt;**地緣政治不確定性：** 烏俄戰爭與中東局勢升溫。&lt;/li&gt;
+            &lt;li&gt;**政策風險對沖：** 美國政策與貿易關稅變數持續，使黃金成為對沖「停滯性通膨＋衰退」風險的首選資產。&lt;/li&gt;
+            &lt;li&gt;**貨幣政策影響：** 市場預期利率持續下降、美元維持弱勢，強化黃金吸引力。&lt;/li&gt;
+        &lt;/ul&gt;</p>
+</section>"""
+                self.footer_editor.delete("1.0", tk.END)
+                self.footer_editor.insert("1.0", default_footer)
+                messagebox.showinfo("提示", "Footer 檔案不存在，已載入預設內容")
+        except Exception as e:
+            messagebox.showerror("錯誤", f"載入 Footer 失敗: {e}")
+
+    def _save_footer(self):
+        """儲存 Footer 內容到共用檔案"""
+        footer_file = "templates/common_footer.html"
+        try:
+            os.makedirs("templates", exist_ok=True)
+            content = self.footer_editor.get("1.0", tk.END).strip()
+            with open(footer_file, "w", encoding="utf-8") as f:
+                f.write(content)
+            messagebox.showinfo("成功", f"Footer 已儲存至: {footer_file}")
+        except Exception as e:
+            messagebox.showerror("錯誤", f"儲存 Footer 失敗: {e}")
 
     def _strip_tags(self, html: str) -> str:
         """將 HTML 碼轉為純文字（用於 JSON-LD 的 text 欄位）"""
@@ -735,6 +865,16 @@ class Editor:
         if fp:
             with open(fp, "w", encoding="utf-8") as f: f.write(html)
             messagebox.showinfo("完成", f"已匯出: {fp}")
+    
+    def _copy_html(self):
+        """複製 HTML 原始碼到剪貼簿"""
+        try:
+            html = self.pv.get("1.0", tk.END).strip()
+            self.root.clipboard_clear()
+            self.root.clipboard_append(html)
+            messagebox.showinfo("成功", "HTML 原始碼已複製到剪貼簿!")
+        except Exception as e:
+            messagebox.showerror("錯誤", f"複製失敗: {e}")
     
     def _preview_browser(self):
         """從預覽窗格的 HTML 原始碼產生瀏覽器預覽"""
