@@ -19,6 +19,19 @@ BASE = os.path.dirname(os.path.dirname(__file__))
 OUT = os.path.join(BASE, "output")
 ARTICLE_NUMBER_FILE = os.path.join(BASE, "article_number.txt")
 
+def _read_app_version() -> str:
+    """從 src/__init__.py 讀取 __version__，避免手動同步。
+    若讀取失敗則回傳 'dev'。
+    """
+    try:
+        init_path = os.path.join(BASE, "src", "__init__.py")
+        with open(init_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        m = re.search(r"__version__\s*=\s*['\"]([^'\"]+)['\"]", content)
+        return m.group(1) if m else "dev"
+    except Exception:
+        return "dev"
+
 def get_article_number():
     if not os.path.exists(ARTICLE_NUMBER_FILE):
         with open(ARTICLE_NUMBER_FILE, "w", encoding="utf-8") as f:
@@ -218,6 +231,7 @@ class FaqBlock:
 class Editor:
     def __init__(self, root):
         self.root = root; self.root.title("SEO 文章編輯器"); self.root.geometry("1400x900")
+        self.app_version = _read_app_version()
         self.cf = None; self.mod = False; self.secs = []; self.faqs = []
         self.root.protocol("WM_DELETE_WINDOW", self._cls); self._ui()
 
@@ -590,7 +604,7 @@ class Editor:
         footer = ttk.Frame(self.root)
         footer.pack(side=tk.BOTTOM, fill=tk.X, pady=2)
 
-        ttk.Label(footer, text="SEO Article Editor v2.0.2 by ", font=("Arial", 7), foreground="gray").pack(side=tk.LEFT, padx=(0, 0))
+        ttk.Label(footer, text=f"SEO Article Editor v{self.app_version} by ", font=("Arial", 7), foreground="gray").pack(side=tk.LEFT, padx=(0, 0))
 
         author_link = ttk.Label(
             footer,
