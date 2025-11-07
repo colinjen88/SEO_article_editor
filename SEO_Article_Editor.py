@@ -22,13 +22,14 @@ if BASE_DIR not in sys.path:
 def main():
     """主程式進入點 - 直接啟動 SEO 文章編輯器"""
     try:
-        # 直接 import 並執行
-        from src.tp_editor_gui import main as editor_main
-        editor_main()
-    except ImportError:
-        # 如果上面失敗，嘗試直接 import（適用於打包後的執行檔）
+        # 嘗試從 src 目錄 import（開發環境）
         import tp_editor_gui
         tp_editor_gui.main()
+    except ImportError as e:
+        # 顯示錯誤訊息以便診斷
+        print(f"Import error: {e}")
+        print(f"sys.path: {sys.path}")
+        raise
 
 
 if __name__ == "__main__":
