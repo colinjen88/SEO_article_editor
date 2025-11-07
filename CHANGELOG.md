@@ -7,6 +7,19 @@
 
 ---
 
+## [2.0.2] - 2025-11-07
+
+### 變更 (Changed)
+- 🎨 將內嵌 fallback CSS 外部化：新增 `templates/default_common.css`；
+  `_get_style_html()` 優先順序：編輯器內容 → 外部 URL → `templates/common.css` → `templates/default_common.css` → 極簡內建字串。
+- 📄 清理與整併文件：移除過時 `docs/README.md` 與 archive 中冗餘文件（FILE_LIST、PROJECT_STRUCTURE、DOCUMENTATION_CHECK）。
+- 🏷 版本號更新：`2.0.1` → `2.0.2`，同步更新 GUI 頁尾與文件版本標示。
+
+### 打包 (Build)
+- 🔧 重新打包執行檔以反映最新變更。
+
+---
+
 ## [2.0.1] - 2025-11-07
 
 ### 修正 (Fixed)

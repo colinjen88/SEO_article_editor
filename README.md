@@ -1,6 +1,6 @@
 # SEO 文章編輯器
 
-> **版本：** v2.0.1  
+> **版本：** v2.0.2  
 > **更新日期：** 2025-11-07
 
 ## 📌 專案簡介
@@ -218,7 +218,7 @@ pyinstaller --noconfirm --onefile --windowed --add-data "templates;templates" --
 SEO_article_editor/
 ├── SEO_Article_Editor.py      # 主程式入口
 ├── src/
-│   ├── tp_editor_gui.py      # 編輯器核心程式（v1.7）
+│   ├── tp_editor_gui.py      # 編輯器核心程式
 │   └── legacy/               # 舊版工具（已棄用）
 ├── templates/                 # HTML 模板
 ├── output/                    # HTML 輸出資料夾
@@ -385,5 +385,5 @@ SEO_article_editor/
 
 ---
 
-**© 2025 SEO Article Editor v2.0.1**  
+**© 2025 SEO Article Editor v2.0.2**  
 Produced by Colinjen (colinjen88@gmail.com)

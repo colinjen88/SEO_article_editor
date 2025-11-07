@@ -590,7 +590,7 @@ class Editor:
         footer = ttk.Frame(self.root)
         footer.pack(side=tk.BOTTOM, fill=tk.X, pady=2)
 
-        ttk.Label(footer, text="SEO Article Editor v2.0.1 by ", font=("Arial", 7), foreground="gray").pack(side=tk.LEFT, padx=(0, 0))
+        ttk.Label(footer, text="SEO Article Editor v2.0.2 by ", font=("Arial", 7), foreground="gray").pack(side=tk.LEFT, padx=(0, 0))
 
         author_link = ttk.Label(
             footer,

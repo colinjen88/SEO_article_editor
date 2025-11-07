@@ -1,7 +1,7 @@
 # 執行檔製作說明
 
-> **版本：** v1.8  
-> **更新日期：** 2025-11-06
+> **版本：** v2.0.2  
+> **更新日期：** 2025-11-07
 
 ## 📦 如何製作執行檔
 
@@ -208,7 +208,7 @@ pyinstaller --noconfirm --onefile --windowed `
 如果要包含說明文件：
 
 ```
-SEO_Article_Editor_v1.7/
+SEO_Article_Editor_v2.0.2/
 ├── SEO_Article_Editor.exe     # 主程式
 ├── README.md                   # 使用說明
 ├── QUICKSTART.md              # 快速開始

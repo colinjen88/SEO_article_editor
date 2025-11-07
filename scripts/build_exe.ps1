@@ -1,10 +1,10 @@
 # SEO 文章編輯器 - 自動打包腳本
-# 版本: v1.8
-# 日期: 2025-11-06
+# 版本: v2.0.2
+# 日期: 2025-11-07
 
 Write-Host "================================================" -ForegroundColor Cyan
 Write-Host "  SEO 文章編輯器 - 執行檔打包工具" -ForegroundColor Cyan
-Write-Host "  版本: v1.8" -ForegroundColor Cyan
+Write-Host "  版本: v2.0.2" -ForegroundColor Cyan
 Write-Host "================================================" -ForegroundColor Cyan
 Write-Host ""
 
