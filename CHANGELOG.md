@@ -7,6 +7,49 @@
 
 ---
 
+## [2.0.0] - 2025-11-07
+
+### 新增 (Added)
+- ✨ **CSS 與 Footer 編輯分頁**
+  - 新增「CSS」分頁：可編輯共用 CSS 樣式
+  - 新增「Footer」分頁：可編輯共用 Footer HTML
+  - 支援載入/儲存至 `templates/common.css` 和 `templates/common_footer.html`
+- 🎨 **CSS 引入方式選擇**
+  - 支援「內置 Style」模式（直接嵌入 `<style>` 標籤）
+  - 支援「外部 .css 檔」模式（使用 `<link rel="stylesheet">`）
+  - 可自訂外部 CSS URL
+- 👁️ **檢視輸出 HTML 功能**
+  - 「複製完整HTML原始碼」改為「檢視輸出HTML」
+  - 點擊後彈出預覽視窗，顯示完整 HTML 程式碼
+  - 視窗內提供「複製 HTML 碼」按鈕
+  - 可先檢視再決定是否複製
+- 📋 **輸入欄位背景色調整**
+  - 所有輸入欄位從純白 (#ffffff) 改為淡灰白 (#f8f9f9)
+  - 提供更舒適的視覺對比
+- 🔄 **HTML 輸出順序優化**
+  - Schema JSON-LD 排在第一段
+  - Style/Link 樣式排在第二段
+  - 符合 SEO 最佳實踐
+
+### 變更 (Changed)
+- 📝 **版本資訊更新**
+  - 版本號：v1.8 → v2.0
+  - 底部版權資訊：「SEO Article Editor v2.0 by Colinjen」
+  - Colinjen 文字保持白色並連結至 mailto:colinjen88@gmail.com
+- 🔔 **啟動提示優化**
+  - CSS 和 Footer 載入訊息合併為單一提示視窗
+  - 減少啟動時的彈窗干擾
+  - 僅在檔案不存在時顯示提示
+
+### 改進 (Improved)
+- 🎨 **組織名稱預設值更新**
+  - 從「Shiny黃金白銀」改為「Shiny黃金白銀交易所」
+- 📦 **執行檔編譯**
+  - 重新編譯為 v2.0 版本執行檔
+  - 檔案大小約 7.2 MB
+
+---
+
 ## [1.8.0] - 2025-11-06
 
 ### 新增 (Added)

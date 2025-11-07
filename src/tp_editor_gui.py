@@ -308,7 +308,7 @@ class Editor:
         pv_toolbar = ttk.Frame(rf)
         pv_toolbar.pack(side=tk.TOP, fill=tk.X, pady=(0, 5))
         ttk.Button(pv_toolbar, text="🌐 在瀏覽器開啟", command=self._preview_browser).pack(side=tk.LEFT)
-        copy_btn = tk.Button(pv_toolbar, text="複製HTML原始碼", bg="#72a97c", fg="#fefefe", relief=tk.FLAT, padx=10, pady=2, command=self._copy_html)
+        copy_btn = tk.Button(pv_toolbar, text="檢視輸出HTML", bg="#72a97c", fg="#fefefe", relief=tk.FLAT, padx=10, pady=2, command=self._copy_complete_html)
         copy_btn.pack(side=tk.LEFT, padx=10)
         ttk.Label(pv_toolbar, text="(HTML 原始碼)", font=("Arial", 8), foreground="gray").pack(side=tk.LEFT, padx=10)
 
@@ -337,6 +337,21 @@ class Editor:
         ttk.Button(css_toolbar, text="儲存 CSS", command=self._save_css).pack(side=tk.RIGHT, padx=5)
         ttk.Button(css_toolbar, text="載入 CSS", command=self._load_css).pack(side=tk.RIGHT)
 
+        # CSS 模式選擇
+        css_mode_frame = ttk.Frame(css_tab)
+        css_mode_frame.pack(side=tk.TOP, fill=tk.X, padx=5, pady=(0, 5))
+        
+        ttk.Label(css_mode_frame, text="CSS 引入方式:", font=("Arial", 10)).pack(side=tk.LEFT, padx=5)
+        self.css_mode = tk.StringVar(value="inline")
+        ttk.Radiobutton(css_mode_frame, text="內置 Style", variable=self.css_mode, value="inline").pack(side=tk.LEFT, padx=5)
+        ttk.Radiobutton(css_mode_frame, text="外部 .css 檔", variable=self.css_mode, value="external").pack(side=tk.LEFT, padx=5)
+        
+        # 外部 CSS 連結輸入
+        ttk.Label(css_mode_frame, text="外部 CSS URL:", font=("Arial", 9)).pack(side=tk.LEFT, padx=(20, 5))
+        self.css_link_entry = tk.Entry(css_mode_frame, width=40, bg="#f8f9f9", fg="black", font=("Consolas", 9))
+        self.css_link_entry.pack(side=tk.LEFT, padx=5)
+        self.css_link_entry.insert(0, "https://example.com/style.css")
+
         self.css_editor = scrolledtext.ScrolledText(css_tab, wrap=tk.WORD, font=("Consolas", 10), bg="#f8f9f9", fg="black", insertbackground="black")
         self.css_editor.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
@@ -357,7 +372,7 @@ class Editor:
         footer = ttk.Frame(self.root)
         footer.pack(side=tk.BOTTOM, fill=tk.X, pady=2)
 
-        ttk.Label(footer, text="SEOArticleEditor product v1.8 produced by ", font=("Arial", 7), foreground="gray").pack(side=tk.LEFT, padx=(0, 0))
+        ttk.Label(footer, text="SEO Article Editor v2.0 by ", font=("Arial", 7), foreground="gray").pack(side=tk.LEFT, padx=(0, 0))
 
         author_link = ttk.Label(
             footer,
@@ -372,9 +387,18 @@ class Editor:
         self._load_ex()
         self.upd()
         
-        # 載入共用檔案
-        self._load_css()
-        self._load_footer()
+        # 載入共用檔案並收集訊息
+        messages = []
+        css_success, css_msg = self._load_css()
+        messages.append(css_msg)
+        
+        footer_success, footer_msg = self._load_footer()
+        messages.append(footer_msg)
+        
+        # 合併顯示一次提示
+        combined_message = "\n".join(messages)
+        if not css_success or not footer_success:
+            messagebox.showinfo("載入狀態", combined_message)
         
         # 強制設定所有輸入欄位為白底黑字（在主題載入後執行）
         self.root.after(100, self._force_white_inputs)
@@ -445,7 +469,7 @@ class Editor:
                     content = f.read()
                 self.css_editor.delete("1.0", tk.END)
                 self.css_editor.insert("1.0", content)
-                messagebox.showinfo("成功", f"已載入 CSS 檔案: {css_file}")
+                return True, f"已載入 CSS: {css_file}"
             else:
                 # 如果檔案不存在，載入預設內容
                 default_css = """/* 共用 CSS 樣式 */
@@ -479,9 +503,9 @@ h3 {
 """
                 self.css_editor.delete("1.0", tk.END)
                 self.css_editor.insert("1.0", default_css)
-                messagebox.showinfo("提示", "CSS 檔案不存在，已載入預設樣式")
+                return False, "CSS 檔案不存在，已載入預設樣式"
         except Exception as e:
-            messagebox.showerror("錯誤", f"載入 CSS 失敗: {e}")
+            return False, f"載入 CSS 失敗: {e}"
 
     def _save_css(self):
         """儲存 CSS 內容到共用檔案"""
@@ -504,7 +528,7 @@ h3 {
                     content = f.read()
                 self.footer_editor.delete("1.0", tk.END)
                 self.footer_editor.insert("1.0", content)
-                messagebox.showinfo("成功", f"已載入 Footer 檔案: {footer_file}")
+                return True, f"已載入 Footer: {footer_file}"
             else:
                 # 如果檔案不存在，載入預設內容
                 default_footer = """<section>
@@ -518,9 +542,9 @@ h3 {
 </section>"""
                 self.footer_editor.delete("1.0", tk.END)
                 self.footer_editor.insert("1.0", default_footer)
-                messagebox.showinfo("提示", "Footer 檔案不存在，已載入預設內容")
+                return False, "Footer 檔案不存在，已載入預設內容"
         except Exception as e:
-            messagebox.showerror("錯誤", f"載入 Footer 失敗: {e}")
+            return False, f"載入 Footer 失敗: {e}"
 
     def _save_footer(self):
         """儲存 Footer 內容到共用檔案"""
@@ -875,6 +899,105 @@ h3 {
             messagebox.showinfo("成功", "HTML 原始碼已複製到剪貼簿!")
         except Exception as e:
             messagebox.showerror("錯誤", f"複製失敗: {e}")
+    
+    def _copy_complete_html(self):
+        """檢視並複製完整 HTML（包含 Schema、CSS、HTML 和 Footer）"""
+        try:
+            # 生成完整 HTML
+            complete_html = self._generate_complete_html()
+            
+            # 創建預覽視窗
+            preview_window = tk.Toplevel(self.root)
+            preview_window.title("檢視輸出 HTML")
+            preview_window.geometry("900x700")
+            
+            # 工具列
+            toolbar = ttk.Frame(preview_window)
+            toolbar.pack(side=tk.TOP, fill=tk.X, padx=5, pady=5)
+            
+            ttk.Label(toolbar, text="完整 HTML 預覽", font=("Arial", 12, "bold")).pack(side=tk.LEFT)
+            
+            def copy_to_clipboard():
+                preview_window.clipboard_clear()
+                preview_window.clipboard_append(complete_html)
+                messagebox.showinfo("成功", "HTML 原始碼已複製到剪貼簿!", parent=preview_window)
+            
+            ttk.Button(toolbar, text="複製 HTML 碼", command=copy_to_clipboard).pack(side=tk.RIGHT, padx=5)
+            ttk.Button(toolbar, text="關閉", command=preview_window.destroy).pack(side=tk.RIGHT)
+            
+            # HTML 預覽區
+            html_preview = scrolledtext.ScrolledText(
+                preview_window, 
+                wrap=tk.WORD, 
+                font=("Consolas", 9), 
+                bg="#f8f9f9", 
+                fg="black"
+            )
+            html_preview.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+            html_preview.insert("1.0", complete_html)
+            html_preview.config(state=tk.NORMAL)  # 允許選取複製
+            
+        except Exception as e:
+            messagebox.showerror("錯誤", f"生成 HTML 失敗: {e}")
+    
+    def _generate_complete_html(self):
+        """生成完整的 HTML（Schema 在前，Style 在後）"""
+        # 生成主要內容
+        body = self._gen()
+        
+        # 取得 CSS 樣式模式
+        css_mode = getattr(self, 'css_mode', tk.StringVar(value="inline"))
+        css_link = getattr(self, 'css_link_entry', None)
+        
+        # 取得 CSS 內容
+        css_content = self.css_editor.get("1.0", tk.END).strip() if hasattr(self, 'css_editor') else ""
+        if not css_content:
+            css_content = (
+                ".seo-article-content {"
+                "font-family: 'Noto Sans TC', sans-serif; line-height: 1.7; color: #343a40; background-color: #ffffff; font-size: 16px;}"
+                ".seo-article-content h1 {font-size: 2.5em; text-align: center; margin-bottom: 20px; color: #b08d57;}"
+                ".seo-article-content h2 {font-size: 1.8em; margin-top: 50px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #b08d57;}"
+                ".seo-article-content h3 {font-size: 1.3em; margin-top: 30px; margin-bottom: 10px; color: #343a40;}"
+            )
+        
+        # 取得 Footer（從 Footer 編輯器）
+        footer_content = self.footer_editor.get("1.0", tk.END).strip() if hasattr(self, 'footer_editor') else ""
+        
+        # 生成 Schema JSON-LD
+        schema = self._gen_schema_jsonld()
+        
+        # 根據 CSS 模式生成樣式標籤
+        style_tag = ""
+        if css_mode.get() == "external" and css_link:
+            external_css = css_link.get().strip()
+            if external_css:
+                style_tag = f'    <link rel="stylesheet" href="{external_css}">'
+        else:
+            style_tag = f'    <style>\n{css_content}\n    </style>'
+        
+        # 組合完整 HTML（Schema 在前，Style 在後）
+        title = self.h1.get().strip() or "文章標題"
+        complete_html = (
+            '<!DOCTYPE html>\n'
+            '<html lang="zh-TW">\n'
+            '<head>\n'
+            '    <meta charset="UTF-8">\n'
+            '    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
+            f'    <title>{title}</title>\n'
+            f'{schema}\n'
+            f'{style_tag}\n'
+            '</head>\n'
+            '<body>\n'
+            f'{body}\n'
+        )
+        
+        # 加入 Footer（如果有的話）
+        if footer_content:
+            complete_html += f'    {footer_content}\n'
+        
+        complete_html += '</body>\n</html>'
+        
+        return complete_html
     
     def _preview_browser(self):
         """從預覽窗格的 HTML 原始碼產生瀏覽器預覽"""

@@ -1,7 +1,7 @@
 # SEO 文章編輯器
 
-> **版本：** v1.8  
-> **更新日期：** 2025-11-06
+> **版本：** v2.0  
+> **更新日期：** 2025-11-07
 
 ## 📌 專案簡介
 
@@ -14,9 +14,11 @@
 - 🔍 **完整 SEO 控制**：作者、日期、組織、文章編號、描述等
 - 📊 **Schema.org 結構化資料**：自動生成 Article 與 FAQPage JSON-LD
 - 🏢 **進階出版者設定**：支援 Logo URL/尺寸、sameAs 社群連結
-- 👁️ **三重預覽**：編輯 + HTML 原始碼 + Schema JSON-LD
+- 👁️ **多重預覽**：編輯 + HTML 原始碼 + Schema JSON-LD
 - 🌐 **瀏覽器預覽**：一鍵在瀏覽器查看完整樣式
-- 📤 **語意化 HTML 匯出**：使用 `<article>`、`<section>` 標籤
+- 📤 **完整 HTML 輸出**：包含 Schema、CSS、內容與 Footer
+- 🎨 **CSS 管理**：支援內置 Style 或外部 .css 檔引入
+- 📋 **共用模板**：CSS 與 Footer 可共用編輯與儲存
 - 💾 **JSON 專案儲存**：所有設定與內容完整保存
 - 🎨 **Darkly 主題**：專業暗色介面（ttkbootstrap）
 
