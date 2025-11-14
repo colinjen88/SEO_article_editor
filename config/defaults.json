@@ -1,0 +1,30 @@
+{
+  "seo": {
+    "author": "作者名稱（預設）",
+    "org_name": "組織名稱（預設）",
+    "author_type": "Organization",
+    "publisher_logo_url": "https://example.com/logo.png",
+    "publisher_url": "https://example.com/",
+    "publisher_logo_width": "",
+    "publisher_logo_height": "",
+    "publisher_sameas": [],
+    "publisher_name": "請修改為您的品牌/網站名稱"
+  },
+  "article": {
+    "headline": "請輸入文章標題",
+    "description": "請輸入文章描述",
+    "intro_h2": "前言",
+    "intro": "這裡是前言內容…",
+    "h1": "請輸入 H1 標題",
+    "sections": [
+      {
+        "h2": "第一段標題",
+        "content": "第一段內容…",
+        "h3s": []
+      }
+    ],
+    "faqs": [
+      { "question": "常見問題 1?", "answer": "這是一個回答。", "is_html": false }
+    ]
+  }
+}
