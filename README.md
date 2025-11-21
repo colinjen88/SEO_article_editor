@@ -1,4 +1,16 @@
-# SEO 文章編輯器
+# SEO Article Editor v2.3
+
+專為 SEO 文章寫作設計的視覺化編輯器，支援即時預覽、Schema JSON-LD 結構化資料生成、自訂 CSS 樣式以及 HTML 匯出功能。
+
+## v2.3 更新重點
+- **UI 優化**: 重新編排欄位配置，提升操作流暢度
+- **預設值更新**: 作者與組織名稱預設為「炫麗黃金白銀交易所」
+- **圖片設定**: 新增圖片路徑、寬度 (預設 100%) 與高度 (預設 auto) 設定
+- **CSS 支援**: 新增外部 CSS 檔案瀏覽功能，並更新預設 CSS 樣式
+- **主題優化**: 改用標準 tkinter，自訂深色主題 (#2c4c52)
+- **Footer 更新**: 頁尾新增 "Design by Colinjen" 及聯絡連結
+
+## 核心功能
 - 🔍 **完整 SEO 控制**：作者、日期、組織、文章編號、描述等
 - 📊 **Schema.org 結構化資料**：自動生成 Article 與 FAQPage JSON-LD
 - 🏢 **進階出版者設定**：支援 Logo URL/尺寸、sameAs 社群連結
@@ -373,5 +385,5 @@ SEO_article_editor/
 
 ---
 
-**© 2025 SEO Article Editor v2.0.2**  
+**© 2025 SEO Article Editor v2.3**  
 Produced by Colinjen (colinjen88@gmail.com)

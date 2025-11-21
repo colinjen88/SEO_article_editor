@@ -232,6 +232,25 @@ class Editor:
     def __init__(self, root):
         self.root = root; self.root.title("SEO 文章編輯器"); self.root.geometry("1400x900")
         self.app_version = _read_app_version()
+        
+        # 立即覆蓋 ttkbootstrap 主題顏色
+        bg_color = "#2c4c52"
+        try:
+            self.root.configure(bg=bg_color)
+            style = ttk.Style()
+            # 修改主題的核心顏色
+            style.theme_settings('darkly', {
+                'TFrame': {'configure': {'background': bg_color}},
+                'TLabelframe': {'configure': {'background': bg_color, 'bordercolor': bg_color}},
+                'TLabelframe.Label': {'configure': {'background': bg_color}},
+                'TLabel': {'configure': {'background': bg_color}},
+                'TNotebook': {'configure': {'background': bg_color, 'bordercolor': bg_color}},
+                'TNotebook.Tab': {'configure': {'background': bg_color}},
+                'TPanedwindow': {'configure': {'background': bg_color}},
+            })
+        except Exception as e:
+            print(f"Theme override error: {e}")
+        
         self.cf = None; self.mod = False; self.secs = []; self.faqs = []
         self.root.protocol("WM_DELETE_WINDOW", self._cls); self._ui()
 
@@ -353,6 +372,25 @@ class Editor:
         self.root.option_add("*TEntry*foreground", "black")
         try:
             st = ttk.Style()
+            # 自訂背景色 #2c4c52
+            bg_color = "#2c4c52"
+            self.root.configure(bg=bg_color)
+            
+            # 設定所有主要元件的背景色
+            st.configure(".", background=bg_color)
+            st.configure("TFrame", background=bg_color)
+            st.configure("TLabelframe", background=bg_color, bordercolor=bg_color)
+            st.configure("TLabelframe.Label", background=bg_color)
+            st.configure("TLabel", background=bg_color)
+            st.configure("TButton", background=bg_color)
+            st.configure("TRadiobutton", background=bg_color)
+            st.configure("TCheckbutton", background=bg_color)
+            st.configure("TNotebook", background=bg_color, bordercolor=bg_color)
+            st.configure("TNotebook.Tab", background=bg_color)
+            st.configure("TPanedwindow", background=bg_color)
+            st.configure("Vertical.TScrollbar", background=bg_color, troughcolor=bg_color)
+            st.configure("Horizontal.TScrollbar", background=bg_color, troughcolor=bg_color)
+            
             st.configure("TEntry", fieldbackground="#ffffff", foreground="black")
             st.map(
                 "TEntry",
@@ -492,7 +530,7 @@ class Editor:
 
         lf = ttk.Frame(pn)
         pn.add(lf, weight=1)
-        cv = tk.Canvas(lf)
+        cv = tk.Canvas(lf, bg="#2c4c52", highlightthickness=0)
         sb = ttk.Scrollbar(lf, command=cv.yview)
         self.sf = ttk.Frame(cv)
         self.sf.bind("<Configure>", lambda e: cv.configure(scrollregion=cv.bbox("all")))
@@ -1365,7 +1403,7 @@ class Editor:
         self.root.destroy()
 
 def main():
-    root = tb.Window(themename="darkly") if HAS_TTK else tk.Tk()
+    root = tk.Tk()
     Editor(root); root.mainloop()
 
 if __name__ == "__main__": main()
