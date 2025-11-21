@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "author": "測試作者",
+    "pub_date": "2025-11-06",
+    "mod_date": "2025-11-06",
+    "org_name": "測試組織",
+    "article_num": "999",
+    "headline": "測試 Headline",
+    "description": "這是測試用的 Description",
+    "author_type": "Organization",
+    "publisher_logo_url": "https://pm.shiny.com.tw/images/logo.png",
+    "publisher_url": "https://pm.shiny.com.tw/",
+    "publisher_logo_width": "",
+    "publisher_logo_height": "",
+    "publisher_sameas": []
+  },
+  "h1": "測試文章標題",
+  "intro": "這是測試前言內容。",
+  "intro_h2": "測試前言H2",
+  "intro_is_html": false,
+  "sections": [
+    {
+      "h2": "測試段落H2",
+      "content": "測試段落內容",
+      "h3s": [
+        {
+          "h3": "測試H3",
+          "content": "測試H3內容"
+        }
+      ]
+    }
+  ],
+  "faqs": []
+}

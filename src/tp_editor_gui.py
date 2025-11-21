@@ -377,89 +377,107 @@ class Editor:
         seo_frame = ttk.LabelFrame(self.root, text="SEO 資訊", padding=10)
         seo_frame.pack(side=tk.TOP, fill=tk.X, padx=5, pady=3)
 
-        # 第一行
+        # 第一行：作者、組織名稱、文章編號
         row1 = ttk.Frame(seo_frame)
         row1.pack(fill=tk.X, pady=2)
         ttk.Label(row1, text="作者:", width=10).pack(side=tk.LEFT)
         self.author = tk.Entry(row1, width=15, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.author.insert(0, "")
+        self.author.insert(0, "炫麗黃金白銀交易所")
         self.author.pack(side=tk.LEFT, padx=5)
 
-        ttk.Label(row1, text="文章日期:", width=10).pack(side=tk.LEFT, padx=(10,0))
-        self.pub_date = tk.Entry(row1, width=15, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.pub_date.insert(0, datetime.today().strftime('%Y-%m-%d'))
-        self.pub_date.pack(side=tk.LEFT, padx=5)
-
-        ttk.Label(row1, text="修改日期:", width=10).pack(side=tk.LEFT, padx=(10,0))
-        self.mod_date = tk.Entry(row1, width=15, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.mod_date.insert(0, datetime.today().strftime('%Y-%m-%d'))
-        self.mod_date.pack(side=tk.LEFT, padx=5)
-
-        # 第二行
-        row2 = ttk.Frame(seo_frame)
-        row2.pack(fill=tk.X, pady=2)
-        ttk.Label(row2, text="組織名稱:", width=10).pack(side=tk.LEFT)
-        self.org_name = tk.Entry(row2, width=20, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.org_name.insert(0, "")
+        ttk.Label(row1, text="組織名稱:", width=10).pack(side=tk.LEFT, padx=(10,0))
+        self.org_name = tk.Entry(row1, width=20, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.org_name.insert(0, "炫麗黃金白銀交易所")
         self.org_name.pack(side=tk.LEFT, padx=5)
 
-        ttk.Label(row2, text="文章編號:", width=10).pack(side=tk.LEFT, padx=(10,0))
-        self.article_num = tk.Entry(row2, width=10, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        ttk.Label(row1, text="文章編號:", width=10).pack(side=tk.LEFT, padx=(10,0))
+        self.article_num = tk.Entry(row1, width=10, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.article_num.insert(0, str(get_article_number()))
         self.article_num.pack(side=tk.LEFT, padx=5)
 
-        # 第三行：作者型別（Person/Organization）
-        row2b = ttk.Frame(seo_frame)
-        row2b.pack(fill=tk.X, pady=2)
-        ttk.Label(row2b, text="作者型別:", width=10).pack(side=tk.LEFT)
-        self.author_type = tk.StringVar(value="Organization")
-        ttk.Radiobutton(row2b, text="Organization", variable=self.author_type, value="Organization", command=self._chg).pack(side=tk.LEFT)
-        ttk.Radiobutton(row2b, text="Person", variable=self.author_type, value="Person", command=self._chg).pack(side=tk.LEFT, padx=10)
+        # 第二行：文章日期、修改日期
+        row2 = ttk.Frame(seo_frame)
+        row2.pack(fill=tk.X, pady=2)
+        ttk.Label(row2, text="文章日期:", width=10).pack(side=tk.LEFT)
+        self.pub_date = tk.Entry(row2, width=15, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.pub_date.insert(0, datetime.today().strftime('%Y-%m-%d'))
+        self.pub_date.pack(side=tk.LEFT, padx=5)
 
-        # 第三行
+        ttk.Label(row2, text="修改日期:", width=10).pack(side=tk.LEFT, padx=(10,0))
+        self.mod_date = tk.Entry(row2, width=15, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.mod_date.insert(0, datetime.today().strftime('%Y-%m-%d'))
+        self.mod_date.pack(side=tk.LEFT, padx=5)
+
+        # 第三行：作者型別（Person/Organization）
         row3 = ttk.Frame(seo_frame)
         row3.pack(fill=tk.X, pady=2)
-        ttk.Label(row3, text="標題:", width=10).pack(side=tk.LEFT)
-        self.headline = tk.Entry(row3, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.headline.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        ttk.Label(row3, text="作者型別:", width=10).pack(side=tk.LEFT)
+        self.author_type = tk.StringVar(value="Organization")
+        ttk.Radiobutton(row3, text="Organization", variable=self.author_type, value="Organization", command=self._chg).pack(side=tk.LEFT)
+        ttk.Radiobutton(row3, text="Person", variable=self.author_type, value="Person", command=self._chg).pack(side=tk.LEFT, padx=10)
 
-        # 第四行
+        # 第四行：標題
         row4 = ttk.Frame(seo_frame)
         row4.pack(fill=tk.X, pady=2)
-        ttk.Label(row4, text="描述:", width=10).pack(side=tk.LEFT)
-        self.description = tk.Entry(row4, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.description.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        ttk.Label(row4, text="標題:", width=10).pack(side=tk.LEFT)
+        self.headline = tk.Entry(row4, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.headline.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
-        # 第五行：Publisher 設定（Logo/URL）
+        # 第五行：描述
         row5 = ttk.Frame(seo_frame)
         row5.pack(fill=tk.X, pady=2)
-        ttk.Label(row5, text="Publisher Logo:", width=14).pack(side=tk.LEFT)
-        self.publisher_logo_url = tk.Entry(row5, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        ttk.Label(row5, text="描述:", width=10).pack(side=tk.LEFT)
+        self.description = tk.Entry(row5, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.description.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+
+        # 第六行：Publisher 設定（Logo/URL）
+        row6 = ttk.Frame(seo_frame)
+        row6.pack(fill=tk.X, pady=2)
+        ttk.Label(row6, text="Publisher Logo:", width=14).pack(side=tk.LEFT)
+        self.publisher_logo_url = tk.Entry(row6, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.publisher_logo_url.insert(0, "")
         self.publisher_logo_url.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
-        ttk.Label(row5, text="Publisher URL:", width=12).pack(side=tk.LEFT, padx=(10,0))
-        self.publisher_url = tk.Entry(row5, width=28, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        ttk.Label(row6, text="Publisher URL:", width=12).pack(side=tk.LEFT, padx=(10,0))
+        self.publisher_url = tk.Entry(row6, width=28, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.publisher_url.insert(0, "")
         self.publisher_url.pack(side=tk.LEFT)
 
-        # 第六行：Publisher Logo 寬高 + sameAs
-        row6 = ttk.Frame(seo_frame)
-        row6.pack(fill=tk.X, pady=2)
-        ttk.Label(row6, text="Logo寬(px):", width=10).pack(side=tk.LEFT)
-        self.publisher_logo_width = tk.Entry(row6, width=8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        # 第七行：Publisher Logo 寬高 + sameAs
+        row7 = ttk.Frame(seo_frame)
+        row7.pack(fill=tk.X, pady=2)
+        ttk.Label(row7, text="Logo寬(px):", width=10).pack(side=tk.LEFT)
+        self.publisher_logo_width = tk.Entry(row7, width=8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.publisher_logo_width.insert(0, "")
         self.publisher_logo_width.pack(side=tk.LEFT)
 
-        ttk.Label(row6, text="Logo高(px):", width=10).pack(side=tk.LEFT, padx=(10,0))
-        self.publisher_logo_height = tk.Entry(row6, width=8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        ttk.Label(row7, text="Logo高(px):", width=10).pack(side=tk.LEFT, padx=(10,0))
+        self.publisher_logo_height = tk.Entry(row7, width=8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.publisher_logo_height.insert(0, "")
         self.publisher_logo_height.pack(side=tk.LEFT)
 
-        ttk.Label(row6, text="Publisher sameAs:", width=16).pack(side=tk.LEFT, padx=(10,0))
-        self.publisher_sameas = tk.Entry(row6, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        ttk.Label(row7, text="Publisher sameAs:", width=16).pack(side=tk.LEFT, padx=(10,0))
+        self.publisher_sameas = tk.Entry(row7, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.publisher_sameas.insert(0, "")
         self.publisher_sameas.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+
+        # 第八行：圖片路徑、寬、高
+        row8 = ttk.Frame(seo_frame)
+        row8.pack(fill=tk.X, pady=2)
+        ttk.Label(row8, text="圖片路徑:", width=10).pack(side=tk.LEFT)
+        self.image_path = tk.Entry(row8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.image_path.insert(0, "")
+        self.image_path.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+
+        ttk.Label(row8, text="寬度:", width=6).pack(side=tk.LEFT, padx=(10,0))
+        self.image_width = tk.Entry(row8, width=10, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.image_width.insert(0, "100%")
+        self.image_width.pack(side=tk.LEFT, padx=5)
+
+        ttk.Label(row8, text="高度:", width=6).pack(side=tk.LEFT, padx=(10,0))
+        self.image_height = tk.Entry(row8, width=10, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.image_height.insert(0, "auto")
+        self.image_height.pack(side=tk.LEFT, padx=5)
 
         # 分頁介面
         notebook = ttk.Notebook(self.root)
@@ -583,6 +601,7 @@ class Editor:
         self.css_link_entry = tk.Entry(css_mode_frame, width=40, bg="#f8f9f9", fg="black", font=("Consolas", 9))
         self.css_link_entry.pack(side=tk.LEFT, padx=5)
         self.css_link_entry.insert(0, "https://example.com/style.css")
+        ttk.Button(css_mode_frame, text="瀏覽...", command=self._browse_css_file).pack(side=tk.LEFT, padx=2)
 
         self.css_editor = scrolledtext.ScrolledText(css_tab, wrap=tk.WORD, font=("Consolas", 10), bg="#f8f9f9", fg="black", insertbackground="black")
         self.css_editor.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
@@ -604,13 +623,13 @@ class Editor:
         footer = ttk.Frame(self.root)
         footer.pack(side=tk.BOTTOM, fill=tk.X, pady=2)
 
-        ttk.Label(footer, text=f"SEO Article Editor v{self.app_version} by ", font=("Arial", 7), foreground="gray").pack(side=tk.LEFT, padx=(0, 0))
+        ttk.Label(footer, text=f"SEO Article Editor v{self.app_version} | Design by ", font=("Arial", 8), foreground="gray").pack(side=tk.LEFT, padx=(5, 0))
 
         author_link = ttk.Label(
             footer,
             text="Colinjen",
-            font=("Arial", 7, "underline"),
-            foreground="white",
+            font=("Arial", 8, "underline"),
+            foreground="gray",
             cursor="hand2"
         )
         author_link.pack(side=tk.LEFT)
@@ -655,6 +674,7 @@ class Editor:
         for widget in [self.author, self.pub_date, self.mod_date, self.org_name, self.article_num,
                       self.headline, self.description, self.publisher_logo_url, self.publisher_url,
                       self.publisher_logo_width, self.publisher_logo_height, self.publisher_sameas,
+                      self.image_path, self.image_width, self.image_height,
                       self.h1, self.intro_h2]:
             try:
                 widget.config(bg="#f8f9f9", fg="black", insertbackground="black")
@@ -725,33 +745,20 @@ class Editor:
             else:
                 # 如果檔案不存在，載入預設內容
                 default_css = """/* 共用 CSS 樣式 */
-body {
-    font-family: 'Noto Sans TC', sans-serif;
-    line-height: 1.7;
-    color: #343a40;
-}
-
-h1, h2, h3 {
-    font-family: 'Noto Serif TC', serif;
-    color: #1a1a1a;
-}
-
-h1 {
-    font-size: 2.5em;
-    text-align: center;
-    color: #b08d57;
-}
-
-h2 {
-    font-size: 1.8em;
-    margin-top: 50px;
-    border-bottom: 2px solid #b08d57;
-}
-
-h3 {
-    font-size: 1.3em;
-    margin-top: 30px;
-}
+.seo-article-content {max-width:960px; margin:0 auto; padding:20px;font-family:'Noto Sans TC',sans-serif; line-height:1.7; color:#343a40;}
+.seo-article-content img{ width: 100%; height: auto;}
+.seo-article-content h1 {font-size:2.5em; text-align:center; margin-bottom:20px; color:#b08d57;}
+.seo-article-content h2 {font-size:1.8em; margin-top:8px; margin-bottom:20px; padding-bottom:10px; border-bottom:2px solid #b08d57;}
+.seo-article-content h3 {font-size:1.3em; margin-top:20px; margin-bottom:10px; color:#343a40;}
+.seo-article-content p {margin-bottom:1.2em;}
+.intro-summary {background:#f8f9fa; border-left:5px solid #D8AB4C; padding:1rem 1.5rem; margin:1rem 0; font-size:1.05em;}
+.intro-summary p {margin:0 0 4px;}
+.seo-article-content table {width:100%; border-collapse:collapse; margin:30px 0; font-size:0.95em;}
+.seo-article-content th,.seo-article-content td {padding:12px 15px; text-align:left; border-bottom:1px solid #dee2e6;}
+.seo-article-content thead th {background:#343a40; color:#fff; font-weight:700;}
+.seo-article-content tbody tr:nth-of-type(even) {background:#f8f9fa;}
+.seo-article-content tbody tr:hover {background:#e9ecef;}
+.seo-article-content hr {border:0; height:1px; background:#dee2e6; margin:60px 0;}
 """
                 self.css_editor.delete("1.0", tk.END)
                 self.css_editor.insert("1.0", default_css)
@@ -770,6 +777,13 @@ h3 {
             messagebox.showinfo("成功", f"CSS 已儲存至: {css_file}")
         except Exception as e:
             messagebox.showerror("錯誤", f"儲存 CSS 失敗: {e}")
+
+    def _browse_css_file(self):
+        """瀏覽並選擇本地 CSS 檔案"""
+        fp = filedialog.askopenfilename(filetypes=[("CSS Files", "*.css"), ("All Files", "*.*")])
+        if fp:
+            self.css_link_entry.delete(0, tk.END)
+            self.css_link_entry.insert(0, fp)
 
     def _load_footer(self):
         """從共用 Footer 檔案載入內容"""
@@ -830,7 +844,7 @@ h3 {
         mod_date = self.mod_date.get().strip() or datetime.today().strftime('%Y-%m-%d')
         headline = self.headline.get().strip() or (self.h1.get().strip() or "文章標題")
         description = self.description.get().strip() or ""
-        image_url = ""
+        image_url = self.image_path.get().strip() if hasattr(self, 'image_path') else ""
         author_type = (self.author_type.get() if hasattr(self, 'author_type') else 'Organization') or 'Organization'
         publisher_logo = self.publisher_logo_url.get().strip() if hasattr(self, 'publisher_logo_url') else "https://example.com/logo.png"
         publisher_url = self.publisher_url.get().strip() if hasattr(self, 'publisher_url') else "https://example.com/"
@@ -1030,7 +1044,10 @@ h3 {
                     "publisher_url": (self.publisher_url.get().strip() if hasattr(self, 'publisher_url') else "https://example.com/"),
                     "publisher_logo_width": (self.publisher_logo_width.get().strip() if hasattr(self, 'publisher_logo_width') else ""),
                     "publisher_logo_height": (self.publisher_logo_height.get().strip() if hasattr(self, 'publisher_logo_height') else ""),
-                    "publisher_sameas": ([u.strip() for u in (self.publisher_sameas.get().split(',') if hasattr(self, 'publisher_sameas') else []) if u.strip()])
+                    "publisher_sameas": ([u.strip() for u in (self.publisher_sameas.get().split(',') if hasattr(self, 'publisher_sameas') else []) if u.strip()]),
+                    "image_path": (self.image_path.get().strip() if hasattr(self, 'image_path') else ""),
+                    "image_width": (self.image_width.get().strip() if hasattr(self, 'image_width') else "100%"),
+                    "image_height": (self.image_height.get().strip() if hasattr(self, 'image_height') else "auto")
                 },
                 "h1": self.h1.get().strip(),
                 "intro": self.intro.get("1.0", tk.END).strip(),
@@ -1070,6 +1087,13 @@ h3 {
             else:
                 sameas_str = sameas_val or ""
             self.publisher_sameas.delete(0, tk.END); self.publisher_sameas.insert(0, sameas_str)
+        
+        if hasattr(self, 'image_path'):
+            self.image_path.delete(0, tk.END); self.image_path.insert(0, seo.get("image_path", ""))
+        if hasattr(self, 'image_width'):
+            self.image_width.delete(0, tk.END); self.image_width.insert(0, seo.get("image_width", "100%"))
+        if hasattr(self, 'image_height'):
+            self.image_height.delete(0, tk.END); self.image_height.insert(0, seo.get("image_height", "auto"))
         
         # 載入內容
         self.h1.delete(0, tk.END); self.intro.delete("1.0", tk.END)
@@ -1210,6 +1234,7 @@ h3 {
             '<html lang="zh-TW">\n'
             '<head>\n'
             '    <meta charset="UTF-8">\n'
+            '    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">\n'
             '    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
             f'    <title>{title}</title>\n'
             f'{schema}\n'
@@ -1301,10 +1326,10 @@ h3 {
             # 內建 placeholder 結構
             data = {
                 "seo": {
-                    "author": "作者名稱（預設）",
+                    "author": "炫麗黃金白銀交易所",
                     "pub_date": datetime.today().strftime('%Y-%m-%d'),
                     "mod_date": datetime.today().strftime('%Y-%m-%d'),
-                    "org_name": "組織名稱（預設）",
+                    "org_name": "炫麗黃金白銀交易所",
                     "article_num": str(get_article_number()),
                     "headline": "請輸入文章標題",
                     "description": "請輸入文章描述",

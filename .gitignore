@@ -51,7 +51,7 @@ output/*.html
 article_number.txt
 settings.json
 temp_*.py
-*.json
+# *.json (移除這行以允許追蹤 config/defaults.json)
 !package.json
 !package-lock.json
 !tsconfig.json
