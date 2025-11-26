@@ -1,0 +1,6 @@
+# 網站設定值檔案
+# 格式：設定名稱：設定值
+
+PublisherURL：https://example.com/
+PublisherLogo：https://example.com/logo.png
+圖片路徑："https://example.com/"+"xxx.jpg"

@@ -1,0 +1,21 @@
+.seo-article-content {max-width:960px; margin:0 auto; padding:20px;font-family:'Noto Sans TC',sans-serif; line-height:1.7; color:#343a40;}
+.seo-article-content img{ width: 100%; height: auto;}
+.seo-article-content section {
+    margin-top: 40px;
+}
+.seo-article-content h1 {font-size:2.5em; text-align:center; margin-bottom:20px; color:#b08d57;}
+.seo-article-content h2 {font-size:1.8em; margin-top:8px;  padding-bottom:10px; border-bottom:2px solid #b08d57;}
+.seo-article-content h3 {font-size:1.3em;  margin-bottom:8px; color:#343a40;}
+.seo-article-content p {margin-bottom:1.2em;}
+.intro-summary {background:#f8f9fa; border-left:5px solid #D8AB4C; padding:1rem 1.5rem; margin:1rem 0; font-size:1.05em;}
+.intro-summary p {margin:0 0 4px;}
+.seo-article-content table {width:100%; border-collapse:collapse; margin:30px 0; font-size:0.95em;}
+.seo-article-content th,.seo-article-content td {padding:12px 15px; text-align:left; border-bottom:1px solid #dee2e6;}
+.seo-article-content thead th {background:#343a40; color:#fff; font-weight:700;}
+.seo-article-content tbody tr:nth-of-type(even) {background:#f8f9fa;}
+.seo-article-content tbody tr:hover {background:#e9ecef;}
+.seo-article-content hr {border:0; height:1px; background:#dee2e6; margin:60px 0;}
+.seo-article-content .faq h3 {
+    content: '';
+    border-left: 4px solid #b08d57;
+}

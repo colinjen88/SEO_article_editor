@@ -408,6 +408,11 @@ class Editor:
         ttk.Button(tb, text="開啟編輯檔", command=self.op).pack(side=tk.LEFT, padx=2)
         ttk.Button(tb, text="儲存編輯檔", command=self.sv).pack(side=tk.LEFT, padx=2)
         ttk.Button(tb, text="匯出HTML", command=self.ex).pack(side=tk.LEFT, padx=2)
+        
+        # 右側按鈕區域
+        right_frame = ttk.Frame(tb)
+        right_frame.pack(side=tk.RIGHT, padx=2)
+        ttk.Button(right_frame, text="載入網站設定值", command=self.load_site_settings).pack(side=tk.RIGHT, padx=2)
 
         # 檔案路徑顯示
         self.file_path_label = ttk.Label(tb, text="未開啟檔案", font=("Arial", 8), foreground="gray")
@@ -434,6 +439,11 @@ class Editor:
         self.article_num = tk.Entry(row1, width=10, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.article_num.insert(0, str(get_article_number()))
         self.article_num.pack(side=tk.LEFT, padx=5)
+
+        ttk.Label(row1, text="網址前綴:", width=10).pack(side=tk.LEFT, padx=(10,0))
+        self.page_url_prefix = tk.Entry(row1, width=30, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.page_url_prefix.insert(0, "https://example.com/news-detail.php?id=")
+        self.page_url_prefix.pack(side=tk.LEFT, padx=5)
 
         # 第二行：文章日期、修改日期
         row2 = ttk.Frame(seo_frame)
@@ -501,13 +511,22 @@ class Editor:
         self.publisher_sameas.insert(0, "")
         self.publisher_sameas.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
-        # 第八行：圖片路徑、寬、高
+        # 第八行：圖片路徑拆分、寬、高
         row8 = ttk.Frame(seo_frame)
         row8.pack(fill=tk.X, pady=2)
         ttk.Label(row8, text="圖片路徑:", width=10).pack(side=tk.LEFT)
-        self.image_path = tk.Entry(row8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.image_path.insert(0, "")
-        self.image_path.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        self.image_url_prefix = tk.Entry(row8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.image_url_prefix.insert(0, "https://example.com/")
+        self.image_url_prefix.pack(side=tk.LEFT, padx=5)
+        
+        self.image_filename = tk.Entry(row8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.image_filename.insert(0, "")
+        self.image_filename.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+
+        ttk.Label(row8, text="圖片描述:", width=10).pack(side=tk.LEFT)
+        self.image_alt = tk.Entry(row8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.image_alt.insert(0, "")
+        self.image_alt.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
         ttk.Label(row8, text="寬度:", width=6).pack(side=tk.LEFT, padx=(10,0))
         self.image_width = tk.Entry(row8, width=10, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
@@ -711,10 +730,10 @@ class Editor:
     def _force_white_inputs(self):
         """強制將所有輸入欄位設定為白底黑字"""
         # 更新所有已存在的輸入欄位
-        for widget in [self.author, self.pub_date, self.mod_date, self.org_name, self.article_num,
+        for widget in [self.author, self.pub_date, self.mod_date, self.org_name, self.article_num, self.page_url_prefix,
                       self.headline, self.description, self.publisher_logo_url, self.publisher_url,
                       self.publisher_logo_width, self.publisher_logo_height, self.publisher_sameas,
-                      self.image_path, self.image_width, self.image_height,
+                      self.image_url_prefix, self.image_filename, self.image_alt, self.image_width, self.image_height,
                       self.h1, self.intro_h2]:
             try:
                 widget.config(bg="#f8f9f9", fg="black", insertbackground="black")
@@ -747,6 +766,62 @@ class Editor:
             except:
                 pass
     
+    def _is_html_content(self, text):
+        """檢測文字是否包含 HTML 標籤"""
+        if not text or not text.strip():
+            return False
+        # 簡單檢測是否包含 HTML 標籤
+        import re
+        html_pattern = re.compile(r'<[^>]+>')
+        return bool(html_pattern.search(text))
+    
+    def _update_field_validation(self, field, is_html_mode, label_widget=None):
+        """更新欄位驗證狀態"""
+        try:
+            content = field.get("1.0", tk.END).strip() if hasattr(field, 'get') and hasattr(field, 'index') else field.get().strip()
+            
+            if is_html_mode:
+                # HTML 模式：如果內容沒有 HTML 標籤，顯示警告
+                if not self._is_html_content(content):
+                    field.config(highlightbackground="red", highlightcolor="red", highlightthickness=2)
+                    if label_widget:
+                        label_widget.config(foreground="red")
+                else:
+                    field.config(highlightbackground="#f8f9f9", highlightcolor="#f8f9f9", highlightthickness=1)
+                    if label_widget:
+                        label_widget.config(foreground="black")
+            else:
+                # 純文字模式：如果內容包含 HTML 標籤，顯示警告
+                if self._is_html_content(content):
+                    field.config(highlightbackground="red", highlightcolor="red", highlightthickness=2)
+                    if label_widget:
+                        label_widget.config(foreground="red")
+                else:
+                    field.config(highlightbackground="#f8f9f9", highlightcolor="#f8f9f9", highlightthickness=1)
+                    if label_widget:
+                        label_widget.config(foreground="black")
+        except Exception:
+            pass
+    
+    def _validate_all_fields(self):
+        """驗證所有支援 HTML 模式的欄位"""
+        try:
+            # 前言內容
+            if hasattr(self, 'intro') and hasattr(self, 'intro_is_html'):
+                self._update_field_validation(self.intro, self.intro_is_html.get())
+            
+            # 段落內容
+            for sec in self.secs:
+                if hasattr(sec, 'is_html') and hasattr(sec, 'ct'):
+                    self._update_field_validation(sec.ct, sec.is_html.get())
+            
+            # FAQ 答案
+            for faq in self.faqs:
+                if hasattr(faq, 'is_html') and hasattr(faq, 'a'):
+                    self._update_field_validation(faq.a, faq.get_is_html())
+        except Exception:
+            pass
+    
     def _chg(self):
         self.mod = True
         if hasattr(self, "_tm"): self.root.after_cancel(self._tm)
@@ -756,6 +831,8 @@ class Editor:
         h = self._gen()
         self.pv.config(state=tk.NORMAL); self.pv.delete("1.0", tk.END); self.pv.insert("1.0", h); self.pv.config(state=tk.DISABLED)
         self._update_schema_preview()
+        # 驗證欄位內容
+        self._validate_all_fields()
         # 預覽更新後，如有 HTML 模式則嘗試高亮（不影響主要輸入區）
         try:
             self._highlight_intro_if_html()
@@ -884,7 +961,14 @@ class Editor:
         mod_date = self.mod_date.get().strip() or datetime.today().strftime('%Y-%m-%d')
         headline = self.headline.get().strip() or (self.h1.get().strip() or "文章標題")
         description = self.description.get().strip() or ""
-        image_url = self.image_path.get().strip() if hasattr(self, 'image_path') else ""
+        image_url_prefix = self.image_url_prefix.get().strip() if hasattr(self, 'image_url_prefix') else "https://example.com/"
+        image_filename = self.image_filename.get().strip() if hasattr(self, 'image_filename') else ""
+        image_alt = self.image_alt.get().strip() if hasattr(self, 'image_alt') else ""
+        
+        # 組合完整圖片 URL
+        image_url = ""
+        if image_filename:
+            image_url = image_url_prefix + image_filename
         author_type = (self.author_type.get() if hasattr(self, 'author_type') else 'Organization') or 'Organization'
         publisher_logo = self.publisher_logo_url.get().strip() if hasattr(self, 'publisher_logo_url') else "https://example.com/logo.png"
         publisher_url = self.publisher_url.get().strip() if hasattr(self, 'publisher_url') else "https://example.com/"
@@ -893,12 +977,14 @@ class Editor:
         publisher_sameas_str = self.publisher_sameas.get().strip() if hasattr(self, 'publisher_sameas') else ""
         publisher_sameas = [u.strip() for u in publisher_sameas_str.split(",") if u.strip()]
 
-        # 以文章編號推導頁面 URL（如: https://pm.shiny.com.tw/news-detail.php?id=XXXX）
+        # 以文章編號推導頁面 URL（使用前綴 + 文章編號）
         page_id = self.article_num.get().strip()
+        page_url_prefix = self.page_url_prefix.get().strip() if hasattr(self, 'page_url_prefix') else "https://example.com/news-detail.php?id="
         main_entity_of_page = None
         if page_id and page_id.isdigit():
+            full_page_url = page_url_prefix + page_id
             main_entity_of_page = {
-                "@id": f"https://example.com/news/{page_id}",
+                "@id": full_page_url,
                 "@type": "WebPage",
             }
 
@@ -928,8 +1014,14 @@ class Editor:
             "datePublished": pub_date,
             "description": description,
             "headline": headline,
-            "image": image_url,
         }
+        
+        # 加入圖片資訊（如果有）
+        if image_url:
+            image_obj = {"@type": "ImageObject", "url": image_url}
+            if image_alt:
+                image_obj["caption"] = image_alt
+            data_article["image"] = image_obj
 
         # FAQPage JSON-LD（獨立 script）
         data_faq = None
@@ -979,6 +1071,18 @@ class Editor:
     def _gen(self):
         p = []
         p.append("<article class=\"seo-article-content\">")
+        
+        # 在 h1 之前添加圖片
+        image_url_prefix = self.image_url_prefix.get().strip() if hasattr(self, 'image_url_prefix') else "https://example.com/"
+        image_filename = self.image_filename.get().strip() if hasattr(self, 'image_filename') else ""
+        image_alt = self.image_alt.get().strip() if hasattr(self, 'image_alt') else ""
+        
+        if image_filename:
+            full_image_url = image_url_prefix + image_filename
+            alt_text = self._esc(image_alt) if image_alt else ""
+            p.append(f'  <div class="img"><img alt="{alt_text}" src="{full_image_url}" /></div>')
+            p.append("")
+        
         h1 = self.h1.get().strip()
         if h1:
             p.append(f"  <h1>{self._esc(h1)}</h1>")
@@ -1059,6 +1163,92 @@ class Editor:
     
     def _esc(self, t): return t.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
     
+    def load_site_settings(self):
+        """載入網站設定值檔案"""
+        import os
+        
+        # 預設檔案路徑
+        default_file = os.path.join(BASE, "site_setup.txt")
+        
+        # 如果預設檔案存在，直接載入；否則讓使用者選擇
+        if os.path.exists(default_file):
+            self._parse_and_apply_site_settings(default_file)
+        else:
+            # 讓使用者選擇檔案
+            fp = filedialog.askopenfilename(
+                title="選擇網站設定檔案",
+                filetypes=[("文字檔", "*.txt"), ("所有檔案", "*.*")],
+                initialdir=BASE
+            )
+            if fp:
+                self._parse_and_apply_site_settings(fp)
+    
+    def _parse_and_apply_site_settings(self, file_path):
+        """解析並應用網站設定值"""
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # 解析設定值
+            settings = {}
+            for line in content.split('\n'):
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                
+                # 支援多種分隔符號
+                if '：' in line:
+                    key, value = line.split('：', 1)
+                elif ':' in line:
+                    key, value = line.split(':', 1)
+                elif '=' in line:
+                    key, value = line.split('=', 1)
+                else:
+                    continue
+                
+                key = key.strip()
+                value = value.strip()
+                settings[key] = value
+            
+            # 應用設定值
+            if 'PublisherURL' in settings:
+                if hasattr(self, 'publisher_url'):
+                    self.publisher_url.delete(0, tk.END)
+                    self.publisher_url.insert(0, settings['PublisherURL'])
+            
+            if 'PublisherLogo' in settings:
+                if hasattr(self, 'publisher_logo_url'):
+                    self.publisher_logo_url.delete(0, tk.END)
+                    self.publisher_logo_url.insert(0, settings['PublisherLogo'])
+            
+            if '圖片路徑' in settings:
+                # 解析圖片路徑格式："https://example.com/"+"xxx.jpg"
+                image_path = settings['圖片路徑']
+                if '+' in image_path and '"' in image_path:
+                    # 分割前綴和檔名部分
+                    parts = image_path.split('+')
+                    if len(parts) >= 2:
+                        prefix = parts[0].strip().strip('"')
+                        if hasattr(self, 'image_url_prefix'):
+                            self.image_url_prefix.delete(0, tk.END)
+                            self.image_url_prefix.insert(0, prefix)
+                
+                # 如果只有單一 URL，設定為前綴
+                elif image_path and not image_path.startswith('"'):
+                    if hasattr(self, 'image_url_prefix'):
+                        self.image_url_prefix.delete(0, tk.END)
+                        self.image_url_prefix.insert(0, image_path)
+            
+            # 顯示成功訊息
+            messagebox.showinfo("載入成功", f"已成功載入網站設定值：{file_path}")
+            
+            # 觸發更新
+            self._chg()
+            
+        except Exception as e:
+            # 靜默處理錯誤，不影響程式運行
+            pass
+    
     def new_file(self):
         """新建檔案 - 重置所有欄位並使用下一個文章編號"""
         if self.mod and messagebox.askyesno("未儲存", "目前檔案有未儲存的變更，要儲存嗎?"):
@@ -1078,6 +1268,10 @@ class Editor:
         next_article_num = str(get_article_number())
         self.article_num.delete(0, tk.END); self.article_num.insert(0, next_article_num)
         
+        # 重置網址前綴
+        if hasattr(self, 'page_url_prefix'):
+            self.page_url_prefix.delete(0, tk.END); self.page_url_prefix.insert(0, "https://example.com/news-detail.php?id=")
+        
         self.headline.delete(0, tk.END); self.headline.insert(0, "")
         self.description.delete(0, tk.END); self.description.insert(0, "")
         
@@ -1093,8 +1287,12 @@ class Editor:
             self.publisher_logo_height.delete(0, tk.END); self.publisher_logo_height.insert(0, "")
         if hasattr(self, 'publisher_sameas'):
             self.publisher_sameas.delete(0, tk.END); self.publisher_sameas.insert(0, "")
-        if hasattr(self, 'image_path'):
-            self.image_path.delete(0, tk.END); self.image_path.insert(0, "")
+        if hasattr(self, 'image_url_prefix'):
+            self.image_url_prefix.delete(0, tk.END); self.image_url_prefix.insert(0, "https://example.com/")
+        if hasattr(self, 'image_filename'):
+            self.image_filename.delete(0, tk.END); self.image_filename.insert(0, "")
+        if hasattr(self, 'image_alt'):
+            self.image_alt.delete(0, tk.END); self.image_alt.insert(0, "")
         if hasattr(self, 'image_width'):
             self.image_width.delete(0, tk.END); self.image_width.insert(0, "100%")
         if hasattr(self, 'image_height'):
@@ -1147,6 +1345,7 @@ class Editor:
                     "mod_date": self.mod_date.get().strip(),
                     "org_name": self.org_name.get().strip(),
                     "article_num": current_article_num,
+                    "page_url_prefix": (self.page_url_prefix.get().strip() if hasattr(self, 'page_url_prefix') else "https://example.com/news-detail.php?id="),
                     "headline": self.headline.get().strip(),
                     "description": self.description.get().strip(),
                     "author_type": (self.author_type.get() if hasattr(self, 'author_type') else 'Organization'),
@@ -1155,7 +1354,9 @@ class Editor:
                     "publisher_logo_width": (self.publisher_logo_width.get().strip() if hasattr(self, 'publisher_logo_width') else ""),
                     "publisher_logo_height": (self.publisher_logo_height.get().strip() if hasattr(self, 'publisher_logo_height') else ""),
                     "publisher_sameas": ([u.strip() for u in (self.publisher_sameas.get().split(',') if hasattr(self, 'publisher_sameas') else []) if u.strip()]),
-                    "image_path": (self.image_path.get().strip() if hasattr(self, 'image_path') else ""),
+                    "image_url_prefix": (self.image_url_prefix.get().strip() if hasattr(self, 'image_url_prefix') else "https://example.com/"),
+                    "image_filename": (self.image_filename.get().strip() if hasattr(self, 'image_filename') else ""),
+                    "image_alt": (self.image_alt.get().strip() if hasattr(self, 'image_alt') else ""),
                     "image_width": (self.image_width.get().strip() if hasattr(self, 'image_width') else "100%"),
                     "image_height": (self.image_height.get().strip() if hasattr(self, 'image_height') else "auto")
                 },
@@ -1178,6 +1379,8 @@ class Editor:
         self.mod_date.delete(0, tk.END); self.mod_date.insert(0, seo.get("mod_date", datetime.today().strftime('%Y-%m-%d')))
         self.org_name.delete(0, tk.END); self.org_name.insert(0, seo.get("org_name", "組織名稱（預設）"))
         self.article_num.delete(0, tk.END); self.article_num.insert(0, seo.get("article_num", str(get_article_number())))
+        if hasattr(self, 'page_url_prefix'):
+            self.page_url_prefix.delete(0, tk.END); self.page_url_prefix.insert(0, seo.get("page_url_prefix", "https://example.com/news-detail.php?id="))
         self.headline.delete(0, tk.END); self.headline.insert(0, seo.get("headline", ""))
         self.description.delete(0, tk.END); self.description.insert(0, seo.get("description", ""))
         # 新增欄位
@@ -1198,8 +1401,12 @@ class Editor:
                 sameas_str = sameas_val or ""
             self.publisher_sameas.delete(0, tk.END); self.publisher_sameas.insert(0, sameas_str)
         
-        if hasattr(self, 'image_path'):
-            self.image_path.delete(0, tk.END); self.image_path.insert(0, seo.get("image_path", ""))
+        if hasattr(self, 'image_url_prefix'):
+            self.image_url_prefix.delete(0, tk.END); self.image_url_prefix.insert(0, seo.get("image_url_prefix", "https://example.com/"))
+        if hasattr(self, 'image_filename'):
+            self.image_filename.delete(0, tk.END); self.image_filename.insert(0, seo.get("image_filename", ""))
+        if hasattr(self, 'image_alt'):
+            self.image_alt.delete(0, tk.END); self.image_alt.insert(0, seo.get("image_alt", ""))
         if hasattr(self, 'image_width'):
             self.image_width.delete(0, tk.END); self.image_width.insert(0, seo.get("image_width", "100%"))
         if hasattr(self, 'image_height'):
