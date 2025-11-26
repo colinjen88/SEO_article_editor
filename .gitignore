@@ -49,6 +49,7 @@ output/*.html
 !output/.gitkeep
 !output/preview_temp.html
 article_number.txt
+site_setup.txt
 settings.json
 temp_*.py
 # *.json (移除這行以允許追蹤 config/defaults.json)
