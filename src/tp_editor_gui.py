@@ -403,6 +403,7 @@ class Editor:
         # 工具列
         tb = ttk.Frame(self.root)
         tb.pack(side=tk.TOP, fill=tk.X, padx=5, pady=3)
+        ttk.Button(tb, text="新建檔案", command=self.new_file).pack(side=tk.LEFT, padx=2)
         ttk.Button(tb, text="開啟編輯檔", command=self.op).pack(side=tk.LEFT, padx=2)
         ttk.Button(tb, text="儲存編輯檔", command=self.sv).pack(side=tk.LEFT, padx=2)
         ttk.Button(tb, text="匯出HTML", command=self.ex).pack(side=tk.LEFT, padx=2)
@@ -1057,6 +1058,65 @@ class Editor:
     
     def _esc(self, t): return t.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
     
+    def new_file(self):
+        """新建檔案 - 重置所有欄位並使用下一個文章編號"""
+        if self.mod and messagebox.askyesno("未儲存", "目前檔案有未儲存的變更，要儲存嗎?"):
+            self.sv()
+        
+        # 重置檔案路徑
+        self.cf = None
+        self.file_path_label.config(text="未開啟檔案")
+        
+        # 重置 SEO 資訊
+        self.author.delete(0, tk.END); self.author.insert(0, "作者名稱（預設）")
+        self.pub_date.delete(0, tk.END); self.pub_date.insert(0, datetime.today().strftime('%Y-%m-%d'))
+        self.mod_date.delete(0, tk.END); self.mod_date.insert(0, datetime.today().strftime('%Y-%m-%d'))
+        self.org_name.delete(0, tk.END); self.org_name.insert(0, "炫麗黃金白銀交易所")
+        
+        # 取得下一個文章編號
+        next_article_num = str(get_article_number())
+        self.article_num.delete(0, tk.END); self.article_num.insert(0, next_article_num)
+        
+        self.headline.delete(0, tk.END); self.headline.insert(0, "")
+        self.description.delete(0, tk.END); self.description.insert(0, "")
+        
+        # 重置新增欄位
+        if hasattr(self, 'author_type'): self.author_type.set("Organization")
+        if hasattr(self, 'publisher_logo_url'):
+            self.publisher_logo_url.delete(0, tk.END); self.publisher_logo_url.insert(0, "https://example.com/logo.png")
+        if hasattr(self, 'publisher_url'):
+            self.publisher_url.delete(0, tk.END); self.publisher_url.insert(0, "https://example.com/")
+        if hasattr(self, 'publisher_logo_width'):
+            self.publisher_logo_width.delete(0, tk.END); self.publisher_logo_width.insert(0, "")
+        if hasattr(self, 'publisher_logo_height'):
+            self.publisher_logo_height.delete(0, tk.END); self.publisher_logo_height.insert(0, "")
+        if hasattr(self, 'publisher_sameas'):
+            self.publisher_sameas.delete(0, tk.END); self.publisher_sameas.insert(0, "")
+        if hasattr(self, 'image_path'):
+            self.image_path.delete(0, tk.END); self.image_path.insert(0, "")
+        if hasattr(self, 'image_width'):
+            self.image_width.delete(0, tk.END); self.image_width.insert(0, "100%")
+        if hasattr(self, 'image_height'):
+            self.image_height.delete(0, tk.END); self.image_height.insert(0, "auto")
+        
+        # 重置內容
+        self.h1.delete(0, tk.END); self.h1.insert(0, "")
+        self.intro.delete("1.0", tk.END); self.intro.insert("1.0", "")
+        self.intro_h2.delete(0, tk.END); self.intro_h2.insert(0, "前言")
+        self.intro_is_html.set(False)
+        
+        # 清除段落和 FAQ
+        for s in self.secs[:]:
+            s.f.destroy()
+        self.secs.clear()
+        
+        for f in self.faqs[:]:
+            f.f.destroy()
+        self.faqs.clear()
+        
+        self.mod = False
+        self.upd()
+    
     def op(self):
         fp = filedialog.askopenfilename(filetypes=[("JSON","*.json")])
         if fp:
@@ -1068,13 +1128,24 @@ class Editor:
     def sv(self):
         if not self.cf: self.cf = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON","*.json")])
         if self.cf:
+            # 獲取當前文章編號並更新
+            current_article_num = self.article_num.get().strip()
+            try:
+                # 將文章編號+1 並儲存到 number.txt
+                next_num = int(current_article_num) + 1
+                set_article_number(next_num)
+            except ValueError:
+                # 如果文章編號不是數字，使用預設值
+                next_num = get_article_number() + 1
+                set_article_number(next_num)
+            
             d = {
                 "seo": {
                     "author": self.author.get().strip(),
                     "pub_date": self.pub_date.get().strip(),
                     "mod_date": self.mod_date.get().strip(),
                     "org_name": self.org_name.get().strip(),
-                    "article_num": self.article_num.get().strip(),
+                    "article_num": current_article_num,
                     "headline": self.headline.get().strip(),
                     "description": self.description.get().strip(),
                     "author_type": (self.author_type.get() if hasattr(self, 'author_type') else 'Organization'),

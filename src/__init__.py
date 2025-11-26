@@ -3,4 +3,4 @@
 SEO Article Editor - Source Package
 """
 
-__version__ = "2.3"
+__version__ = "2.4"

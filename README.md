@@ -1,6 +1,12 @@
-# SEO Article Editor v2.3
+# SEO Article Editor v2.4
 
 專為 SEO 文章寫作設計的視覺化編輯器，支援即時預覽、Schema JSON-LD 結構化資料生成、自訂 CSS 樣式以及 HTML 匯出功能。
+
+## v2.4 更新重點
+- **文章編號自動管理**: 儲存時自動遞增文章編號並更新至 `number.txt`
+- **新建檔案功能**: 新增「新建檔案」按鈕，自動取得下一個文章編號
+- **程式啟動優化**: 開啟時自動讀取最新文章編號 +1
+- **工作流程改善**: 簡化文章編號管理，提升編輯效率
 
 ## v2.3 更新重點
 - **UI 優化**: 重新編排欄位配置，提升操作流暢度
@@ -385,5 +391,5 @@ SEO_article_editor/
 
 ---
 
-**© 2025 SEO Article Editor v2.3**  
+**© 2025 SEO Article Editor v2.4**  
 Produced by Colinjen (colinjen88@gmail.com)
