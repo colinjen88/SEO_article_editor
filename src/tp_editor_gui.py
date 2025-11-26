@@ -1233,6 +1233,12 @@ class Editor:
                     self.org_name.delete(0, tk.END)
                     self.org_name.insert(0, org_name)
             
+            if '頁面網址前綴' in settings or 'PageURLPrefix' in settings:
+                page_prefix = settings.get('頁面網址前綴', settings.get('PageURLPrefix', ''))
+                if page_prefix and hasattr(self, 'page_url_prefix'):
+                    self.page_url_prefix.delete(0, tk.END)
+                    self.page_url_prefix.insert(0, page_prefix)
+            
             if '圖片路徑' in settings:
                 # 解析圖片路徑格式："https://example.com/"+"xxx.jpg"
                 image_path = settings['圖片路徑']
