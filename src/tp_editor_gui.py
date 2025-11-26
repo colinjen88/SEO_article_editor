@@ -249,7 +249,8 @@ class Editor:
                 'TPanedwindow': {'configure': {'background': bg_color}},
             })
         except Exception as e:
-            print(f"Theme override error: {e}")
+            # 靜默忽略主題錯誤，不影響程式運行
+            pass
         
         self.cf = None; self.mod = False; self.secs = []; self.faqs = []
         self.root.protocol("WM_DELETE_WINDOW", self._cls); self._ui()
