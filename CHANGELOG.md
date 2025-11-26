@@ -26,6 +26,8 @@
   - 新增「載入網站設定值」按鈕
   - 支援 site_setup.txt 檔案格式
   - 一鍵載入 PublisherURL、PublisherLogo、圖片路徑等設定
+  - 支援作者、組織名稱、頁面網址前綴設定
+  - 中英文雙語設定名稱支援
 
 ### 變更 (Changed)
 - 🔄 **Schema 輸出優化**: image 物件包含 url 和 caption 屬性

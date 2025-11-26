@@ -7,8 +7,9 @@
 - **圖片路徑優化**: 拆分圖片路徑為前綴和檔名，提升管理便利性
 - **內容驗證系統**: HTML/純文字欄位自動驗證，錯誤時紅框提示
 - **頁面網址管理**: 新增網址前綴欄位，自動生成完整頁面 URL
-- **網站設定載入**: 一鍵載入網站設定值，提升工作效率
+- **網站設定載入**: 一鍵載入網站設定值，支援作者、組織、網址前綴等
 - **HTML 圖片輸出**: 圖片自動置於 h1 之前，符合最佳 SEO 實踐
+- **設定檔案支援**: 完整支援 site_setup.txt 格式，中英文雙語設定名稱
 
 ## v2.4 更新重點
 - **文章編號自動管理**: 儲存時自動遞增文章編號並更新至 `number.txt`
@@ -73,6 +74,33 @@ pip install -r requirements.txt
 ```powershell
 python SEO_Article_Editor.py
 ```
+
+### 📋 網站設定檔案 (v2.5 新功能)
+
+建立 `site_setup.txt` 檔案來快速載入常用設定：
+
+```txt
+# 基本資訊設定
+作者：張三
+Author：張三
+組織名稱：炫麗黃金白銀交易所
+Organization：炫麗黃金白銀交易所
+
+# 網站相關設定
+PublisherURL：https://example.com/
+PublisherLogo：https://example.com/logo.png
+
+# 頁面網址前綴設定
+頁面網址前綴：https://pm.shiny.com.tw/news-detail.php?id=
+PageURLPrefix：https://pm.shiny.com.tw/news-detail.php?id=
+
+# 圖片路徑設定
+圖片路徑："https://example.com/"+"xxx.jpg"
+```
+
+**使用方式**：點擊工具列的「載入網站設定值」按鈕即可一鍵填入所有設定。
+
+**注意**：`site_setup.txt` 已加入 `.gitignore`，不會被提交到版本控制系統。
 
 ### 製作執行檔
 
