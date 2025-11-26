@@ -1,6 +1,16 @@
 # 網站設定值檔案
 # 格式：設定名稱：設定值
+# 支援中文和英文設定名稱
 
+# 基本資訊設定
+作者：張三
+Author：張三
+組織名稱：炫麗黃金白銀交易所
+Organization：炫麗黃金白銀交易所
+
+# 網站相關設定
 PublisherURL：https://example.com/
 PublisherLogo：https://example.com/logo.png
+
+# 圖片路徑設定
 圖片路徑："https://example.com/"+"xxx.jpg"

@@ -1221,6 +1221,18 @@ class Editor:
                     self.publisher_logo_url.delete(0, tk.END)
                     self.publisher_logo_url.insert(0, settings['PublisherLogo'])
             
+            if '作者' in settings or 'Author' in settings:
+                author_name = settings.get('作者', settings.get('Author', ''))
+                if author_name and hasattr(self, 'author'):
+                    self.author.delete(0, tk.END)
+                    self.author.insert(0, author_name)
+            
+            if '組織名稱' in settings or 'Organization' in settings:
+                org_name = settings.get('組織名稱', settings.get('Organization', ''))
+                if org_name and hasattr(self, 'org_name'):
+                    self.org_name.delete(0, tk.END)
+                    self.org_name.insert(0, org_name)
+            
             if '圖片路徑' in settings:
                 # 解析圖片路徑格式："https://example.com/"+"xxx.jpg"
                 image_path = settings['圖片路徑']
