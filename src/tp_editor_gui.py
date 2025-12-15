@@ -62,24 +62,78 @@ def _index_from_offset(content: str, offset: int) -> str:
 
 class H3Block:
     def __init__(self, p, oc, od):
+        self.oc = oc
+        self.is_html = tk.BooleanVar(value=False)
         self.f = ttk.Frame(p, relief=tk.GROOVE, borderwidth=1)
         self.f.pack(fill=tk.X, padx=10, pady=3)
-        ttk.Label(self.f, text="H3:", font=("Arial", 9)).pack(anchor=tk.W, padx=5)
-        self.h3 = tk.Entry(self.f, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10)); self.h3.pack(fill=tk.X, padx=5, pady=(0,3)); self.h3.bind("<KeyRelease>", lambda e: oc())
+        
+        header = ttk.Frame(self.f)
+        header.pack(fill=tk.X, padx=5, pady=2)
+        ttk.Label(header, text="H3:", font=("Arial", 9)).pack(side=tk.LEFT)
+        ttk.Checkbutton(header, text="HTML", variable=self.is_html, command=self._toggle_html).pack(side=tk.LEFT, padx=5)
+        
+        self.h3 = tk.Entry(header, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10)); self.h3.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5); self.h3.bind("<KeyRelease>", lambda e: oc())
+        ttk.Button(header, text="刪除", command=lambda: [self.f.destroy(), od(self)]).pack(side=tk.RIGHT)
+        
         ttk.Label(self.f, text="內容:", font=("Arial", 9)).pack(anchor=tk.W, padx=5)
-        self.ct = tk.Text(self.f, height=4, wrap=tk.WORD, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 9)); self.ct.pack(fill=tk.BOTH, expand=True, padx=5, pady=(0,3)); self.ct.bind("<KeyRelease>", lambda e: oc())
-        ttk.Button(self.f, text="刪除H3", command=lambda: [self.f.destroy(), od(self)]).pack(anchor=tk.E, padx=5, pady=3)
+        self.ct = tk.Text(self.f, height=4, wrap=tk.WORD, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 9)); self.ct.pack(fill=tk.BOTH, expand=True, padx=5, pady=(0,3)); self.ct.bind("<KeyRelease>", lambda e: [self._highlight_if_html(), oc()])
+        self._init_highlight(self.ct)
+
+    def _toggle_html(self):
+        if self.is_html.get():
+            self._highlight_if_html()
+        else:
+            try:
+                self.ct.tag_remove("html-tag", "1.0", tk.END)
+                self.ct.tag_remove("html-attr", "1.0", tk.END)
+                self.ct.tag_remove("html-string", "1.0", tk.END)
+            except: pass
+        self.oc()
+    
+    def _init_highlight(self, tw: tk.Text):
+        try:
+            tw.tag_config("html-tag", foreground="#0066cc")
+            tw.tag_config("html-attr", foreground="#995500")
+            tw.tag_config("html-string", foreground="#2a7b2e")
+        except: pass
+
+    def _highlight_if_html(self):
+        if not self.is_html.get(): return
+        tw = self.ct
+        try:
+            content = tw.get("1.0", tk.END)
+            tw.tag_remove("html-tag", "1.0", tk.END)
+            tw.tag_remove("html-attr", "1.0", tk.END)
+            tw.tag_remove("html-string", "1.0", tk.END)
+            for m in TAG_PATTERN.finditer(content):
+                s = _index_from_offset(content, m.start())
+                e = _index_from_offset(content, m.end())
+                tw.tag_add("html-tag", s, e)
+                inner = content[m.start():m.end()]
+                inner_base = m.start()
+                for sm in ATTR_PATTERN.finditer(inner):
+                    ss = _index_from_offset(content, inner_base + sm.start(1))
+                    se = _index_from_offset(content, inner_base + sm.end(1))
+                    tw.tag_add("html-attr", ss, se)
+                for q in STRING_PATTERN.finditer(inner):
+                    qs = _index_from_offset(content, inner_base + q.start())
+                    qe = _index_from_offset(content, inner_base + q.end())
+                    tw.tag_add("html-string", qs, qe)
+        except: pass
+
     def get_h3(self): return self.h3.get().strip()
     def get_ct(self): return self.ct.get("1.0", tk.END).strip()
+    def get_is_html(self): return self.is_html.get()
     def set_h3(self, t): self.h3.delete(0, tk.END); self.h3.insert(0, t)
     def set_ct(self, t): self.ct.delete("1.0", tk.END); self.ct.insert("1.0", t)
-    def to_dict(self): return {"h3": self.get_h3(), "content": self.get_ct()}
+    def set_is_html(self, v): self.is_html.set(v); self._toggle_html()
+    def to_dict(self): return {"h3": self.get_h3(), "content": self.get_ct(), "is_html": self.get_is_html()}
 
 class SecBlock:
     def __init__(self, p, oc, od):
         self.oc = oc
         self.h3s = []
-        self.is_html = True  # 段落內容預設為 HTML 模式
+        self.is_html = tk.BooleanVar(value=True)  # 段落內容預設為 HTML 模式
         self.f = ttk.LabelFrame(p, text="段落", padding=10)
         self.f.pack(fill=tk.X, padx=5, pady=5)
         ttk.Label(self.f, text="H2:").pack(anchor=tk.W)
@@ -88,6 +142,8 @@ class SecBlock:
         ct_label_frame = ttk.Frame(self.f)
         ct_label_frame.pack(fill=tk.X, anchor=tk.W)
         ttk.Label(ct_label_frame, text="內容:").pack(side=tk.LEFT)
+        ttk.Checkbutton(ct_label_frame, text="HTML 模式", variable=self.is_html, command=lambda: [self._highlight_if_html(), oc()]).pack(side=tk.LEFT, padx=5)
+        
         # 簡易語法提示（HTML 模式時高亮可能常用標籤）
         tip = (
             "可用標籤: <p> <br> <table> <thead> <tbody> <tr> <th> <td> <ul> <li> <strong> <em>"
@@ -118,9 +174,11 @@ class SecBlock:
     
     def get_h2(self): return self.h2.get().strip()
     def get_ct(self): return self.ct.get("1.0", tk.END).strip()
+    def get_is_html(self): return self.is_html.get()
     def set_h2(self, t): self.h2.delete(0, tk.END); self.h2.insert(0, t)
     def set_ct(self, t): self.ct.delete("1.0", tk.END); self.ct.insert("1.0", t)
-    def to_dict(self): return {"h2": self.get_h2(), "content": self.get_ct(), "h3s": [h.to_dict() for h in self.h3s]}
+    def set_is_html(self, v): self.is_html.set(v); self._highlight_if_html()
+    def to_dict(self): return {"h2": self.get_h2(), "content": self.get_ct(), "h3s": [h.to_dict() for h in self.h3s], "is_html": self.get_is_html()}
     # --- 簡易 HTML 高亮 ---
     def _init_highlight(self, tw: tk.Text):
         try:
@@ -130,7 +188,12 @@ class SecBlock:
         except Exception:
             pass
     def _highlight_if_html(self):
-        if not self.is_html:
+        if not self.is_html.get():
+            try:
+                self.ct.tag_remove("html-tag", "1.0", tk.END)
+                self.ct.tag_remove("html-attr", "1.0", tk.END)
+                self.ct.tag_remove("html-string", "1.0", tk.END)
+            except: pass
             return
         tw = self.ct
         try:
@@ -412,7 +475,15 @@ class Editor:
         # 右側按鈕區域
         right_frame = ttk.Frame(tb)
         right_frame.pack(side=tk.RIGHT, padx=2)
-        ttk.Button(right_frame, text="載入網站設定值", command=self.load_site_settings).pack(side=tk.RIGHT, padx=2)
+        
+        # 網站設定檔案選擇
+        self.site_settings_entry = tk.Entry(right_frame, width=25, bg="#f8f9f9", fg="gray")
+        self.site_settings_entry.pack(side=tk.LEFT, padx=2)
+        # 嘗試載入上次紀錄
+        self._load_local_settings_to_entry()
+        
+        ttk.Button(right_frame, text="選擇檔案", command=self._browse_site_settings).pack(side=tk.LEFT, padx=2)
+        ttk.Button(right_frame, text="載入設定", command=self.load_site_settings).pack(side=tk.LEFT, padx=2)
 
         # 檔案路徑顯示
         self.file_path_label = ttk.Label(tb, text="未開啟檔案", font=("Arial", 8), foreground="gray")
@@ -765,6 +836,13 @@ class Editor:
                 faq.a.config(bg="#f8f9f9", fg="black", insertbackground="black")
             except:
                 pass
+        
+        # 更新網站設定輸入框
+        try:
+            # 只有當內容不是 placeholder 時才設為黑色，否則維持灰色（如果需要的話，但這裡統一設黑比較簡單）
+             self.site_settings_entry.config(bg="#f8f9f9", fg="black", insertbackground="black")
+        except:
+             pass
     
     def _is_html_content(self, text):
         """檢測文字是否包含 HTML 標籤"""
@@ -1114,7 +1192,7 @@ class Editor:
                 if h2: p.append(f"  <h2>{self._esc(h2)}</h2>")
                 if ct:
                     # 段落內容支援 HTML (不轉義)
-                    if s.is_html:
+                    if s.get_is_html():
                         # HTML 模式: 直接插入,按行處理
                         for line in ct.split("\n"):
                             if line.strip(): p.append(f"  {line.strip()}")
@@ -1130,8 +1208,12 @@ class Editor:
                         p.append("  <section>")
                         if h3t: p.append(f"    <h3>{self._esc(h3t)}</h3>")
                         if h3c:
-                            for pa in h3c.split("\n\n"):
-                                if pa.strip(): p.append(f"      <p>{self._esc(pa.strip())}</p>")
+                            if h3.get_is_html():
+                                for line in h3c.split("\n"):
+                                    if line.strip(): p.append(f"      {line.strip()}")
+                            else:
+                                for pa in h3c.split("\n\n"):
+                                    if pa.strip(): p.append(f"      <p>{self._esc(pa.strip())}</p>")
                         p.append("  </section>")
                 
                 p.append("</section>")
@@ -1163,25 +1245,72 @@ class Editor:
     
     def _esc(self, t): return t.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
     
+    
+    def _browse_site_settings(self):
+        fp = filedialog.askopenfilename(
+            title="選擇網站設定檔案",
+            filetypes=[("文字檔", "*.txt"), ("所有檔案", "*.*")],
+            initialdir=BASE
+        )
+        if fp:
+            self.site_settings_entry.delete(0, tk.END)
+            self.site_settings_entry.insert(0, fp)
+            self.site_settings_entry.config(fg="black")
+            
+    def _load_local_settings_to_entry(self):
+        """讀取本地設定(記住上次的路徑)"""
+        try:
+            cfg_path = os.path.join(BASE, "config", "local_settings.json")
+            if os.path.exists(cfg_path):
+                with open(cfg_path, "r", encoding="utf-8") as f:
+                    d = json.load(f)
+                    last_path = d.get("last_site_settings_path", "")
+                    if last_path:
+                        self.site_settings_entry.delete(0, tk.END)
+                        self.site_settings_entry.insert(0, last_path)
+                        self.site_settings_entry.config(fg="black")
+                    else:
+                         self.site_settings_entry.insert(0, "選擇網站設定檔(記憶上次的值)")
+            else:
+                self.site_settings_entry.insert(0, "選擇網站設定檔(記憶上次的值)")
+        except:
+            self.site_settings_entry.insert(0, "選擇網站設定檔(記憶上次的值)")
+
+    def _save_local_settings_path(self, path):
+        """儲存路徑到本地設定"""
+        try:
+            os.makedirs(os.path.join(BASE, "config"), exist_ok=True)
+            cfg_path = os.path.join(BASE, "config", "local_settings.json")
+            data = {}
+            if os.path.exists(cfg_path):
+                try:
+                    with open(cfg_path, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                except: pass
+            data["last_site_settings_path"] = path
+            with open(cfg_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+        except: pass
+
     def load_site_settings(self):
         """載入網站設定值檔案"""
         import os
         
-        # 預設檔案路徑
-        default_file = os.path.join(BASE, "site_setup.txt")
+        # 取得 Entry 中的路徑
+        file_path = self.site_settings_entry.get().strip()
         
-        # 如果預設檔案存在，直接載入；否則讓使用者選擇
-        if os.path.exists(default_file):
-            self._parse_and_apply_site_settings(default_file)
+        if not file_path or file_path == "選擇網站設定檔(記憶上次的值)":
+             self._browse_site_settings()
+             file_path = self.site_settings_entry.get().strip()
+             
+        if not file_path or file_path == "選擇網站設定檔(記憶上次的值)":
+            return
+            
+        if os.path.exists(file_path):
+             self._save_local_settings_path(file_path)
+             self._parse_and_apply_site_settings(file_path)
         else:
-            # 讓使用者選擇檔案
-            fp = filedialog.askopenfilename(
-                title="選擇網站設定檔案",
-                filetypes=[("文字檔", "*.txt"), ("所有檔案", "*.*")],
-                initialdir=BASE
-            )
-            if fp:
-                self._parse_and_apply_site_settings(fp)
+             messagebox.showerror("錯誤", f"檔案不存在: {file_path}")
     
     def _parse_and_apply_site_settings(self, file_path):
         """解析並應用網站設定值"""
@@ -1443,10 +1572,12 @@ class Editor:
             self.add_sec()
             self.secs[-1].set_h2(sd.get("h2",""))
             self.secs[-1].set_ct(sd.get("content",""))
+            self.secs[-1].set_is_html(sd.get("is_html", True))
             for h3d in sd.get("h3s",[]):
                 self.secs[-1].add_h3()
                 self.secs[-1].h3s[-1].set_h3(h3d.get("h3",""))
                 self.secs[-1].h3s[-1].set_ct(h3d.get("content",""))
+                self.secs[-1].h3s[-1].set_is_html(h3d.get("is_html", False))
         for fd in d.get("faqs",[]): 
             self.add_faq()
             self.faqs[-1].set_q(fd.get("question",""))

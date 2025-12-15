@@ -3,14 +3,18 @@
 # 支援中文和英文設定名稱
 
 # 基本資訊設定
-作者：張三
-Author：張三
+作者：炫麗黃金白銀交易所
+Author：炫麗黃金白銀交易所
 組織名稱：炫麗黃金白銀交易所
 Organization：炫麗黃金白銀交易所
 
 # 網站相關設定
-PublisherURL：https://example.com/
-PublisherLogo：https://example.com/logo.png
+PublisherURL：https://pm.shiny.com.tw/
+PublisherLogo：https://pm.shiny.com.tw/images/logo.png
 
 # 圖片路徑設定
-圖片路徑："https://example.com/"+"xxx.jpg"
+圖片路徑："https://shiny.com.tw/tboSL/js/upload/images/"+"xxx.jpg"
+
+# 頁面網址前綴設定
+頁面網址前綴：https://pm.shiny.com.tw/news-detail.php?id=
+PageURLPrefix：https://pm.shiny.com.tw/news-detail.php?id=

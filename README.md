@@ -1,6 +1,11 @@
-# SEO Article Editor v2.5
+# SEO Article Editor v2.6
 
 專為 SEO 文章寫作設計的視覺化編輯器，支援即時預覽、Schema JSON-LD 結構化資料生成、自訂 CSS 樣式以及 HTML 匯出功能。
+
+## v2.6 更新重點
+- **內容區塊升級**: 完整支援 H2/H3 區塊的 HTML 模式切換與語法高亮
+- **設定檔記憶**: 自動記錄上次使用的網站設定檔路徑，一鍵快速載入
+- **UI 優化**: 改良工具列配置，整合設定檔選擇器
 
 ## v2.5 更新重點
 - **圖片功能增強**: 新增圖片 alt 欄位，支援完整的圖片 SEO 設定
@@ -419,5 +424,5 @@ SEO_article_editor/
 
 ---
 
-**© 2025 SEO Article Editor v2.5**  
+**© 2025 SEO Article Editor v2.6**  
 Produced by Colinjen (colinjen88@gmail.com)
