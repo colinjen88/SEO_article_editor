@@ -594,7 +594,7 @@ class Editor:
         self.image_filename.insert(0, "")
         self.image_filename.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
-        ttk.Label(row8, text="圖片描述:", width=10).pack(side=tk.LEFT)
+        ttk.Label(row8, text="替代文字(Alt):", width=14).pack(side=tk.LEFT)
         self.image_alt = tk.Entry(row8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.image_alt.insert(0, "")
         self.image_alt.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
@@ -608,6 +608,19 @@ class Editor:
         self.image_height = tk.Entry(row8, width=10, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.image_height.insert(0, "auto")
         self.image_height.pack(side=tk.LEFT, padx=5)
+
+        # 第九行：圖片標題、圖片敘述
+        row9 = ttk.Frame(seo_frame)
+        row9.pack(fill=tk.X, pady=2)
+        ttk.Label(row9, text="圖片標題(Title):", width=14).pack(side=tk.LEFT)
+        self.image_title = tk.Entry(row9, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.image_title.insert(0, "")
+        self.image_title.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+
+        ttk.Label(row9, text="圖片敘述(Caption):", width=16).pack(side=tk.LEFT, padx=(10,0))
+        self.image_caption = tk.Entry(row9, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.image_caption.insert(0, "")
+        self.image_caption.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
         # 分頁介面
         notebook = ttk.Notebook(self.root)
@@ -805,6 +818,7 @@ class Editor:
                       self.headline, self.description, self.publisher_logo_url, self.publisher_url,
                       self.publisher_logo_width, self.publisher_logo_height, self.publisher_sameas,
                       self.image_url_prefix, self.image_filename, self.image_alt, self.image_width, self.image_height,
+                      self.image_title, self.image_caption,
                       self.h1, self.intro_h2]:
             try:
                 widget.config(bg="#f8f9f9", fg="black", insertbackground="black")
@@ -1150,15 +1164,22 @@ class Editor:
         p = []
         p.append("<article class=\"seo-article-content\">")
         
-        # 在 h1 之前添加圖片
+        # 在 h1 之前添加圖片（使用 figure 結構）
         image_url_prefix = self.image_url_prefix.get().strip() if hasattr(self, 'image_url_prefix') else "https://example.com/"
         image_filename = self.image_filename.get().strip() if hasattr(self, 'image_filename') else ""
         image_alt = self.image_alt.get().strip() if hasattr(self, 'image_alt') else ""
+        image_title = self.image_title.get().strip() if hasattr(self, 'image_title') else ""
+        image_caption = self.image_caption.get().strip() if hasattr(self, 'image_caption') else ""
         
         if image_filename:
             full_image_url = image_url_prefix + image_filename
-            alt_text = self._esc(image_alt) if image_alt else ""
-            p.append(f'  <div class="img"><img alt="{alt_text}" src="{full_image_url}" /></div>')
+            alt_attr = f' alt="{self._esc(image_alt)}"' if image_alt else ' alt=""'
+            title_attr = f' title="{self._esc(image_title)}"' if image_title else ''
+            p.append("  <figure>")
+            p.append(f'    <img src="{full_image_url}"{alt_attr}{title_attr}>')
+            if image_caption:
+                p.append(f"    <figcaption>{self._esc(image_caption)}</figcaption>")
+            p.append("  </figure>")
             p.append("")
         
         h1 = self.h1.get().strip()
@@ -1440,6 +1461,10 @@ class Editor:
             self.image_filename.delete(0, tk.END); self.image_filename.insert(0, "")
         if hasattr(self, 'image_alt'):
             self.image_alt.delete(0, tk.END); self.image_alt.insert(0, "")
+        if hasattr(self, 'image_title'):
+            self.image_title.delete(0, tk.END); self.image_title.insert(0, "")
+        if hasattr(self, 'image_caption'):
+            self.image_caption.delete(0, tk.END); self.image_caption.insert(0, "")
         if hasattr(self, 'image_width'):
             self.image_width.delete(0, tk.END); self.image_width.insert(0, "100%")
         if hasattr(self, 'image_height'):
@@ -1504,6 +1529,8 @@ class Editor:
                     "image_url_prefix": (self.image_url_prefix.get().strip() if hasattr(self, 'image_url_prefix') else "https://example.com/"),
                     "image_filename": (self.image_filename.get().strip() if hasattr(self, 'image_filename') else ""),
                     "image_alt": (self.image_alt.get().strip() if hasattr(self, 'image_alt') else ""),
+                    "image_title": (self.image_title.get().strip() if hasattr(self, 'image_title') else ""),
+                    "image_caption": (self.image_caption.get().strip() if hasattr(self, 'image_caption') else ""),
                     "image_width": (self.image_width.get().strip() if hasattr(self, 'image_width') else "100%"),
                     "image_height": (self.image_height.get().strip() if hasattr(self, 'image_height') else "auto")
                 },
@@ -1554,6 +1581,10 @@ class Editor:
             self.image_filename.delete(0, tk.END); self.image_filename.insert(0, seo.get("image_filename", ""))
         if hasattr(self, 'image_alt'):
             self.image_alt.delete(0, tk.END); self.image_alt.insert(0, seo.get("image_alt", ""))
+        if hasattr(self, 'image_title'):
+            self.image_title.delete(0, tk.END); self.image_title.insert(0, seo.get("image_title", ""))
+        if hasattr(self, 'image_caption'):
+            self.image_caption.delete(0, tk.END); self.image_caption.insert(0, seo.get("image_caption", ""))
         if hasattr(self, 'image_width'):
             self.image_width.delete(0, tk.END); self.image_width.insert(0, seo.get("image_width", "100%"))
         if hasattr(self, 'image_height'):

@@ -7,6 +7,29 @@
 
 ---
 
+## [2.7] - 2025-12-15
+
+### 新增 (Added)
+
+- 🖼️ **圖片 SEO 欄位增強**
+  - 新增「圖片標題(Title)」欄位，對應 HTML `<img>` 的 `title` 屬性
+  - 新增「圖片敘述(Caption)」欄位，對應 HTML `<figcaption>` 標籤
+  - 「圖片描述」欄位重新命名為「替代文字(Alt)」更清楚表達用途
+
+### 變更 (Changed)
+
+- 🔄 **圖片 HTML 結構優化**
+  - 圖片輸出從 `<div class="img">` 改為語意化 `<figure>` 結構
+  - 輸出格式：`<figure><img src="..." alt="..." title="..."><figcaption>...</figcaption></figure>`
+  - 符合 HTML5 語意化標準與 SEO 最佳實踐
+
+### 改進 (Improved)
+
+- 📝 **資料持久化**：新欄位自動儲存至 JSON 並可正確還原
+- 🎨 **UI 佈局**：新增第九行欄位區塊，整合圖片相關設定
+
+---
+
 ## [2.6] - 2025-12-15
 
 ### 新增 (Added)
