@@ -541,16 +541,12 @@ class Editor:
         self.row3a = ttk.Frame(seo_frame)
         self.row3a.pack(fill=tk.X, pady=2)
         ttk.Label(self.row3a, text="作者職稱:", width=10).pack(side=tk.LEFT)
-        self.author_job_title = tk.Entry(self.row3a, width=15, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.author_job_title = tk.Entry(self.row3a, width=20, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.author_job_title.pack(side=tk.LEFT, padx=5)
 
         ttk.Label(self.row3a, text="作者描述:", width=10).pack(side=tk.LEFT, padx=(10,0))
         self.author_description = tk.Entry(self.row3a, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.author_description.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
-
-        ttk.Label(self.row3a, text="作者網址:", width=10).pack(side=tk.LEFT, padx=(10,0))
-        self.author_url = tk.Entry(self.row3a, width=35, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.author_url.pack(side=tk.LEFT, padx=5)
         
         # 預設隱藏（Organization 模式）
         self.row3a.pack_forget()
@@ -837,7 +833,7 @@ class Editor:
                       self.publisher_logo_width, self.publisher_logo_height, self.publisher_sameas,
                       self.image_url_prefix, self.image_filename, self.image_alt, self.image_width, self.image_height,
                       self.image_title, self.image_caption,
-                      self.author_job_title, self.author_description, self.author_url,
+                      self.author_job_title, self.author_description,
                       self.h1, self.intro_h2]:
             try:
                 widget.config(bg="#f8f9f9", fg="black", insertbackground="black")
@@ -1138,13 +1134,10 @@ class Editor:
         if author_type == "Person":
             author_job_title = self.author_job_title.get().strip() if hasattr(self, 'author_job_title') else ""
             author_description = self.author_description.get().strip() if hasattr(self, 'author_description') else ""
-            author_url = self.author_url.get().strip() if hasattr(self, 'author_url') else ""
             if author_job_title:
                 author_obj["jobTitle"] = author_job_title
             if author_description:
                 author_obj["description"] = author_description
-            if author_url:
-                author_obj["url"] = author_url
         data_article = {
             "@context": "https://schema.org",
             "@type": "Article",
@@ -1497,8 +1490,6 @@ class Editor:
             self.author_job_title.delete(0, tk.END); self.author_job_title.insert(0, "")
         if hasattr(self, 'author_description'):
             self.author_description.delete(0, tk.END); self.author_description.insert(0, "")
-        if hasattr(self, 'author_url'):
-            self.author_url.delete(0, tk.END); self.author_url.insert(0, "")
         # 隱藏作者擴充欄位（Organization 模式）
         self._toggle_author_fields()
         if hasattr(self, 'publisher_logo_url'):
@@ -1579,7 +1570,6 @@ class Editor:
                     "author_type": (self.author_type.get() if hasattr(self, 'author_type') else 'Organization'),
                     "author_job_title": (self.author_job_title.get().strip() if hasattr(self, 'author_job_title') else ""),
                     "author_description": (self.author_description.get().strip() if hasattr(self, 'author_description') else ""),
-                    "author_url": (self.author_url.get().strip() if hasattr(self, 'author_url') else ""),
                     "publisher_logo_url": (self.publisher_logo_url.get().strip() if hasattr(self, 'publisher_logo_url') else "https://example.com/logo.png"),
                     "publisher_url": (self.publisher_url.get().strip() if hasattr(self, 'publisher_url') else "https://example.com/"),
                     "publisher_logo_width": (self.publisher_logo_width.get().strip() if hasattr(self, 'publisher_logo_width') else ""),
@@ -1623,8 +1613,6 @@ class Editor:
             self.author_job_title.delete(0, tk.END); self.author_job_title.insert(0, seo.get("author_job_title", ""))
         if hasattr(self, 'author_description'):
             self.author_description.delete(0, tk.END); self.author_description.insert(0, seo.get("author_description", ""))
-        if hasattr(self, 'author_url'):
-            self.author_url.delete(0, tk.END); self.author_url.insert(0, seo.get("author_url", ""))
         # 根據作者型別顯示/隱藏擴充欄位
         self._toggle_author_fields()
         if hasattr(self, 'publisher_logo_url'):

@@ -14,7 +14,6 @@
 - 👤 **作者 Schema 擴充 (E-E-A-T 強化)**
   - 新增「作者職稱 (jobTitle)」欄位
   - 新增「作者描述 (description)」欄位
-  - 新增「作者網址 (url)」欄位
   - 僅在作者型別為 **Person** 時顯示擴充欄位
   - 符合 Schema.org Person 規範，增強搜尋引擎 E-E-A-T 信號
 
