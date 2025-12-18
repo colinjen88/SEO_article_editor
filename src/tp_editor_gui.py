@@ -484,6 +484,7 @@ class Editor:
         
         ttk.Button(right_frame, text="選擇檔案", command=self._browse_site_settings).pack(side=tk.LEFT, padx=2)
         ttk.Button(right_frame, text="載入設定", command=self.load_site_settings).pack(side=tk.LEFT, padx=2)
+        ttk.Button(right_frame, text="儲存設定", command=self._save_site_settings).pack(side=tk.LEFT, padx=2)
 
         # 檔案路徑顯示
         self.file_path_label = ttk.Label(tb, text="未開啟檔案", font=("Arial", 8), foreground="gray")
@@ -1372,6 +1373,59 @@ class Editor:
              self._parse_and_apply_site_settings(file_path)
         else:
              messagebox.showerror("錯誤", f"檔案不存在: {file_path}")
+
+    def _save_site_settings(self):
+        """將目前 SEO 資訊區塊 (日期除外) 儲存為設定檔"""
+        fp = filedialog.asksaveasfilename(
+            title="儲存網站設定檔案",
+            defaultextension=".txt",
+            filetypes=[("文字檔", "*.txt"), ("所有檔案", "*.*")],
+            initialdir=BASE
+        )
+        if not fp: return
+        
+        try:
+            lines = []
+            # SEO 資訊區塊 (Excluded: pub_date, mod_date)
+            if hasattr(self, 'author'): lines.append(f"Author: {self.author.get().strip()}")
+            if hasattr(self, 'org_name'): lines.append(f"Organization: {self.org_name.get().strip()}")
+            if hasattr(self, 'article_num'): lines.append(f"ArticleNum: {self.article_num.get().strip()}")
+            if hasattr(self, 'page_url_prefix'): lines.append(f"PageURLPrefix: {self.page_url_prefix.get().strip()}")
+            
+            if hasattr(self, 'author_type'): lines.append(f"AuthorType: {self.author_type.get()}")
+            if hasattr(self, 'author_job_title'): lines.append(f"AuthorJobTitle: {self.author_job_title.get().strip()}")
+            if hasattr(self, 'author_description'): lines.append(f"AuthorDescription: {self.author_description.get().strip()}")
+            
+            if hasattr(self, 'headline'): lines.append(f"Headline: {self.headline.get().strip()}")
+            if hasattr(self, 'description'): lines.append(f"Description: {self.description.get().strip()}")
+            
+            if hasattr(self, 'publisher_logo_url'): lines.append(f"PublisherLogo: {self.publisher_logo_url.get().strip()}")
+            if hasattr(self, 'publisher_url'): lines.append(f"PublisherURL: {self.publisher_url.get().strip()}")
+            if hasattr(self, 'publisher_logo_width'): lines.append(f"PublisherLogoWidth: {self.publisher_logo_width.get().strip()}")
+            if hasattr(self, 'publisher_logo_height'): lines.append(f"PublisherLogoHeight: {self.publisher_logo_height.get().strip()}")
+            if hasattr(self, 'publisher_sameas'): lines.append(f"PublisherSameAs: {self.publisher_sameas.get().strip()}")
+            
+            if hasattr(self, 'image_url_prefix'): lines.append(f"ImageURLPrefix: {self.image_url_prefix.get().strip()}")
+            if hasattr(self, 'image_filename'): lines.append(f"ImageFilename: {self.image_filename.get().strip()}")
+            if hasattr(self, 'image_alt'): lines.append(f"ImageAlt: {self.image_alt.get().strip()}")
+            if hasattr(self, 'image_title'): lines.append(f"ImageTitle: {self.image_title.get().strip()}")
+            if hasattr(self, 'image_caption'): lines.append(f"ImageCaption: {self.image_caption.get().strip()}")
+            if hasattr(self, 'image_width'): lines.append(f"ImageWidth: {self.image_width.get().strip()}")
+            if hasattr(self, 'image_height'): lines.append(f"ImageHeight: {self.image_height.get().strip()}")
+
+            with open(fp, "w", encoding="utf-8") as f:
+                f.write("\n".join(lines))
+            
+            messagebox.showinfo("成功", f"設定已儲存至: {fp}")
+            
+            # 更新顯示並記錄路徑
+            self.site_settings_entry.delete(0, tk.END)
+            self.site_settings_entry.insert(0, fp)
+            self.site_settings_entry.config(fg="black")
+            self._save_local_settings_path(fp)
+            
+        except Exception as e:
+            messagebox.showerror("錯誤", f"儲存失敗: {e}")
     
     def _parse_and_apply_site_settings(self, file_path):
         """解析並應用網站設定值"""
@@ -1446,7 +1500,57 @@ class Editor:
                     if hasattr(self, 'image_url_prefix'):
                         self.image_url_prefix.delete(0, tk.END)
                         self.image_url_prefix.insert(0, image_path)
-            
+
+            # 新增解析邏輯 (SEO 資訊區塊全)
+            if 'ArticleNum' in settings and hasattr(self, 'article_num'):
+                self.article_num.delete(0, tk.END); self.article_num.insert(0, settings['ArticleNum'])
+
+            if 'AuthorType' in settings and hasattr(self, 'author_type'):
+                self.author_type.set(settings['AuthorType'])
+                self._toggle_author_fields() # 確保觸發顯示切換
+
+            if 'AuthorJobTitle' in settings and hasattr(self, 'author_job_title'):
+                self.author_job_title.delete(0, tk.END); self.author_job_title.insert(0, settings['AuthorJobTitle'])
+
+            if 'AuthorDescription' in settings and hasattr(self, 'author_description'):
+                self.author_description.delete(0, tk.END); self.author_description.insert(0, settings['AuthorDescription'])
+
+            if 'Headline' in settings and hasattr(self, 'headline'):
+                self.headline.delete(0, tk.END); self.headline.insert(0, settings['Headline'])
+
+            if 'Description' in settings and hasattr(self, 'description'):
+                self.description.delete(0, tk.END); self.description.insert(0, settings['Description'])
+
+            if 'PublisherLogoWidth' in settings and hasattr(self, 'publisher_logo_width'):
+                self.publisher_logo_width.delete(0, tk.END); self.publisher_logo_width.insert(0, settings['PublisherLogoWidth'])
+
+            if 'PublisherLogoHeight' in settings and hasattr(self, 'publisher_logo_height'):
+                self.publisher_logo_height.delete(0, tk.END); self.publisher_logo_height.insert(0, settings['PublisherLogoHeight'])
+
+            if 'PublisherSameAs' in settings and hasattr(self, 'publisher_sameas'):
+                self.publisher_sameas.delete(0, tk.END); self.publisher_sameas.insert(0, settings['PublisherSameAs'])
+
+            if 'ImageURLPrefix' in settings and hasattr(self, 'image_url_prefix'):
+                self.image_url_prefix.delete(0, tk.END); self.image_url_prefix.insert(0, settings['ImageURLPrefix'])
+
+            if 'ImageFilename' in settings and hasattr(self, 'image_filename'):
+                self.image_filename.delete(0, tk.END); self.image_filename.insert(0, settings['ImageFilename'])
+
+            if 'ImageAlt' in settings and hasattr(self, 'image_alt'):
+                self.image_alt.delete(0, tk.END); self.image_alt.insert(0, settings['ImageAlt'])
+
+            if 'ImageTitle' in settings and hasattr(self, 'image_title'):
+                self.image_title.delete(0, tk.END); self.image_title.insert(0, settings['ImageTitle'])
+
+            if 'ImageCaption' in settings and hasattr(self, 'image_caption'):
+                self.image_caption.delete(0, tk.END); self.image_caption.insert(0, settings['ImageCaption'])
+
+            if 'ImageWidth' in settings and hasattr(self, 'image_width'):
+                self.image_width.delete(0, tk.END); self.image_width.insert(0, settings['ImageWidth'])
+
+            if 'ImageHeight' in settings and hasattr(self, 'image_height'):
+                self.image_height.delete(0, tk.END); self.image_height.insert(0, settings['ImageHeight'])
+
             # 顯示成功訊息
             messagebox.showinfo("載入成功", f"已成功載入網站設定值：{file_path}")
             
