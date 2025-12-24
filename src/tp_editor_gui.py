@@ -425,46 +425,66 @@ class Editor:
             messagebox.showerror("格式化失敗", str(e))
     
     def _ui(self):
-        # 全域樣式：確保 ttk.Entry 也採用白底黑字，即使主題（如 ttkbootstrap darkly）會覆蓋
-        self.root.option_add("*Entry.background", "#ffffff")
+        # ===== Modern Glass Design System =====
+        # 現代玻璃風格配色（高對比版本）
+        self.glass_colors = {
+            "bg_dark": "#1a2e2e",         # 深翡翠背景
+            "bg_glass": "#243d3d",        # 玻璃底色（較亮）
+            "glass_border": "#50807a",    # 玻璃邊框（更亮）
+            "glass_highlight": "#6bc9a8", # 霓虹高亮（亮綠）
+            "text_primary": "#ffffff",    # 主文字（純白）
+            "text_secondary": "#b8d4d0",  # 次文字（淺青）
+            "accent": "#4dd4ac",          # 強調色（亮翡翠霓虹）
+            "accent_hover": "#3bb896",    # 強調色 hover
+            "input_bg": "#f5f9f8",        # 輸入框背景
+            "input_focus": "#ffffff",     # 輸入框聚焦
+        }
+        
+        # 設定根視窗背景
+        self.root.configure(bg=self.glass_colors["bg_dark"])
+        
+        # 建立流體背景層
+        self._setup_liquid_glass_bg()
+        
+        # 全域樣式設定
+        self.root.option_add("*Entry.background", self.glass_colors["input_bg"])
         self.root.option_add("*Entry.foreground", "black")
         self.root.option_add("*Entry.insertBackground", "black")
-        self.root.option_add("*Text.background", "#ffffff")
+        self.root.option_add("*Text.background", self.glass_colors["input_bg"])
         self.root.option_add("*Text.foreground", "black")
         self.root.option_add("*Text.insertBackground", "black")
-        self.root.option_add("*TEntry*FieldBackground", "#ffffff")
+        self.root.option_add("*TEntry*FieldBackground", self.glass_colors["input_bg"])
         self.root.option_add("*TEntry*foreground", "black")
+        
         try:
             st = ttk.Style()
-            # 自訂背景色 #2c4c52
-            bg_color = "#2c4c52"
-            self.root.configure(bg=bg_color)
+            bg_color = self.glass_colors["bg_glass"]
             
-            # 設定所有主要元件的背景色
-            st.configure(".", background=bg_color)
+            # 玻璃風格配置
+            st.configure(".", background=bg_color, foreground=self.glass_colors["text_primary"])
             st.configure("TFrame", background=bg_color)
-            st.configure("TLabelframe", background=bg_color, bordercolor=bg_color)
-            st.configure("TLabelframe.Label", background=bg_color)
-            st.configure("TLabel", background=bg_color)
-            st.configure("TButton", background=bg_color)
-            st.configure("TRadiobutton", background=bg_color)
-            st.configure("TCheckbutton", background=bg_color)
-            st.configure("TNotebook", background=bg_color, bordercolor=bg_color)
-            st.configure("TNotebook.Tab", background=bg_color)
+            st.configure("TLabelframe", background=bg_color, bordercolor=self.glass_colors["glass_border"])
+            st.configure("TLabelframe.Label", background=bg_color, foreground=self.glass_colors["text_primary"])
+            st.configure("TLabel", background=bg_color, foreground=self.glass_colors["text_primary"])
+            st.configure("TButton", background=self.glass_colors["accent"], foreground=self.glass_colors["text_primary"])
+            st.configure("TRadiobutton", background=bg_color, foreground=self.glass_colors["text_primary"])
+            st.configure("TCheckbutton", background=bg_color, foreground=self.glass_colors["text_primary"])
+            st.configure("TNotebook", background=bg_color, bordercolor=self.glass_colors["glass_border"])
+            st.configure("TNotebook.Tab", background=bg_color, foreground=self.glass_colors["text_primary"])
             st.configure("TPanedwindow", background=bg_color)
-            st.configure("Vertical.TScrollbar", background=bg_color, troughcolor=bg_color)
-            st.configure("Horizontal.TScrollbar", background=bg_color, troughcolor=bg_color)
+            st.configure("Vertical.TScrollbar", background=bg_color, troughcolor=self.glass_colors["bg_dark"])
+            st.configure("Horizontal.TScrollbar", background=bg_color, troughcolor=self.glass_colors["bg_dark"])
             
-            st.configure("TEntry", fieldbackground="#ffffff", foreground="black")
+            st.configure("TEntry", fieldbackground=self.glass_colors["input_bg"], foreground="black")
             st.map(
                 "TEntry",
-                fieldbackground=[('disabled', '#eeeeee'), ('focus', '#ffffff'), ('!disabled', '#ffffff')],
+                fieldbackground=[('disabled', '#eeeeee'), ('focus', self.glass_colors["input_focus"]), ('!disabled', self.glass_colors["input_bg"])],
                 foreground=[('disabled', '#666666'), ('!disabled', 'black')]
             )
         except Exception:
             pass
 
-        # 工具列
+        # 工具列（帶玻璃邊框）
         tb = ttk.Frame(self.root)
         tb.pack(side=tk.TOP, fill=tk.X, padx=5, pady=3)
         ttk.Button(tb, text="新建檔案", command=self.new_file).pack(side=tk.LEFT, padx=2)
@@ -490,7 +510,7 @@ class Editor:
         self.file_path_label = ttk.Label(tb, text="未開啟檔案", font=("Arial", 8), foreground="gray")
         self.file_path_label.pack(side=tk.LEFT, padx=20)
 
-        # SEO 資訊區收合控制
+        # SEO 資訊區收合控制 (固定在最上方工具列下方)
         seo_toggle_frame = ttk.Frame(self.root)
         seo_toggle_frame.pack(side=tk.TOP, fill=tk.X, padx=5, pady=(3, 0))
         
@@ -499,18 +519,66 @@ class Editor:
             seo_toggle_frame, 
             text="▼ 收合 SEO 資訊", 
             command=self._toggle_seo_panel,
-            bg="#4a7c59", 
-            fg="white", 
+            bg=self.glass_colors["accent"], 
+            fg=self.glass_colors["text_primary"], 
+            activebackground=self.glass_colors["glass_highlight"],
+            activeforeground=self.glass_colors["text_primary"],
             relief=tk.FLAT, 
-            padx=10, 
-            pady=2,
-            cursor="hand2"
+            bd=0,
+            padx=12, 
+            pady=4,
+            cursor="hand2",
+            font=("Arial", 9, "bold")
         )
         self.seo_toggle_btn.pack(side=tk.LEFT)
-        ttk.Label(seo_toggle_frame, text="(點擊收合/展開 SEO 資訊區塊)", font=("Arial", 8), foreground="gray").pack(side=tk.LEFT, padx=10)
+        ttk.Label(seo_toggle_frame, text="(點擊收合/展開 SEO 資訊區塊 - 位於視窗底部)", font=("Arial", 8), foreground=self.glass_colors["text_secondary"]).pack(side=tk.LEFT, padx=10)
 
-        # SEO 資訊區
-        self.seo_frame = ttk.LabelFrame(self.root, text="SEO 資訊", padding=10)
+        # --- 分頁介面 (中間主體) ---
+        notebook = ttk.Notebook(self.root)
+        notebook.pack(fill=tk.BOTH, expand=True, padx=5, pady=3)
+
+        # 內容編輯分頁
+        edit_tab = ttk.Frame(notebook)
+        notebook.add(edit_tab, text="內容編輯")
+
+        pn = ttk.PanedWindow(edit_tab, orient=tk.HORIZONTAL)
+        pn.pack(fill=tk.BOTH, expand=True)
+
+        lf = ttk.Frame(pn)
+        pn.add(lf, weight=3)  # 內容編輯區佔 3/4
+        
+        # --- 內容滾動編輯區 ---
+        cv = tk.Canvas(lf, bg=self.glass_colors["bg_dark"], highlightthickness=0)
+        sb = ttk.Scrollbar(lf, command=cv.yview)
+        self.sf = ttk.Frame(cv)
+        self.sf.bind("<Configure>", lambda e: cv.configure(scrollregion=cv.bbox("all")))
+        cv.create_window((0, 0), window=self.sf, anchor="nw")
+        cv.configure(yscrollcommand=sb.set)
+        cv.pack(side="left", fill="both", expand=True)
+        sb.pack(side="right", fill="y")
+        cv.bind_all("<MouseWheel>", lambda e: cv.yview_scroll(int(-1 * (e.delta / 120)), "units"))
+
+        # --- [修正] 底部 SEO 資訊區 (帶滾動條) ---
+        self.seo_scroll_container = ttk.Frame(self.root)
+        self.seo_scroll_container.pack(side=tk.BOTTOM, fill=tk.X, padx=5, pady=3)
+        
+        seo_cv = tk.Canvas(self.seo_scroll_container, height=350, bg=self.glass_colors["bg_glass"], highlightthickness=0)
+        seo_sb = ttk.Scrollbar(self.seo_scroll_container, command=seo_cv.yview)
+        seo_inner = ttk.Frame(seo_cv)
+        seo_inner.bind("<Configure>", lambda e: seo_cv.configure(scrollregion=seo_cv.bbox("all")))
+        seo_cv.create_window((0, 0), window=seo_inner, anchor="nw", width=self.root.winfo_screenwidth()) # 確保全寬
+        
+        seo_cv.configure(yscrollcommand=seo_sb.set)
+        seo_cv.pack(side="left", fill="x", expand=True)
+        seo_sb.pack(side="right", fill="y")
+        
+        # 滑鼠滾動支援 (SEO 區)
+        def _on_mousewheel_seo(event):
+            seo_cv.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        seo_cv.bind("<Enter>", lambda _: seo_cv.bind_all("<MouseWheel>", _on_mousewheel_seo))
+        seo_cv.bind("<Leave>", lambda _: seo_cv.unbind_all("<MouseWheel>"))
+
+        self.seo_frame = ttk.LabelFrame(seo_inner, text="SEO 資訊", padding=10)
         self.seo_frame.pack(side=tk.TOP, fill=tk.X, padx=5, pady=3)
 
         # 第一行：作者、組織名稱、文章編號
@@ -684,32 +752,10 @@ class Editor:
         # 預設隱藏副圖區內容
         self.sub_image_content.pack_forget()
 
-        # 分頁介面
-        notebook = ttk.Notebook(self.root)
-        notebook.pack(fill=tk.BOTH, expand=True, padx=5, pady=3)
-
-        # 內容編輯分頁
-        edit_tab = ttk.Frame(notebook)
-        notebook.add(edit_tab, text="內容編輯")
-
-        pn = ttk.PanedWindow(edit_tab, orient=tk.HORIZONTAL)
-        pn.pack(fill=tk.BOTH, expand=True)
-
-        lf = ttk.Frame(pn)
-        pn.add(lf, weight=3)  # 內容編輯區佔 3/4
-        cv = tk.Canvas(lf, bg="#2c4c52", highlightthickness=0)
-        sb = ttk.Scrollbar(lf, command=cv.yview)
-        self.sf = ttk.Frame(cv)
-        self.sf.bind("<Configure>", lambda e: cv.configure(scrollregion=cv.bbox("all")))
-        cv.create_window((0, 0), window=self.sf, anchor="nw")
-        cv.configure(yscrollcommand=sb.set)
-        cv.pack(side="left", fill="both", expand=True)
-        sb.pack(side="right", fill="y")
-        cv.bind_all("<MouseWheel>", lambda e: cv.yview_scroll(int(-1 * (e.delta / 120)), "units"))
-
-        h1f = ttk.LabelFrame(self.sf, text="H1", padding=10)
-        h1f.pack(fill=tk.X, padx=5, pady=5)
-        h1_row = ttk.Frame(h1f)
+        # --- H1, 前言, 主內容 ---
+        self.h1_frame = ttk.LabelFrame(self.sf, text="H1", padding=10)
+        self.h1_frame.pack(fill=tk.X, padx=5, pady=5)
+        h1_row = ttk.Frame(self.h1_frame)
         h1_row.pack(fill=tk.X)
         self.h1 = tk.Entry(h1_row, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 11))
         self.h1.pack(side=tk.LEFT, fill=tk.X, expand=True)
@@ -866,6 +912,12 @@ class Editor:
         # 強制設定所有輸入欄位為白底黑字（在主題載入後執行）
         self.root.after(100, self._force_white_inputs)
     
+    def _setup_liquid_glass_bg(self):
+        """建立玻璃設計背景（簡化版 - 靜態漸層）"""
+        # 由於 Tkinter 不支援真正的透明度和背景模糊
+        # 我們使用漸層條紋來模擬玻璃折射效果
+        pass  # 暫時禁用動態背景，改用配色優化
+
     def add_sec(self): s = SecBlock(self.scc, self._chg, lambda x: [self.secs.remove(x), self._chg()]); self.secs.append(s); self._chg()
     def add_faq(self):
         f = FaqBlock(self.fqc, self._chg, lambda x: [self.faqs.remove(x), self._chg()])
@@ -1005,12 +1057,12 @@ class Editor:
         """收合/展開 SEO 資訊區塊"""
         if self.seo_collapsed.get():
             # 展開
-            self.seo_frame.pack(side=tk.TOP, fill=tk.X, padx=5, pady=3)
+            self.seo_scroll_container.pack(side=tk.BOTTOM, fill=tk.X, padx=5, pady=3)
             self.seo_toggle_btn.config(text="▼ 收合 SEO 資訊")
             self.seo_collapsed.set(False)
         else:
             # 收合
-            self.seo_frame.pack_forget()
+            self.seo_scroll_container.pack_forget()
             self.seo_toggle_btn.config(text="▶ 展開 SEO 資訊")
             self.seo_collapsed.set(True)
 
