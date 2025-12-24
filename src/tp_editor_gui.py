@@ -490,12 +490,31 @@ class Editor:
         self.file_path_label = ttk.Label(tb, text="未開啟檔案", font=("Arial", 8), foreground="gray")
         self.file_path_label.pack(side=tk.LEFT, padx=20)
 
+        # SEO 資訊區收合控制
+        seo_toggle_frame = ttk.Frame(self.root)
+        seo_toggle_frame.pack(side=tk.TOP, fill=tk.X, padx=5, pady=(3, 0))
+        
+        self.seo_collapsed = tk.BooleanVar(value=False)
+        self.seo_toggle_btn = tk.Button(
+            seo_toggle_frame, 
+            text="▼ 收合 SEO 資訊", 
+            command=self._toggle_seo_panel,
+            bg="#4a7c59", 
+            fg="white", 
+            relief=tk.FLAT, 
+            padx=10, 
+            pady=2,
+            cursor="hand2"
+        )
+        self.seo_toggle_btn.pack(side=tk.LEFT)
+        ttk.Label(seo_toggle_frame, text="(點擊收合/展開 SEO 資訊區塊)", font=("Arial", 8), foreground="gray").pack(side=tk.LEFT, padx=10)
+
         # SEO 資訊區
-        seo_frame = ttk.LabelFrame(self.root, text="SEO 資訊", padding=10)
-        seo_frame.pack(side=tk.TOP, fill=tk.X, padx=5, pady=3)
+        self.seo_frame = ttk.LabelFrame(self.root, text="SEO 資訊", padding=10)
+        self.seo_frame.pack(side=tk.TOP, fill=tk.X, padx=5, pady=3)
 
         # 第一行：作者、組織名稱、文章編號
-        row1 = ttk.Frame(seo_frame)
+        row1 = ttk.Frame(self.seo_frame)
         row1.pack(fill=tk.X, pady=2)
         ttk.Label(row1, text="作者:", width=10).pack(side=tk.LEFT)
         self.author = tk.Entry(row1, width=15, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
@@ -518,7 +537,7 @@ class Editor:
         self.page_url_prefix.pack(side=tk.LEFT, padx=5)
 
         # 第二行：文章日期、修改日期
-        row2 = ttk.Frame(seo_frame)
+        row2 = ttk.Frame(self.seo_frame)
         row2.pack(fill=tk.X, pady=2)
         ttk.Label(row2, text="文章日期:", width=10).pack(side=tk.LEFT)
         self.pub_date = tk.Entry(row2, width=15, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
@@ -531,7 +550,7 @@ class Editor:
         self.mod_date.pack(side=tk.LEFT, padx=5)
 
         # 第三行：作者型別（Person/Organization）
-        row3 = ttk.Frame(seo_frame)
+        row3 = ttk.Frame(self.seo_frame)
         row3.pack(fill=tk.X, pady=2)
         ttk.Label(row3, text="作者型別:", width=10).pack(side=tk.LEFT)
         self.author_type = tk.StringVar(value="Organization")
@@ -539,7 +558,7 @@ class Editor:
         ttk.Radiobutton(row3, text="Person", variable=self.author_type, value="Person", command=self._on_author_type_change).pack(side=tk.LEFT, padx=10)
 
         # 第三行擴充：作者詳細資訊（僅 Person 模式顯示）
-        self.row3a = ttk.Frame(seo_frame)
+        self.row3a = ttk.Frame(self.seo_frame)
         self.row3a.pack(fill=tk.X, pady=2)
         ttk.Label(self.row3a, text="作者職稱:", width=10).pack(side=tk.LEFT)
         self.author_job_title = tk.Entry(self.row3a, width=20, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
@@ -553,21 +572,21 @@ class Editor:
         self.row3a.pack_forget()
 
         # 第四行：標題
-        row4 = ttk.Frame(seo_frame)
+        row4 = ttk.Frame(self.seo_frame)
         row4.pack(fill=tk.X, pady=2)
         ttk.Label(row4, text="標題:", width=10).pack(side=tk.LEFT)
         self.headline = tk.Entry(row4, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.headline.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
         # 第五行：描述
-        row5 = ttk.Frame(seo_frame)
+        row5 = ttk.Frame(self.seo_frame)
         row5.pack(fill=tk.X, pady=2)
         ttk.Label(row5, text="描述:", width=10).pack(side=tk.LEFT)
         self.description = tk.Entry(row5, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.description.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
         # 第六行：Publisher 設定（Logo/URL）
-        row6 = ttk.Frame(seo_frame)
+        row6 = ttk.Frame(self.seo_frame)
         row6.pack(fill=tk.X, pady=2)
         ttk.Label(row6, text="Publisher Logo:", width=14).pack(side=tk.LEFT)
         self.publisher_logo_url = tk.Entry(row6, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
@@ -579,63 +598,91 @@ class Editor:
         self.publisher_url.insert(0, "")
         self.publisher_url.pack(side=tk.LEFT)
 
-        # 第七行：Publisher Logo 寬高 + sameAs
-        row7 = ttk.Frame(seo_frame)
+        # 第七行：Logo 寬高、SameAs
+        row7 = ttk.Frame(self.seo_frame)
         row7.pack(fill=tk.X, pady=2)
-        ttk.Label(row7, text="Logo寬(px):", width=10).pack(side=tk.LEFT)
+        ttk.Label(row7, text="Logo 寬:", width=8).pack(side=tk.LEFT)
         self.publisher_logo_width = tk.Entry(row7, width=8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.publisher_logo_width.insert(0, "")
-        self.publisher_logo_width.pack(side=tk.LEFT)
-
-        ttk.Label(row7, text="Logo高(px):", width=10).pack(side=tk.LEFT, padx=(10,0))
+        self.publisher_logo_width.pack(side=tk.LEFT, padx=5)
+        ttk.Label(row7, text="Logo 高:", width=8).pack(side=tk.LEFT, padx=(5,0))
         self.publisher_logo_height = tk.Entry(row7, width=8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.publisher_logo_height.insert(0, "")
-        self.publisher_logo_height.pack(side=tk.LEFT)
+        self.publisher_logo_height.pack(side=tk.LEFT, padx=5)
 
-        ttk.Label(row7, text="Publisher sameAs:", width=16).pack(side=tk.LEFT, padx=(10,0))
+        ttk.Label(row7, text="SameAs (逗號分隔):", width=18).pack(side=tk.LEFT, padx=(10,0))
         self.publisher_sameas = tk.Entry(row7, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.publisher_sameas.insert(0, "")
         self.publisher_sameas.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
-        # 第八行：圖片路徑拆分、寬、高
-        row8 = ttk.Frame(seo_frame)
-        row8.pack(fill=tk.X, pady=2)
-        ttk.Label(row8, text="圖片路徑:", width=10).pack(side=tk.LEFT)
-        self.image_url_prefix = tk.Entry(row8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        # ===== 主圖區 =====
+        main_image_frame = ttk.LabelFrame(self.seo_frame, text="主圖區", padding=5)
+        main_image_frame.pack(fill=tk.X, pady=2)
+        
+        main_img_row1 = ttk.Frame(main_image_frame)
+        main_img_row1.pack(fill=tk.X, pady=2)
+        ttk.Label(main_img_row1, text="圖片路徑:", width=10).pack(side=tk.LEFT)
+        self.image_url_prefix = tk.Entry(main_img_row1, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.image_url_prefix.insert(0, "https://example.com/")
         self.image_url_prefix.pack(side=tk.LEFT, padx=5)
         
-        self.image_filename = tk.Entry(row8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.image_filename = tk.Entry(main_img_row1, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.image_filename.insert(0, "")
         self.image_filename.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
-        ttk.Label(row8, text="替代文字(Alt):", width=14).pack(side=tk.LEFT)
-        self.image_alt = tk.Entry(row8, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        ttk.Label(main_img_row1, text="替代文字(Alt):", width=14).pack(side=tk.LEFT)
+        self.image_alt = tk.Entry(main_img_row1, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.image_alt.insert(0, "")
         self.image_alt.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
-        ttk.Label(row8, text="寬度:", width=6).pack(side=tk.LEFT, padx=(10,0))
-        self.image_width = tk.Entry(row8, width=10, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.image_width.insert(0, "100%")
-        self.image_width.pack(side=tk.LEFT, padx=5)
-
-        ttk.Label(row8, text="高度:", width=6).pack(side=tk.LEFT, padx=(10,0))
-        self.image_height = tk.Entry(row8, width=10, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.image_height.insert(0, "auto")
-        self.image_height.pack(side=tk.LEFT, padx=5)
-
-        # 第九行：圖片標題、圖片敘述
-        row9 = ttk.Frame(seo_frame)
-        row9.pack(fill=tk.X, pady=2)
-        ttk.Label(row9, text="圖片標題(Title):", width=14).pack(side=tk.LEFT)
-        self.image_title = tk.Entry(row9, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.image_title.insert(0, "")
-        self.image_title.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
-
-        ttk.Label(row9, text="圖片敘述(Caption):", width=16).pack(side=tk.LEFT, padx=(10,0))
-        self.image_caption = tk.Entry(row9, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        main_img_row2 = ttk.Frame(main_image_frame)
+        main_img_row2.pack(fill=tk.X, pady=2)
+        ttk.Label(main_img_row2, text="圖片敘述(Caption):", width=16).pack(side=tk.LEFT)
+        self.image_caption = tk.Entry(main_img_row2, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
         self.image_caption.insert(0, "")
         self.image_caption.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        self.image_caption.bind("<KeyRelease>", lambda e: self._validate_caption_length())
+        self.image_caption_label = ttk.Label(main_img_row2, text="(0/46)", width=8)
+        self.image_caption_label.pack(side=tk.LEFT, padx=5)
+
+        # ===== 副圖區 =====
+        self.sub_image_enabled = tk.BooleanVar(value=False)
+        sub_image_frame = ttk.LabelFrame(self.seo_frame, text="副圖區 (FAQ前)", padding=5)
+        sub_image_frame.pack(fill=tk.X, pady=2)
+        
+        sub_img_toggle = ttk.Frame(sub_image_frame)
+        sub_img_toggle.pack(fill=tk.X, pady=2)
+        ttk.Checkbutton(sub_img_toggle, text="啟用副圖", variable=self.sub_image_enabled, command=self._toggle_sub_image).pack(side=tk.LEFT)
+        
+        self.sub_image_content = ttk.Frame(sub_image_frame)
+        self.sub_image_content.pack(fill=tk.X, pady=2)
+        
+        sub_img_row1 = ttk.Frame(self.sub_image_content)
+        sub_img_row1.pack(fill=tk.X, pady=2)
+        ttk.Label(sub_img_row1, text="圖片路徑:", width=10).pack(side=tk.LEFT)
+        self.sub_image_url_prefix = tk.Entry(sub_img_row1, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.sub_image_url_prefix.insert(0, "https://example.com/")
+        self.sub_image_url_prefix.pack(side=tk.LEFT, padx=5)
+        
+        self.sub_image_filename = tk.Entry(sub_img_row1, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.sub_image_filename.insert(0, "")
+        self.sub_image_filename.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+
+        ttk.Label(sub_img_row1, text="替代文字(Alt):", width=14).pack(side=tk.LEFT)
+        self.sub_image_alt = tk.Entry(sub_img_row1, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.sub_image_alt.insert(0, "")
+        self.sub_image_alt.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+
+        sub_img_row2 = ttk.Frame(self.sub_image_content)
+        sub_img_row2.pack(fill=tk.X, pady=2)
+        ttk.Label(sub_img_row2, text="圖片敘述(Caption):", width=16).pack(side=tk.LEFT)
+        self.sub_image_caption = tk.Entry(sub_img_row2, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
+        self.sub_image_caption.insert(0, "")
+        self.sub_image_caption.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        self.sub_image_caption.bind("<KeyRelease>", lambda e: self._validate_sub_caption_length())
+        self.sub_image_caption_label = ttk.Label(sub_img_row2, text="(0/46)", width=8)
+        self.sub_image_caption_label.pack(side=tk.LEFT, padx=5)
+        
+        # 預設隱藏副圖區內容
+        self.sub_image_content.pack_forget()
 
         # 分頁介面
         notebook = ttk.Notebook(self.root)
@@ -649,7 +696,7 @@ class Editor:
         pn.pack(fill=tk.BOTH, expand=True)
 
         lf = ttk.Frame(pn)
-        pn.add(lf, weight=1)
+        pn.add(lf, weight=3)  # 內容編輯區佔 3/4
         cv = tk.Canvas(lf, bg="#2c4c52", highlightthickness=0)
         sb = ttk.Scrollbar(lf, command=cv.yview)
         self.sf = ttk.Frame(cv)
@@ -662,9 +709,13 @@ class Editor:
 
         h1f = ttk.LabelFrame(self.sf, text="H1", padding=10)
         h1f.pack(fill=tk.X, padx=5, pady=5)
-        self.h1 = tk.Entry(h1f, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 11))
-        self.h1.pack(fill=tk.X)
-        self.h1.bind("<KeyRelease>", lambda e: self._chg())
+        h1_row = ttk.Frame(h1f)
+        h1_row.pack(fill=tk.X)
+        self.h1 = tk.Entry(h1_row, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 11))
+        self.h1.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        self.h1_count_label = ttk.Label(h1_row, text="(0/17)", width=8)
+        self.h1_count_label.pack(side=tk.LEFT, padx=5)
+        self.h1.bind("<KeyRelease>", lambda e: [self._validate_h1_length(), self._chg()])
 
         inf = ttk.LabelFrame(self.sf, text="前言", padding=10)
         inf.pack(fill=tk.X, padx=5, pady=5)
@@ -809,6 +860,9 @@ class Editor:
         if not css_success or not footer_success:
             messagebox.showinfo("載入狀態", combined_message)
         
+        # 自動載入上次的網站設定（如果有記錄）
+        self.root.after(200, self._auto_load_site_settings)
+        
         # 強制設定所有輸入欄位為白底黑字（在主題載入後執行）
         self.root.after(100, self._force_white_inputs)
     
@@ -832,8 +886,8 @@ class Editor:
         for widget in [self.author, self.pub_date, self.mod_date, self.org_name, self.article_num, self.page_url_prefix,
                       self.headline, self.description, self.publisher_logo_url, self.publisher_url,
                       self.publisher_logo_width, self.publisher_logo_height, self.publisher_sameas,
-                      self.image_url_prefix, self.image_filename, self.image_alt, self.image_width, self.image_height,
-                      self.image_title, self.image_caption,
+                      self.image_url_prefix, self.image_filename, self.image_alt, self.image_caption,
+                      self.sub_image_url_prefix, self.sub_image_filename, self.sub_image_alt, self.sub_image_caption,
                       self.author_job_title, self.author_description,
                       self.h1, self.intro_h2]:
             try:
@@ -946,6 +1000,159 @@ class Editor:
         else:
             # 隱藏擴充欄位
             self.row3a.pack_forget()
+
+    def _toggle_seo_panel(self):
+        """收合/展開 SEO 資訊區塊"""
+        if self.seo_collapsed.get():
+            # 展開
+            self.seo_frame.pack(side=tk.TOP, fill=tk.X, padx=5, pady=3)
+            self.seo_toggle_btn.config(text="▼ 收合 SEO 資訊")
+            self.seo_collapsed.set(False)
+        else:
+            # 收合
+            self.seo_frame.pack_forget()
+            self.seo_toggle_btn.config(text="▶ 展開 SEO 資訊")
+            self.seo_collapsed.set(True)
+
+    def _toggle_sub_image(self):
+        """根據開關顯示/隱藏副圖區內容"""
+        if self.sub_image_enabled.get():
+            self.sub_image_content.pack(fill=tk.X, pady=2)
+        else:
+            self.sub_image_content.pack_forget()
+        self._chg()
+
+    def _validate_h1_length(self):
+        """驗證 H1 標題字數（限17個中文字）"""
+        try:
+            text = self.h1.get()
+            length = len(text)
+            self.h1_count_label.config(text=f"({length}/17)")
+            if length > 17:
+                self.h1.config(fg="red")
+                self.h1_count_label.config(foreground="red")
+            else:
+                self.h1.config(fg="black")
+                self.h1_count_label.config(foreground="gray")
+        except Exception:
+            pass
+
+    def _validate_caption_length(self):
+        """驗證主圖 Caption 字數（限46個中文字）"""
+        try:
+            text = self.image_caption.get()
+            length = len(text)
+            self.image_caption_label.config(text=f"({length}/46)")
+            if length > 46:
+                self.image_caption.config(fg="red")
+                self.image_caption_label.config(foreground="red")
+            else:
+                self.image_caption.config(fg="black")
+                self.image_caption_label.config(foreground="gray")
+        except Exception:
+            pass
+
+    def _validate_sub_caption_length(self):
+        """驗證副圖 Caption 字數（限46個中文字）"""
+        try:
+            text = self.sub_image_caption.get()
+            length = len(text)
+            self.sub_image_caption_label.config(text=f"({length}/46)")
+            if length > 46:
+                self.sub_image_caption.config(fg="red")
+                self.sub_image_caption_label.config(foreground="red")
+            else:
+                self.sub_image_caption.config(fg="black")
+                self.sub_image_caption_label.config(foreground="gray")
+        except Exception:
+            pass
+
+    def _auto_load_site_settings(self):
+        """啟動時自動載入上次的網站設定（靜默模式，不顯示訊息）"""
+        try:
+            cfg_path = os.path.join(BASE, "config", "local_settings.json")
+            if os.path.exists(cfg_path):
+                with open(cfg_path, "r", encoding="utf-8") as f:
+                    d = json.load(f)
+                    last_path = d.get("last_site_settings_path", "")
+                    if last_path and os.path.exists(last_path):
+                        # 靜默載入設定
+                        self._parse_and_apply_site_settings_silent(last_path)
+        except Exception:
+            pass
+
+    def _parse_and_apply_site_settings_silent(self, file_path):
+        """靜默解析並應用網站設定值（不顯示成功訊息）"""
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # 解析設定值
+            settings = {}
+            for line in content.split('\n'):
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                
+                # 支援多種分隔符號
+                if '：' in line:
+                    key, value = line.split('：', 1)
+                elif ':' in line:
+                    key, value = line.split(':', 1)
+                elif '=' in line:
+                    key, value = line.split('=', 1)
+                else:
+                    continue
+                
+                key = key.strip()
+                value = value.strip()
+                settings[key] = value
+            
+            # 應用設定值
+            if 'PublisherURL' in settings:
+                if hasattr(self, 'publisher_url'):
+                    self.publisher_url.delete(0, tk.END)
+                    self.publisher_url.insert(0, settings['PublisherURL'])
+            
+            if 'PublisherLogo' in settings:
+                if hasattr(self, 'publisher_logo_url'):
+                    self.publisher_logo_url.delete(0, tk.END)
+                    self.publisher_logo_url.insert(0, settings['PublisherLogo'])
+            
+            if '作者' in settings or 'Author' in settings:
+                author_name = settings.get('作者', settings.get('Author', ''))
+                if author_name and hasattr(self, 'author'):
+                    self.author.delete(0, tk.END)
+                    self.author.insert(0, author_name)
+            
+            if '組織名稱' in settings or 'Organization' in settings:
+                org_name = settings.get('組織名稱', settings.get('Organization', ''))
+                if org_name and hasattr(self, 'org_name'):
+                    self.org_name.delete(0, tk.END)
+                    self.org_name.insert(0, org_name)
+            
+            if '頁面網址前綴' in settings or 'PageURLPrefix' in settings:
+                page_prefix = settings.get('頁面網址前綴', settings.get('PageURLPrefix', ''))
+                if page_prefix and hasattr(self, 'page_url_prefix'):
+                    self.page_url_prefix.delete(0, tk.END)
+                    self.page_url_prefix.insert(0, page_prefix)
+
+            if 'ImageURLPrefix' in settings and hasattr(self, 'image_url_prefix'):
+                self.image_url_prefix.delete(0, tk.END); self.image_url_prefix.insert(0, settings['ImageURLPrefix'])
+
+            if 'PublisherLogoWidth' in settings and hasattr(self, 'publisher_logo_width'):
+                self.publisher_logo_width.delete(0, tk.END); self.publisher_logo_width.insert(0, settings['PublisherLogoWidth'])
+
+            if 'PublisherLogoHeight' in settings and hasattr(self, 'publisher_logo_height'):
+                self.publisher_logo_height.delete(0, tk.END); self.publisher_logo_height.insert(0, settings['PublisherLogoHeight'])
+
+            if 'PublisherSameAs' in settings and hasattr(self, 'publisher_sameas'):
+                self.publisher_sameas.delete(0, tk.END); self.publisher_sameas.insert(0, settings['PublisherSameAs'])
+
+            # 觸發更新
+            self._chg()
+        except Exception:
+            pass
 
     def _chg(self):
         self.mod = True
@@ -1205,19 +1412,17 @@ class Editor:
         p = []
         p.append("<article class=\"seo-article-content\">")
         
-        # 在 h1 之前添加圖片（使用 figure 結構）
+        # 在 h1 之前添加主圖（使用 figure 結構）
         image_url_prefix = self.image_url_prefix.get().strip() if hasattr(self, 'image_url_prefix') else "https://example.com/"
         image_filename = self.image_filename.get().strip() if hasattr(self, 'image_filename') else ""
         image_alt = self.image_alt.get().strip() if hasattr(self, 'image_alt') else ""
-        image_title = self.image_title.get().strip() if hasattr(self, 'image_title') else ""
         image_caption = self.image_caption.get().strip() if hasattr(self, 'image_caption') else ""
         
         if image_filename:
             full_image_url = image_url_prefix + image_filename
             alt_attr = f' alt="{self._esc(image_alt)}"' if image_alt else ' alt=""'
-            title_attr = f' title="{self._esc(image_title)}"' if image_title else ''
             p.append("  <figure>")
-            p.append(f'    <img src="{full_image_url}"{alt_attr}{title_attr}>')
+            p.append(f'    <img src="{full_image_url}"{alt_attr}>')
             if image_caption:
                 p.append(f"    <figcaption>{self._esc(image_caption)}</figcaption>")
             p.append("  </figure>")
@@ -1281,6 +1486,23 @@ class Editor:
                 p.append("</section>")
                 p.append("")
         
+        # 在 FAQ 前添加副圖（如果啟用）
+        if hasattr(self, 'sub_image_enabled') and self.sub_image_enabled.get():
+            sub_img_prefix = self.sub_image_url_prefix.get().strip() if hasattr(self, 'sub_image_url_prefix') else ""
+            sub_img_filename = self.sub_image_filename.get().strip() if hasattr(self, 'sub_image_filename') else ""
+            sub_img_alt = self.sub_image_alt.get().strip() if hasattr(self, 'sub_image_alt') else ""
+            sub_img_caption = self.sub_image_caption.get().strip() if hasattr(self, 'sub_image_caption') else ""
+            
+            if sub_img_filename:
+                full_sub_url = sub_img_prefix + sub_img_filename
+                alt_attr = f' alt="{self._esc(sub_img_alt)}"' if sub_img_alt else ' alt=""'
+                p.append("  <figure>")
+                p.append(f'    <img src="{full_sub_url}"{alt_attr}>')
+                if sub_img_caption:
+                    p.append(f"    <figcaption>{self._esc(sub_img_caption)}</figcaption>")
+                p.append("  </figure>")
+                p.append("")
+
         if self.faqs:
             p.append("<hr />")
             p.append('<section id="faq">')
@@ -1408,10 +1630,7 @@ class Editor:
             if hasattr(self, 'image_url_prefix'): lines.append(f"ImageURLPrefix: {self.image_url_prefix.get().strip()}")
             if hasattr(self, 'image_filename'): lines.append(f"ImageFilename: {self.image_filename.get().strip()}")
             if hasattr(self, 'image_alt'): lines.append(f"ImageAlt: {self.image_alt.get().strip()}")
-            if hasattr(self, 'image_title'): lines.append(f"ImageTitle: {self.image_title.get().strip()}")
             if hasattr(self, 'image_caption'): lines.append(f"ImageCaption: {self.image_caption.get().strip()}")
-            if hasattr(self, 'image_width'): lines.append(f"ImageWidth: {self.image_width.get().strip()}")
-            if hasattr(self, 'image_height'): lines.append(f"ImageHeight: {self.image_height.get().strip()}")
 
             with open(fp, "w", encoding="utf-8") as f:
                 f.write("\n".join(lines))
@@ -1539,17 +1758,8 @@ class Editor:
             if 'ImageAlt' in settings and hasattr(self, 'image_alt'):
                 self.image_alt.delete(0, tk.END); self.image_alt.insert(0, settings['ImageAlt'])
 
-            if 'ImageTitle' in settings and hasattr(self, 'image_title'):
-                self.image_title.delete(0, tk.END); self.image_title.insert(0, settings['ImageTitle'])
-
             if 'ImageCaption' in settings and hasattr(self, 'image_caption'):
                 self.image_caption.delete(0, tk.END); self.image_caption.insert(0, settings['ImageCaption'])
-
-            if 'ImageWidth' in settings and hasattr(self, 'image_width'):
-                self.image_width.delete(0, tk.END); self.image_width.insert(0, settings['ImageWidth'])
-
-            if 'ImageHeight' in settings and hasattr(self, 'image_height'):
-                self.image_height.delete(0, tk.END); self.image_height.insert(0, settings['ImageHeight'])
 
             # 顯示成功訊息
             messagebox.showinfo("載入成功", f"已成功載入網站設定值：{file_path}")
@@ -1612,14 +1822,25 @@ class Editor:
             self.image_filename.delete(0, tk.END); self.image_filename.insert(0, "")
         if hasattr(self, 'image_alt'):
             self.image_alt.delete(0, tk.END); self.image_alt.insert(0, "")
-        if hasattr(self, 'image_title'):
-            self.image_title.delete(0, tk.END); self.image_title.insert(0, "")
         if hasattr(self, 'image_caption'):
             self.image_caption.delete(0, tk.END); self.image_caption.insert(0, "")
-        if hasattr(self, 'image_width'):
-            self.image_width.delete(0, tk.END); self.image_width.insert(0, "100%")
-        if hasattr(self, 'image_height'):
-            self.image_height.delete(0, tk.END); self.image_height.insert(0, "auto")
+
+        # 重置副圖區
+        if hasattr(self, 'sub_image_enabled'):
+            self.sub_image_enabled.set(False)
+            self._toggle_sub_image()
+        if hasattr(self, 'sub_image_url_prefix'):
+            self.sub_image_url_prefix.delete(0, tk.END); self.sub_image_url_prefix.insert(0, "https://example.com/")
+        if hasattr(self, 'sub_image_filename'):
+            self.sub_image_filename.delete(0, tk.END); self.sub_image_filename.insert(0, "")
+        if hasattr(self, 'sub_image_alt'):
+            self.sub_image_alt.delete(0, tk.END); self.sub_image_alt.insert(0, "")
+        if hasattr(self, 'sub_image_caption'):
+            self.sub_image_caption.delete(0, tk.END); self.sub_image_caption.insert(0, "")
+        
+        # 確保 SEO 區塊展開
+        if hasattr(self, 'seo_collapsed') and self.seo_collapsed.get():
+            self._toggle_seo_panel()
         
         # 重置內容
         self.h1.delete(0, tk.END); self.h1.insert(0, "")
@@ -1682,10 +1903,12 @@ class Editor:
                     "image_url_prefix": (self.image_url_prefix.get().strip() if hasattr(self, 'image_url_prefix') else "https://example.com/"),
                     "image_filename": (self.image_filename.get().strip() if hasattr(self, 'image_filename') else ""),
                     "image_alt": (self.image_alt.get().strip() if hasattr(self, 'image_alt') else ""),
-                    "image_title": (self.image_title.get().strip() if hasattr(self, 'image_title') else ""),
                     "image_caption": (self.image_caption.get().strip() if hasattr(self, 'image_caption') else ""),
-                    "image_width": (self.image_width.get().strip() if hasattr(self, 'image_width') else "100%"),
-                    "image_height": (self.image_height.get().strip() if hasattr(self, 'image_height') else "auto")
+                    "sub_image_enabled": (self.sub_image_enabled.get() if hasattr(self, 'sub_image_enabled') else False),
+                    "sub_image_url_prefix": (self.sub_image_url_prefix.get().strip() if hasattr(self, 'sub_image_url_prefix') else ""),
+                    "sub_image_filename": (self.sub_image_filename.get().strip() if hasattr(self, 'sub_image_filename') else ""),
+                    "sub_image_alt": (self.sub_image_alt.get().strip() if hasattr(self, 'sub_image_alt') else ""),
+                    "sub_image_caption": (self.sub_image_caption.get().strip() if hasattr(self, 'sub_image_caption') else "")
                 },
                 "h1": self.h1.get().strip(),
                 "intro": self.intro.get("1.0", tk.END).strip(),
@@ -1741,14 +1964,26 @@ class Editor:
             self.image_filename.delete(0, tk.END); self.image_filename.insert(0, seo.get("image_filename", ""))
         if hasattr(self, 'image_alt'):
             self.image_alt.delete(0, tk.END); self.image_alt.insert(0, seo.get("image_alt", ""))
-        if hasattr(self, 'image_title'):
-            self.image_title.delete(0, tk.END); self.image_title.insert(0, seo.get("image_title", ""))
         if hasattr(self, 'image_caption'):
             self.image_caption.delete(0, tk.END); self.image_caption.insert(0, seo.get("image_caption", ""))
-        if hasattr(self, 'image_width'):
-            self.image_width.delete(0, tk.END); self.image_width.insert(0, seo.get("image_width", "100%"))
-        if hasattr(self, 'image_height'):
-            self.image_height.delete(0, tk.END); self.image_height.insert(0, seo.get("image_height", "auto"))
+        
+        # 副圖區
+        if hasattr(self, 'sub_image_enabled'):
+            self.sub_image_enabled.set(seo.get("sub_image_enabled", False))
+            self._toggle_sub_image()
+        if hasattr(self, 'sub_image_url_prefix'):
+            self.sub_image_url_prefix.delete(0, tk.END); self.sub_image_url_prefix.insert(0, seo.get("sub_image_url_prefix", "https://example.com/"))
+        if hasattr(self, 'sub_image_filename'):
+            self.sub_image_filename.delete(0, tk.END); self.sub_image_filename.insert(0, seo.get("sub_image_filename", ""))
+        if hasattr(self, 'sub_image_alt'):
+            self.sub_image_alt.delete(0, tk.END); self.sub_image_alt.insert(0, seo.get("sub_image_alt", ""))
+        if hasattr(self, 'sub_image_caption'):
+            self.sub_image_caption.delete(0, tk.END); self.sub_image_caption.insert(0, seo.get("sub_image_caption", ""))
+
+        # 更新驗證
+        self._validate_h1_length()
+        self._validate_caption_length()
+        self._validate_sub_caption_length()
         
         # 載入內容
         self.h1.delete(0, tk.END); self.intro.delete("1.0", tk.END)
