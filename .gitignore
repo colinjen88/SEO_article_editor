@@ -45,9 +45,6 @@ Thumbs.db
 desktop.ini
 
 # Project specific
-output/*.html
-!output/.gitkeep
-!output/preview_temp.html
 article_number.txt
 site_setup.txt
 settings.json

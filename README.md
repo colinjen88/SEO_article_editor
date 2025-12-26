@@ -410,32 +410,25 @@ SEO_article_editor/
 │
 ├── docs/                       # 文件目錄
 │   ├── TECHNICAL_DOCUMENTATION.md  # 技術文件
-│   ├── HTML_MODE_GUIDE.md      # HTML 模式指南
-│   ├── TP_EDITOR_GUIDE.md      # 編輯器使用指南
-│   └── TP_QUICK_REFERENCE.md   # 快速參考
+│   └── HTML_MODE_GUIDE.md      # HTML 模式指南
 │
-├── output/                     # 輸出目錄
-│   └── preview_temp.html       # 預覽暫存檔
 │
-├── input_docs/                 # 範例文件
-│   └── example_tp_article.txt  # TP 格式範例
-│
-└── dist/                       # 執行檔輸出目錄
-    └── SEO_Article_Editor.exe  # Windows 執行檔
+└── config/                     # 設定檔目錄
+    └── defaults.json           # 預設值設定
 ```
+
 
 ---
 
-## �📚 相關文件
+## 📚 相關文件
 
 - [CHANGELOG.md](CHANGELOG.md) - 完整版本變更記錄
 - [QUICKSTART.md](QUICKSTART.md) - 快速啟動指南
 - [BUILD_INSTRUCTIONS.md](BUILD_INSTRUCTIONS.md) - 執行檔製作說明
 - [docs/TECHNICAL_DOCUMENTATION.md](docs/TECHNICAL_DOCUMENTATION.md) - 技術架構說明
 - [docs/HTML_MODE_GUIDE.md](docs/HTML_MODE_GUIDE.md) - HTML 模式使用指南
-- [docs/TP_EDITOR_GUIDE.md](docs/TP_EDITOR_GUIDE.md) - 編輯器完整指南
 
 ---
 
-**© 2025 SEO Article Editor v2.11**  
+**© 2025 SEO Article Editor v2.13**  
 Produced by Colinjen (colinjen88@gmail.com)

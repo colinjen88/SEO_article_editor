@@ -46,8 +46,7 @@ Write-Host "[3/5] 檢查必要檔案..." -ForegroundColor Yellow
 $requiredFiles = @(
     "SEO_Article_Editor.py",
     "src\tp_editor_gui.py",
-    "templates",
-    "output"
+    "templates"
 )
 
 $allFilesExist = $true
@@ -79,7 +78,7 @@ if (Test-Path "SEO_Article_Editor.spec") {
 }
 else {
     Write-Host "  使用預設參數進行打包..." -ForegroundColor Gray
-    $buildCommand = "pyinstaller --noconfirm --onefile --windowed --add-data `"templates;templates`" --add-data `"output;output`" --add-data `"src;src`" --hidden-import `"tp_editor_gui`" --hidden-import `"tkinter`" --hidden-import `"ttkbootstrap`" --runtime-hook `"tk_rthook.py`" --paths `"src`" SEO_Article_Editor.py"
+    $buildCommand = "pyinstaller --noconfirm --onefile --windowed --add-data `"templates;templates`" --add-data `"src;src`" --hidden-import `"tp_editor_gui`" --hidden-import `"tkinter`" --hidden-import `"ttkbootstrap`" --runtime-hook `"tk_rthook.py`" --paths `"src`" SEO_Article_Editor.py"
 }
 
 Write-Host "  執行指令: $buildCommand" -ForegroundColor Gray
