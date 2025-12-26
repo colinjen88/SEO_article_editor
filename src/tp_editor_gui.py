@@ -586,12 +586,12 @@ class Editor:
         row1.pack(fill=tk.X, pady=2)
         ttk.Label(row1, text="作者:", width=10).pack(side=tk.LEFT)
         self.author = tk.Entry(row1, width=15, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.author.insert(0, "炫麗黃金白銀交易所")
+        self.author.insert(0, "作者名稱（預設）")
         self.author.pack(side=tk.LEFT, padx=5)
 
         ttk.Label(row1, text="組織名稱:", width=10).pack(side=tk.LEFT, padx=(10,0))
         self.org_name = tk.Entry(row1, width=20, bg="#f8f9f9", fg="black", insertbackground="black", font=("Consolas", 10))
-        self.org_name.insert(0, "炫麗黃金白銀交易所")
+        self.org_name.insert(0, "組織名稱（預設）")
         self.org_name.pack(side=tk.LEFT, padx=5)
 
         ttk.Label(row1, text="文章編號:", width=10).pack(side=tk.LEFT, padx=(10,0))
@@ -1298,14 +1298,11 @@ class Editor:
                 return True, f"已載入 Footer: {footer_file}"
             else:
                 # 如果檔案不存在，載入預設內容
-                default_footer = """<section>
-    <h3>1. 宏觀風險與避險需求（Safe-Haven Demand）</h3>
-    <p>&lt;p&gt;黃金是對抗通膨、經濟放緩及貨幣貶值的主要避險工具。&lt;/p&gt;
-        &lt;ul&gt;
-            &lt;li&gt;**地緣政治不確定性：** 烏俄戰爭與中東局勢升溫。&lt;/li&gt;
-            &lt;li&gt;**政策風險對沖：** 美國政策與貿易關稅變數持續，使黃金成為對沖「停滯性通膨＋衰退」風險的首選資產。&lt;/li&gt;
-            &lt;li&gt;**貨幣政策影響：** 市場預期利率持續下降、美元維持弱勢，強化黃金吸引力。&lt;/li&gt;
-        &lt;/ul&gt;</p>
+                default_footer = """<hr>
+<section class="article-footer">
+    <p><strong>炫麗Shiny 黃金白銀交易所</strong> <span data-article-author="炫麗J編輯"
+            style="font-size: 12px;color: #cf79a6;">炫麗J編輯</span></p>
+    <em>僅供參考，恕不代表本站立場</em>
 </section>"""
                 self.footer_editor.delete("1.0", tk.END)
                 self.footer_editor.insert("1.0", default_footer)
@@ -1836,7 +1833,7 @@ class Editor:
         self.author.delete(0, tk.END); self.author.insert(0, "作者名稱（預設）")
         self.pub_date.delete(0, tk.END); self.pub_date.insert(0, datetime.today().strftime('%Y-%m-%d'))
         self.mod_date.delete(0, tk.END); self.mod_date.insert(0, datetime.today().strftime('%Y-%m-%d'))
-        self.org_name.delete(0, tk.END); self.org_name.insert(0, "炫麗黃金白銀交易所")
+        self.org_name.delete(0, tk.END); self.org_name.insert(0, "組織名稱（預設）")
         
         # 取得下一個文章編號
         next_article_num = str(get_article_number())
@@ -2245,10 +2242,10 @@ class Editor:
             # 內建 placeholder 結構
             data = {
                 "seo": {
-                    "author": "炫麗黃金白銀交易所",
+                    "author": "作者名稱（預設）",
                     "pub_date": datetime.today().strftime('%Y-%m-%d'),
                     "mod_date": datetime.today().strftime('%Y-%m-%d'),
-                    "org_name": "炫麗黃金白銀交易所",
+                    "org_name": "組織名稱（預設）",
                     "article_num": str(get_article_number()),
                     "headline": "請輸入文章標題",
                     "description": "請輸入文章描述",

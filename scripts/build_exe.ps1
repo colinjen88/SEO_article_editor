@@ -76,7 +76,7 @@ if (Test-Path "SEO_Article_Editor.spec") {
     $buildCommand = "pyinstaller --noconfirm --clean SEO_Article_Editor.spec"
 } else {
     Write-Host "  使用預設參數進行打包..." -ForegroundColor Gray
-    $buildCommand = "pyinstaller --noconfirm --onefile --windowed --add-data `"templates;templates`" --add-data `"output;output`" --add-data `"src;src`" --hidden-import `"tp_editor_gui`" --hidden-import `"tp_template_parser`" --paths `"src`" SEO_Article_Editor.py"
+    $buildCommand = "pyinstaller --noconfirm --onefile --windowed --add-data `"templates;templates`" --add-data `"output;output`" --add-data `"src;src`" --hidden-import `"tp_editor_gui`" --hidden-import `"tp_template_parser`" --hidden-import `"tkinter`" --hidden-import `"ttkbootstrap`" --runtime-hook `"tk_rthook.py`" --paths `"src`" SEO_Article_Editor.py"
 }
 
 Write-Host "  執行指令: $buildCommand" -ForegroundColor Gray
