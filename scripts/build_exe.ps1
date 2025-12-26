@@ -1,9 +1,9 @@
-# SEO 文章編輯器 - 自動打包腳本
+# SEO Article App - 自動打包腳本
 # 版本: v2.8
 # 日期: 2025-12-17
 
 Write-Host "================================================" -ForegroundColor Cyan
-Write-Host "  SEO 文章編輯器 - 執行檔打包工具" -ForegroundColor Cyan
+Write-Host "  SEO Article App - 執行檔打包工具" -ForegroundColor Cyan
 Write-Host "  版本: v2.8" -ForegroundColor Cyan
 Write-Host "================================================" -ForegroundColor Cyan
 Write-Host ""
@@ -44,7 +44,7 @@ if (Test-Path "SEO_Article_Editor.spec") {
 Write-Host ""
 Write-Host "[3/5] 檢查必要檔案..." -ForegroundColor Yellow
 $requiredFiles = @(
-    "SEO_Article_Editor.py",
+    "SEO_Article_App.py",
     "src\tp_editor_gui.py",
     "templates"
 )
@@ -78,7 +78,7 @@ if (Test-Path "SEO_Article_Editor.spec") {
 }
 else {
     Write-Host "  使用預設參數進行打包..." -ForegroundColor Gray
-    $buildCommand = "pyinstaller --noconfirm --onefile --windowed --add-data `"templates;templates`" --add-data `"src;src`" --hidden-import `"tp_editor_gui`" --hidden-import `"tkinter`" --hidden-import `"ttkbootstrap`" --runtime-hook `"tk_rthook.py`" --paths `"src`" SEO_Article_Editor.py"
+    $buildCommand = "pyinstaller --noconfirm --onefile --windowed --add-data `"templates;templates`" --add-data `"src;src`" --hidden-import `"tp_editor_gui`" --hidden-import `"tkinter`" --hidden-import `"ttkbootstrap`" --runtime-hook `"tk_rthook.py`" --paths `"src`" SEO_Article_App.py"
 }
 
 Write-Host "  執行指令: $buildCommand" -ForegroundColor Gray
@@ -94,11 +94,11 @@ if ($LASTEXITCODE -ne 0) {
 # 檢查結果
 Write-Host ""
 Write-Host "[5/5] 檢查打包結果..." -ForegroundColor Yellow
-if (Test-Path "dist\SEO_Article_Editor.exe") {
-    $exeSize = (Get-Item "dist\SEO_Article_Editor.exe").Length
+if (Test-Path "dist\SEO_Article_App.exe") {
+    $exeSize = (Get-Item "dist\SEO_Article_App.exe").Length
     $exeSizeMB = [math]::Round($exeSize / 1MB, 2)
     Write-Host "  ✓ 執行檔已生成" -ForegroundColor Green
-    Write-Host "  位置: dist\SEO_Article_Editor.exe" -ForegroundColor Gray
+    Write-Host "  位置: dist\SEO_Article_App.exe" -ForegroundColor Gray
     Write-Host "  大小: $exeSizeMB MB" -ForegroundColor Gray
 }
 else {
@@ -112,16 +112,16 @@ Write-Host "================================================" -ForegroundColor C
 Write-Host "  打包完成！" -ForegroundColor Green
 Write-Host "================================================" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "執行檔位置: dist\SEO_Article_Editor.exe" -ForegroundColor White
+Write-Host "執行檔位置: dist\SEO_Article_App.exe" -ForegroundColor White
 Write-Host ""
 Write-Host "使用方式:" -ForegroundColor Yellow
-Write-Host "  1. 直接雙擊執行: dist\SEO_Article_Editor.exe" -ForegroundColor Gray
-Write-Host "  2. 或在命令列執行: .\dist\SEO_Article_Editor.exe" -ForegroundColor Gray
+Write-Host "  1. 直接雙擊執行: dist\SEO_Article_App.exe" -ForegroundColor Gray
+Write-Host "  2. 或在命令列執行: .\dist\SEO_Article_App.exe" -ForegroundColor Gray
 Write-Host ""
 Write-Host "提示:" -ForegroundColor Yellow
 Write-Host "  - 首次執行可能需要 5-10 秒啟動時間" -ForegroundColor Gray
 Write-Host "  - 如遇防毒軟體警告，請加入信任清單" -ForegroundColor Gray
-Write-Host "  - 可將 dist\SEO_Article_Editor.exe 複製到任何電腦使用" -ForegroundColor Gray
+Write-Host "  - 可將 dist\SEO_Article_App.exe 複製到任何電腦使用" -ForegroundColor Gray
 Write-Host ""
 
 # 詢問是否立即執行
@@ -129,7 +129,7 @@ $runNow = Read-Host "是否立即執行測試？(Y/N)"
 if ($runNow -eq "Y" -or $runNow -eq "y") {
     Write-Host ""
     Write-Host "正在啟動執行檔..." -ForegroundColor Yellow
-    Start-Process "dist\SEO_Article_Editor.exe"
+    Start-Process "dist\SEO_Article_App.exe"
     Write-Host "✓ 已啟動" -ForegroundColor Green
 }
 

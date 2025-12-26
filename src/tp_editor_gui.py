@@ -293,7 +293,7 @@ class FaqBlock:
 
 class Editor:
     def __init__(self, root):
-        self.root = root; self.root.title("SEO 文章編輯器"); self.root.geometry("1400x900")
+        self.root = root; self.root.title("SEO Article App"); self.root.geometry("1400x900")
         self.app_version = _read_app_version()
         
         # 立即覆蓋 ttkbootstrap 主題顏色

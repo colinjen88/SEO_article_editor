@@ -1,4 +1,4 @@
-# SEO Article Editor v2.13
+# SEO Article App v2.13
 
 專為 SEO 文章寫作設計的視覺化編輯器，支援即時預覽、Schema JSON-LD 結構化資料生成、自訂 CSS 樣式以及 HTML 匯出功能。
 
@@ -388,8 +388,8 @@ root = tb.Window(themename="darkly")  # 改為其他主題名稱
 ## � 專案結構
 
 ```
-SEO_article_editor/
-├── SEO_Article_Editor.py      # 主程式入口
+SEO_article_app/
+├── SEO_Article_App.py      # 主程式入口
 ├── requirements.txt            # Python 依賴套件
 ├── README.md                   # 專案說明（本檔案）
 ├── CHANGELOG.md                # 版本變更記錄
@@ -430,5 +430,5 @@ SEO_article_editor/
 
 ---
 
-**© 2025 SEO Article Editor v2.13**  
+**© 2025 SEO Article App v2.13**  
 Produced by Colinjen (colinjen88@gmail.com)

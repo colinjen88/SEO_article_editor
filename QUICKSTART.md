@@ -5,10 +5,10 @@
 
 ## 最快速的開始方式
 
-### 啟動 SEO 文章編輯器
+### 啟動 SEO Article App
 
 ```powershell
-python SEO_Article_Editor.py
+python SEO_Article_App.py
 ```
 
 這會啟動視覺化編輯器，包含：
@@ -36,7 +36,7 @@ pip install -r requirements.txt
 
 ### 5 分鐘上手
 
-1. 執行 `python SEO_Article_Editor.py` 啟動編輯器
+1. 執行 `python SEO_Article_App.py` 啟動編輯器
 2. 查看預載的範例內容（黃金投資指南）
 3. 填寫 **SEO 資訊區**（作者、日期、標題等）
 4. 點擊「**+ 段落**」新增 H2 區塊
@@ -62,8 +62,8 @@ pip install -r requirements.txt
 
 - **主要說明**：`README.md` - 完整使用指南
 - **版本記錄**：`CHANGELOG.md` - 所有更新內容
-- **現況報告**：`STATUS_REPORT_2025-11-04.md` - 專案狀態
-- **專案結構**：`PROJECT_STRUCTURE.md` - 檔案架構說明
+- **現況報告**：`docs/TECHNICAL_DOCUMENTATION.md` - 技術文件
+- **專案結構**：`README.md` - 檔案架構說明
 - **技術文件**：`docs/TECHNICAL_DOCUMENTATION.md` - 技術細節
 
 ---
@@ -89,9 +89,9 @@ pip install -r requirements.txt
 ```powershell
 # 完整安裝並啟動
 git clone <repository-url>
-cd SEO_article_editor
+cd SEO_Article_App
 pip install -r requirements.txt
-python SEO_Article_Editor.py
+python SEO_Article_App.py
 ```
 
 ---
@@ -107,4 +107,4 @@ python SEO_Article_Editor.py
 ---
 
 **祝您使用愉快！** 🎉  
-**© 2025 SEO Article Editor v2.0.2**
+**© 2025 SEO Article App v2.13**

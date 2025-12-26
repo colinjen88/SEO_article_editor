@@ -1,6 +1,6 @@
 """
-SEO 文章編輯器 - 主程式
-直接啟動 SEO 文章編輯器
+SEO Article App - Main Program
+Launch SEO Article App
 """
 
 import os
@@ -28,7 +28,7 @@ if BASE_DIR not in sys.path:
 
 
 def main():
-    """主程式進入點 - 直接啟動 SEO 文章編輯器"""
+    """主程式進入點 - 直接啟動 SEO Article App"""
     try:
         # 嘗試從 src 目錄 import（開發環境）
         import tp_editor_gui
