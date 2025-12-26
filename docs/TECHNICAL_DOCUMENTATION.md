@@ -25,7 +25,7 @@ SEO_Article_Editor.py
 
 ## 2. 核心邏輯 (Core Logic)
 
-系統不再依賴外部解析器 (`tp_template_parser.py` 已棄用)，而是直接在 GUI 編輯器中維護資料狀態，並在匯出時組裝內容。
+系統不再依賴外部解析器，而是直接在 GUI 編輯器中維護資料狀態，並在匯出時組裝內容。
 
 ### 2.1 HTML 組裝邏輯 (`_gen`)
 
@@ -121,11 +121,8 @@ v2.6 使用 **JSON** 作為標準專案儲存格式（即模板）。不再使�
 
 ## 4. 棄用模組 (Deprecated)
 
-以下模組屬於 v1.x 架構，目前保留僅供參考或向下相容，**不應再用於新功能開發**：
-
+以下模組屬於 v1.x 架構，目前均已移除：
 - **`src/tp_template_parser.py`**: 舊版正則表達式解析器 (Regex-based parser)。
-    - *已知問題*: 維護困難，且正則依賴容易出錯。
-- **`src/tp_template_gui.py`**: 舊版基於 .txt 模板的轉換工具。
 - **`src/legacy/`**: 存放所有舊版實驗性代碼。
 
 ## 5. 版本歷史 (Version History)

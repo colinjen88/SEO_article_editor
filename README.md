@@ -397,13 +397,11 @@ SEO_article_editor/
 ├── BUILD_INSTRUCTIONS.md       # 執行檔製作說明
 │
 ├── src/                        # 原始碼目錄
-│   ├── tp_editor_gui.py        # 主編輯器 GUI（747 行）
-│   ├── tp_template_parser.py   # 模板解析器
-│   └── legacy/                 # 舊版工具（已棄用）
+│   └── tp_editor_gui.py        # 主編輯器 GUI
 │
 ├── templates/                  # HTML 模板
-│   ├── seo_article.html        # 文章模板
-│   └── seo_layout.html         # 版面模板
+│   ├── common.css              # 共用 CSS 樣式
+│   └── common_footer.html      # 共用 Footer HTML
 │
 ├── scripts/                    # 工具腳本
 │   ├── build_exe.ps1           # 自動打包腳本
@@ -414,8 +412,7 @@ SEO_article_editor/
 │   ├── TECHNICAL_DOCUMENTATION.md  # 技術文件
 │   ├── HTML_MODE_GUIDE.md      # HTML 模式指南
 │   ├── TP_EDITOR_GUIDE.md      # 編輯器使用指南
-│   ├── TP_QUICK_REFERENCE.md   # 快速參考
-│   └── archive/                # 歷史文件
+│   └── TP_QUICK_REFERENCE.md   # 快速參考
 │
 ├── output/                     # 輸出目錄
 │   └── preview_temp.html       # 預覽暫存檔

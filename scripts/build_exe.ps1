@@ -19,7 +19,8 @@ if (-not $pyinstallerCheck) {
         exit 1
     }
     Write-Host "  ✓ PyInstaller 安裝成功" -ForegroundColor Green
-} else {
+}
+else {
     Write-Host "  ✓ PyInstaller 已安裝" -ForegroundColor Green
 }
 
@@ -53,7 +54,8 @@ $allFilesExist = $true
 foreach ($file in $requiredFiles) {
     if (Test-Path $file) {
         Write-Host "  ✓ $file" -ForegroundColor Green
-    } else {
+    }
+    else {
         Write-Host "  ✗ $file (缺少)" -ForegroundColor Red
         $allFilesExist = $false
     }
@@ -74,9 +76,10 @@ Write-Host "  這可能需要 1-2 分鐘，請稍候..." -ForegroundColor Gray
 if (Test-Path "SEO_Article_Editor.spec") {
     Write-Host "  使用現有 spec 檔案進行打包..." -ForegroundColor Gray
     $buildCommand = "pyinstaller --noconfirm --clean SEO_Article_Editor.spec"
-} else {
+}
+else {
     Write-Host "  使用預設參數進行打包..." -ForegroundColor Gray
-    $buildCommand = "pyinstaller --noconfirm --onefile --windowed --add-data `"templates;templates`" --add-data `"output;output`" --add-data `"src;src`" --hidden-import `"tp_editor_gui`" --hidden-import `"tp_template_parser`" --hidden-import `"tkinter`" --hidden-import `"ttkbootstrap`" --runtime-hook `"tk_rthook.py`" --paths `"src`" SEO_Article_Editor.py"
+    $buildCommand = "pyinstaller --noconfirm --onefile --windowed --add-data `"templates;templates`" --add-data `"output;output`" --add-data `"src;src`" --hidden-import `"tp_editor_gui`" --hidden-import `"tkinter`" --hidden-import `"ttkbootstrap`" --runtime-hook `"tk_rthook.py`" --paths `"src`" SEO_Article_Editor.py"
 }
 
 Write-Host "  執行指令: $buildCommand" -ForegroundColor Gray
@@ -98,7 +101,8 @@ if (Test-Path "dist\SEO_Article_Editor.exe") {
     Write-Host "  ✓ 執行檔已生成" -ForegroundColor Green
     Write-Host "  位置: dist\SEO_Article_Editor.exe" -ForegroundColor Gray
     Write-Host "  大小: $exeSizeMB MB" -ForegroundColor Gray
-} else {
+}
+else {
     Write-Host "  ✗ 執行檔未生成" -ForegroundColor Red
     exit 1
 }
