@@ -2074,19 +2074,10 @@ class Editor:
         footer_html = footer_content if footer_content else ""
         body = self._gen()  # 重新取得 body，避免未定義
         html = (
-            '<!DOCTYPE html>'
-            '<html>'
-            '<head>'
-            '<meta charset="UTF-8">'
-            f'<title>{title}</title>'
-            f'{schema}'
-            f'{style_html}'
-            '</head>'
-            '<body>'
-            f'{body}'
+            f'{schema}\n'
+            f'{style_html}\n'
+            f'{body}\n'
             f'{footer_html}'
-            '</body>'
-            '</html>'
         )
         fp = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("HTML","*.html")])
         if fp:
@@ -2174,25 +2165,14 @@ class Editor:
         # 組合完整 HTML（Schema 在前，Style 在後）
         title = self.h1.get().strip() or "文章標題"
         complete_html = (
-            '<!DOCTYPE html>\n'
-            '<html lang="zh-TW">\n'
-            '<head>\n'
-            '    <meta charset="UTF-8">\n'
-            '    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">\n'
-            '    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
-            f'    <title>{title}</title>\n'
             f'{schema}\n'
             f'{style_tag}\n'
-            '</head>\n'
-            '<body>\n'
             f'{body}\n'
         )
         
         # 加入 Footer（如果有的話）
         if footer_content:
-            complete_html += f'    {footer_content}\n'
-        
-        complete_html += '</body>\n</html>'
+            complete_html += f'{footer_content}\n'
         
         return complete_html
 
@@ -2237,19 +2217,14 @@ class Editor:
         style_html = self._get_style_html()
         schema = self._gen_schema_jsonld()
         title = self.h1.get().strip() or "預覽"
+        # 取得 Footer
+        footer_content = self.footer_editor.get("1.0", tk.END).strip() if hasattr(self, 'footer_editor') else ""
+        
         html = (
-            '<!DOCTYPE html>'
-            '<html>'
-            '<head>'
-            '<meta charset="UTF-8">'
-            f'<title>{title}</title>'
-            f'{schema}'
-            f'{style_html}'
-            '</head>'
-            '<body>'
-            f'{body}'
-            '</body>'
-            '</html>'
+            f'{schema}\n'
+            f'{style_html}\n'
+            f'{body}\n'
+            f'{footer_content}'
         )
         os.makedirs(OUT, exist_ok=True)
         pp = os.path.join(OUT, "preview_temp.html")

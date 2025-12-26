@@ -1,6 +1,10 @@
-# SEO Article Editor v2.11
+# SEO Article Editor v2.12
 
 專為 SEO 文章寫作設計的視覺化編輯器，支援即時預覽、Schema JSON-LD 結構化資料生成、自訂 CSS 樣式以及 HTML 匯出功能。
+
+## v2.12 更新重點
+- **輸出優化**: 移除輸出 HTML 與預覽中的 `<html>`, `<head>`, `<body>` 標籤，方便直接貼入編輯器
+- **預覽修正**: 確保瀏覽器預覽功能包含 Footer 內容
 
 ## v2.11 更新重點
 - **空間優化**: 新增 SEO 資訊區塊收合功能，配合 3:1 寬廣編輯版面
@@ -322,7 +326,7 @@ root = tb.Window(themename="darkly")  # 改為其他主題名稱
 - 完整的語意化標籤（`<article>`, `<section>`）
 - 內嵌 CSS 樣式
 - JSON-LD 結構化資料
-- 可直接部署或嵌入網頁
+- 可直接嵌入網頁內容區塊
 
 ---
 
@@ -353,28 +357,26 @@ root = tb.Window(themename="darkly")  # 改為其他主題名稱
 - 防抖動更新機制（500ms 延遲）
 
 **輸出格式：**
+**輸出格式：**
 ```html
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>文章標題</title>
-  <style>/* 內嵌 CSS */</style>
-  <script type="application/ld+json">/* Article Schema */</script>
-  <script type="application/ld+json">/* FAQPage Schema */</script>
-</head>
-<body>
-  <article class="seo-article-content">
-    <h1>標題</h1>
-    <section class="intro-summary">...</section>
-    <section>
-      <h2>段落標題</h2>
-      <section><h3>子標題</h3></section>
-    </section>
-    <section id="faq">...</section>
-  </article>
-</body>
-</html>
+<script type="application/ld+json">/* Article Schema */</script>
+<script type="application/ld+json">/* FAQPage Schema */</script>
+
+<style>/* 內嵌 CSS */</style>
+
+<article class="seo-article-content">
+  <h1>標題</h1>
+  <section class="intro-summary">...</section>
+  <section>
+    <h2>段落標題</h2>
+    <section><h3>子標題</h3></section>
+  </section>
+  <section id="faq">...</section>
+</article>
+
+<footer>
+  <!-- Footer Content -->
+</footer>
 ```
 
 ---
