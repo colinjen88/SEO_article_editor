@@ -58,3 +58,5 @@ temp_*.py
 *.tmp
 *.bak
 *.log
+
+*.lnk

@@ -432,3 +432,11 @@ SEO_article_app/
 
 **© 2025 SEO Article App v2.13**  
 Produced by Colinjen (colinjen88@gmail.com)
+
+## 注意事項
+- 本資料夾部分檔案僅為結構範例，請依原專案 src、templates、config 目錄下實際內容補齊。
+- 若有敏感設定，請提供範本檔（如 local_settings.example.json）。
+
+## FAQ
+- Q: 如何確認移植後功能正常？
+  A: 請依 TECHNICAL_DOCUMENTATION.md 步驟建構並執行單元測試。
